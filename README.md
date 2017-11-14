@@ -68,7 +68,8 @@ If you like to contribute, please file an issue in the bug-tracker.
 
 Newbies and peeps from so called marginalized groups are especially welcome.
 
-Development happens in the 'src'-directory of this repository.
+Development happens in the 'src'-directory of this repository, it contains
+a README also with further explanations.
 
 
 Authors
