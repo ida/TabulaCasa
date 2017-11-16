@@ -1,12 +1,11 @@
-var appName = 'tabulaCasa'
 var cellDeli = ','
 var rowDeli = '\n'
 
 function main(appEle=null) {
 
-  addStylesheet()
-
   appEle = addApp(appEle)
+
+  addStylesheet()
 
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'

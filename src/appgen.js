@@ -1,4 +1,7 @@
+var appName = 'tabulaCasa'
+
 function addApp(appEle) {
+  addStyleEle()
   if(appEle===null) appEle = document.body
   appEle.className = appName
   return appEle
@@ -81,6 +84,10 @@ function addStyle(newSelector, newStyle) {
   else { // rule doesn't exist, append to styles:
     getStyleEle().innerHTML += newSelector + ' {\n' + newStyle + '}\n'
   }
+}
+function addStyleEle() {
+  var styleEle = addEle(document.getElementsByTagName('head')[0], '', 'style')
+  styleEle.className = appName + 'Styles'
 }
 function addStyles(string) {
   getStyleEle().innerHTML += string
