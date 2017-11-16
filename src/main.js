@@ -6,9 +6,7 @@ function main(appEle=null) {
 
   addStylesheet()
 
-  if(appEle===null) appEle = document.body
-  else appEle = appEle
-  appEle.className = appName
+  appEle = addApp(appEle)
 
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'

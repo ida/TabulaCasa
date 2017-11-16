@@ -1,3 +1,8 @@
+function addApp(appEle) {
+  if(appEle===null) appEle = document.body
+  appEle.className = appName
+  return appEle
+}
 /*
  *
  * General helper-func
