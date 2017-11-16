@@ -101,8 +101,7 @@ def main(app_name, output_file_path, input_files_path):
     os.system('echo "function ' + app_name + '(appEle) {" > ' + output_file_path)
     os.system('echo "var appName = \'' + app_name + '\'" >> ' + output_file_path)
     def appendFileToOutputFile(path):
-        if not path.endswith('/dev.js') and \
-           not path.endswith('/' + output_file_path):
+        if not path.endswith('/' + output_file_path):
             os.system('cat ' + path + ' >> ' + output_file_path)
     forEachJsFile(input_files_path, appendFileToOutputFile)
     os.system('echo "  main(appEle)" >> ' + output_file_path)

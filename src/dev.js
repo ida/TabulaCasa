@@ -21,7 +21,7 @@ function reload(ms=2727) {
 }
 function dev(html='') {
   var devEleId = 'dev'
-  var devEle = document.getElementById(devEleId) 
+  var devEle = document.getElementById(devEleId)
   if(devEle == null) {
     var parentEle = document.body
     devEle = document.createElement('div')

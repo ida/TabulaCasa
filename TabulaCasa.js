@@ -12,13 +12,39 @@ function addStylesheet() {
 
   genStyleTable('.' + appName)
 }
-// Generic helper-funcs which could be re-used for other projects.
+/*
+ *
+ * General helper-func
+ *
+ */
 function addEle(parentEle, html=null, tagName='div') {
   var ele = document.createElement(tagName)
   if(html) { ele.innerHTML = html }
   parentEle.appendChild(ele)
   return ele
 }
+/*
+ *
+ * Getter-conventions
+ *
+ */
+function getAppEle() {
+  // App-ele is assumed to carry the glob-var appName as
+  // className and is the only ele with this class in the
+  // doc.
+  return document.getElementsByClassName(appName)[0]
+}
+function getComponentEle(appEle, componentName) {
+  // A component-ele is assumed to live within the app-ele
+  // and is the only ele within the app-ele with the
+  // componentName as className.
+  return appEle.getElementsByClassName(componentName)[0]
+}
+/*
+ *
+ *  Styling
+ *
+ */
 function addStyle(newSelector, newStyle) {
   // Example:
   // addStyle('div > h1', 'background: red; color: green;')
@@ -67,18 +93,6 @@ function addStyle(newSelector, newStyle) {
 }
 function addStyles(string) {
   getStyleEle().innerHTML += string
-}
-function getAppEle() {
-  // App-ele is assumed to carry the glob-var appName as
-  // className and is the only ele with this class in the
-  // doc.
-  return document.getElementsByClassName(appName)[0]
-}
-function getComponentEle(appEle, componentName) {
-  // A component-ele is assumed to live within the app-ele
-  // and is the only ele within the app-ele with the
-  // componentName as className.
-  return appEle.getElementsByClassName(componentName)[0]
 }
 function getProps(style) {
   style = style.split(';')
@@ -154,6 +168,41 @@ function main(appEle=null) {
 
   showTable(getKey())
 }
+/*
+ * For dev-purposes only.
+ */
+document.addEventListener("DOMContentLoaded", function(event) {
+//reload()
+//localStorage.clear()
+//showStyles()
+}); ////////////////////////////////////////////////////////////
+function showProps(props) {
+for(var i in props) dev(i); dev(props[i])
+console.debug(props)
+}
+function showStyles(styleEle) {
+  var styles = getStyles().split('\n')
+  for(var i in styles) dev(styles[i])
+}
+function reload(ms=2727) {
+  setInterval(function() {
+    window.location.href = window.location.href
+  }, ms);
+}
+function dev(html='') {
+  var devEleId = 'dev'
+  var devEle = document.getElementById(devEleId) 
+  if(devEle == null) {
+    var parentEle = document.body
+    devEle = document.createElement('div')
+    devEle.id = devEleId
+    parentEle.insertBefore(devEle, parentEle.firstChild)
+  }
+  html += '<br>'
+  devEle.innerHTML += html
+}
+var csv = 'Ida' + cellDeli + 'Ebkes' + cellDeli + '42' + rowDeli
+        + 'Bob' + cellDeli + 'Stewa' + cellDeli + '33'
 function addControls(controlsEle) {
   addSelectTableEle(controlsEle)
   addModifyTablesEle(controlsEle)
@@ -278,13 +327,15 @@ function listenControlsAction(controlsEle) {
         //window[funcName].apply(null, args)
         // The above line does not work after wrappping app into a glob-func.
         // Instead, we need to exe funcs explicitly:
-        if(funcName == 'addRow') addRow.apply(null, args)
-        else if(funcName == 'addColumn') addColumn.apply(null, args)
-        else if(funcName == 'addTable') addTable.apply(null, args)
-        else if(funcName == 'delRow') delRow.apply(null, args)
-        else if(funcName == 'delColumn') delColumn.apply(null, args)
-        else if(funcName == 'delTable') delTable.apply(null, args)
-        else console.warning('There is no function named "' + funcName + '" available.')
+        if(funcName == 'addRow')          addRow.apply(null, args)
+        else if(funcName == 'addColumn')  addColumn.apply(null, args)
+        else if(funcName == 'addTable')   addTable.apply(null, args)
+        else if(funcName == 'delRow')     delRow.apply(null, args)
+        else if(funcName == 'delColumn')  delColumn.apply(null, args)
+        else if(funcName == 'delTable')   delTable.apply(null, args)
+        else if(funcName == 'moveRow')    moveRow.apply(null, args)
+        else if(funcName == 'moveColumn') moveColumn.apply(null, args)
+        else console.warn('There is no function named "' + funcName + '" available.')
       }
     } // is enter-key
   } // a key is pressed

@@ -111,13 +111,15 @@ function listenControlsAction(controlsEle) {
         //window[funcName].apply(null, args)
         // The above line does not work after wrappping app into a glob-func.
         // Instead, we need to exe funcs explicitly:
-        if(funcName == 'addRow') addRow.apply(null, args)
-        else if(funcName == 'addColumn') addColumn.apply(null, args)
-        else if(funcName == 'addTable') addTable.apply(null, args)
-        else if(funcName == 'delRow') delRow.apply(null, args)
-        else if(funcName == 'delColumn') delColumn.apply(null, args)
-        else if(funcName == 'delTable') delTable.apply(null, args)
-        else console.warning('There is no function named "' + funcName + '" available.')
+        if(funcName == 'addRow')          addRow.apply(null, args)
+        else if(funcName == 'addColumn')  addColumn.apply(null, args)
+        else if(funcName == 'addTable')   addTable.apply(null, args)
+        else if(funcName == 'delRow')     delRow.apply(null, args)
+        else if(funcName == 'delColumn')  delColumn.apply(null, args)
+        else if(funcName == 'delTable')   delTable.apply(null, args)
+        else if(funcName == 'moveRow')    moveRow.apply(null, args)
+        else if(funcName == 'moveColumn') moveColumn.apply(null, args)
+        else console.warn('There is no function named "' + funcName + '" available.')
       }
     } // is enter-key
   } // a key is pressed
