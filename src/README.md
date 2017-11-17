@@ -1,28 +1,53 @@
-Approach
-========
-
 Files structure
 ---------------
 
-Everything starts with 'main.js' in this directory, of there the functions of
-subdirectories are initialized, each subdirectory should contain a main.js,
-too, and follow that approach furtheron.
+A directory should always contain a 'main' and a 'style'-js-file and
+represents an ele in the app, that also has a known class-name, e.g.
+to access it quickly with:
 
-Styles are currently generated of within Javascripts named 'style.js' and are
-inserted into a style-ele in the head-ele of the doc. They are ment to be
-copied and pasted later on into a static stylesheet, which isn't realized, yet.
-Every directory should have it's own 'style.js' and from there call style-funcs
-of subdirectories.
+    getComponentEle(getAppEle(), componentClassName)
 
 
-Avoid naming conflicts
-----------------------
+Styling
+-------
+
+In the style-files use this function:
+
+    addStyles(selector, style)
+
+
+Any applied style will be prefixed with the app's class-name, e.g.:
+
+    addStyle('div', 'background: red; color: blue;')
+
+
+Produces this rule:
+
+    .appName div {
+        background: red;
+        color: blue;
+    }
+
+
+And inserts it to the app's style-element in the header.
+
+
+
+Finalizing
+----------
+
 
 For finalizing a version of this app, there is the Python-script 'merge.py', it
-willl merge all js-scripts into one file and wrap all of it into one function
-called 'TabulaCasa', so only this name needs to be unique within the document.
-Style-selectors should use the prefix '.TabulaCasa ', so it will not affect
-other eles in the document.
+willl merge all js-scripts into one file and wrap all of it into one function,
+so only this function-name needs to be unique within the document.
+
+Use it like this, replace 'appName' with the app's name:
+
+    python merge.py appName
+
+
+TODO: Export styles of style-ele and include them as css-file.
+
 
 
 Otherwise
