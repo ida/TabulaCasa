@@ -1,3 +1,10 @@
+General
+=======
+
+This is the development-directory, open the file main.html
+to get started.
+
+
 Files structure
 ---------------
 
