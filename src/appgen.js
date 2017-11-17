@@ -42,6 +42,7 @@ function getComponentEle(appEle, componentName) {
 function addStyle(newSelector, newStyle) {
   // Example:
   // addStyle('div > h1', 'background: red; color: green;')
+  newSelector = '.' + appName + ' ' + newSelector
   var ruleChanged = false
   var rules = getRules(getStyles())
   for(var i in rules) {

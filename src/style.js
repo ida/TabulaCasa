@@ -1,9 +1,5 @@
-function addStylesheet() {
-
-  // Add style for app-ele:
-  var selector = '.' + appName
+function addAppStyles() {
+  var selector = ''
   var style = 'background: lightblue;'
   addStyle(selector, style)
-
-  genStyleTable('.' + appName)
 }
