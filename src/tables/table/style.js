@@ -1,9 +1,9 @@
-function genStyleTable(prefix, showNrs=true) {
+function addTableStyle(prefix, showNrs=true) {
   var tableTagName = 'div'
   var rowTagName = 'ul'
   var cellTagName = 'li'
 
-  var tableSelector = prefix + ' .tables > ' + tableTagName
+  var tableSelector = prefix + '> ' + tableTagName
   var rowSelector = tableSelector + ' > ' + rowTagName
   var cellSelector = rowSelector + ' > ' + cellTagName
 
@@ -81,6 +81,7 @@ function genStyleTable(prefix, showNrs=true) {
  *
  */
   if(showNrs) {
+  tableSelector = '.' + appName + ' ' + tableSelector
   var colFirstCellSelector = rowSelector + 
                              ':first-child > ' +
                              cellTagName

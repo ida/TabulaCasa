@@ -1,14 +1,9 @@
-var appName = 'tabulaCasa'
 var cellDeli = ','
 var rowDeli = '\n'
 
 function main(appEle=null) {
 
-  addStylesheet()
-
-  if(appEle===null) appEle = document.body
-  else appEle = appEle
-  appEle.className = appName
+  appEle = addApp(appEle)
 
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'
@@ -16,6 +11,7 @@ function main(appEle=null) {
 
   var tablesEle = addEle(appEle)
   tablesEle.className = 'tables'
+  addTableStyle('.' + tablesEle.className + ' ')
 
   showTable(getKey())
 }

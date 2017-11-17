@@ -1,3 +1,11 @@
+var appName = 'tabulaCasa'
+
+function addApp(appEle) {
+  addStyleEle()
+  if(appEle===null) appEle = document.body
+  appEle.className = appName
+  return appEle
+}
 /*
  *
  * General helper-func
@@ -34,6 +42,7 @@ function getComponentEle(appEle, componentName) {
 function addStyle(newSelector, newStyle) {
   // Example:
   // addStyle('div > h1', 'background: red; color: green;')
+  newSelector = '.' + appName + ' ' + newSelector
   var ruleChanged = false
   var rules = getRules(getStyles())
   for(var i in rules) {
@@ -76,6 +85,10 @@ function addStyle(newSelector, newStyle) {
   else { // rule doesn't exist, append to styles:
     getStyleEle().innerHTML += newSelector + ' {\n' + newStyle + '}\n'
   }
+}
+function addStyleEle() {
+  var styleEle = addEle(document.getElementsByTagName('head')[0], '', 'style')
+  styleEle.className = appName + 'Styles'
 }
 function addStyles(string) {
   getStyleEle().innerHTML += string
