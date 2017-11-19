@@ -96,6 +96,7 @@ function listenControlsAction(controlsEle) {
       else {
         if(action == 'move') {
           var targetPosition = targetPositionEle.getElementsByTagName('input')[0].value
+          args.push(positions)
           args.push(targetPosition)
         }
         else {
@@ -107,10 +108,6 @@ function listenControlsAction(controlsEle) {
                              || ( action == 'delete' && ! keyExists(positions) )
             )
         ) {
-        // Exe choosen func:
-        //window[funcName].apply(null, args)
-        // The above line does not work after wrappping app into a glob-func.
-        // Instead, we need to exe funcs explicitly:
         if(funcName == 'addRow')          addRow.apply(null, args)
         else if(funcName == 'addColumn')  addColumn.apply(null, args)
         else if(funcName == 'addTable')   addTable.apply(null, args)
