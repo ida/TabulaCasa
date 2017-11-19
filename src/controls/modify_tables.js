@@ -83,40 +83,27 @@ function listenControlsAction(controlsEle) {
     }
   }
   controlsEle.onkeyup = function(eve) {
-    if(eve.keyCode == 13) {
+    if(eve.keyCode == 13) { // is enter-key
+      var tableKey = getKey()
       var args = [getKey()]
       var action = actionEle.value
       var what = whatEle.value
       var positions = positionsEle.value
-      var funcName = action + what // Can be 'addRow', 'delColumn', etc.
-      // Collect args:
-      if(what == 'Table') {
-        args = [positions]
-      }
-      else {
-        if(action == 'move') {
-          var targetPosition = targetPositionEle.getElementsByTagName('input')[0].value
-          args.push(positions)
-          args.push(targetPosition)
-        }
-        else {
-          args.push(positions)
-        }
-      }
-      // Catch exceptions:
+      var funcName = action + what
+      // Fail silently when existing table wants to be added or non-existing
+      // table is supposed to be deleted:
       if( ! (what == 'Table' && ( action == 'add' && keyExists(positions) )
                              || ( action == 'delete' && ! keyExists(positions) )
             )
         ) {
-        if(funcName == 'addRow')          addRow.apply(null, args)
-        else if(funcName == 'addColumn')  addColumn.apply(null, args)
-        else if(funcName == 'addTable')   addTable.apply(null, args)
-        else if(funcName == 'delRow')     delRow.apply(null, args)
-        else if(funcName == 'delColumn')  delColumn.apply(null, args)
-        else if(funcName == 'delTable')   delTable.apply(null, args)
-        else if(funcName == 'moveRow')    moveRow.apply(null, args)
-        else if(funcName == 'moveColumn') moveColumn.apply(null, args)
-        else console.warn('There is no function named "' + funcName + '" available.')
+                if(funcName == 'addRow')  addRow(tableKey, positions)
+        else if(funcName == 'addColumn')  addColumn(tableKey, positions)
+        else if(funcName == 'addTable')   addTable(positions)
+        else if(funcName == 'delRow')     delRow(tableKey, positions)
+        else if(funcName == 'delColumn')  delColumn(tableKey, positions)
+        else if(funcName == 'delTable')   delTable(positions)
+        else if(funcName == 'moveRow')    moveRow(tableKey, positions, targetPosition)
+        else if(funcName == 'moveColumn') moveColumn(tableKey, positions, targetPosition)
       }
     } // is enter-key
   } // a key is pressed
