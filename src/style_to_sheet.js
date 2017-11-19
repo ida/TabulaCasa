@@ -17,6 +17,8 @@ Currently realized:
 
   styleToSheet.addRule('div a', 'padding: 0; color: green;')
 
+  styleToSheet.downloadStyles()
+
   styleToSheet.showStyles()
 
 
@@ -26,8 +28,6 @@ TODO:
   styleToSheet.delRule('div a')
 
   styleToSheet.delRules()
-
-  styleToSheet.download()
 
 
 
@@ -135,6 +135,15 @@ Variable names and structures
     var ele = document.createElement('style')
     parentEle.appendChild(ele)
     this.styleEle = ele
+  },
+
+
+  downloadStyles: function(fileName='styles.css') {
+    var a = addEle(document.body, 'Download styles', 'a')
+    a.setAttribute('download', fileName)
+    a.href = 'data:application/csv;charset=utf-8,'
+            + encodeURIComponent(this.getStyles())
+    a.click()
   },
 
 
