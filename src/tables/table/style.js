@@ -49,23 +49,23 @@ function addTableStyle(prefix, showNrs=true) {
   border-right: 1px solid;
   border-bottom: 1px solid;
   line-height: ` + lineHeight + ';'
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = rowSelector
   style = 'white-space: nowrap; margin: 0; padding: 0;'
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector
   style = cellStyle + cellBorder
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector + ':focus'
   style = cellOverflowStyle
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector + ':hover'
   style = cellOverflowStyle
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector + ' input'
   style = 'background: inherit;\n\
@@ -74,7 +74,7 @@ function addTableStyle(prefix, showNrs=true) {
   font: inherit;\n\
   margin: 0;\n\
   padding: 0;\n'
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 /*
  *
  * NUMBERING
@@ -111,31 +111,33 @@ function addTableStyle(prefix, showNrs=true) {
   min-width: 1.75em;\n\
   ' // rowNrStyle
 
-  style = '\
-' + tableSelector + ' {\n\
-  counter-reset: rowscounter;\n\
-}\n\
-/* TABLE-ID: */\n\
-' + tableSelector + ':before {\n\
-  content: attr(id);\n\
-  ' + rowNrStyle + '\
-}\n\
-' + rowSelector + ':before {\n\
-  counter-increment: rowscounter;\n\
-  content: counter(rowscounter);\n\
-  counter-reset: columnscounter;\n\
-  ' + rowNrStyle + '\
-}\n\
-/* COL-NRS: */\n\
-' + tableSelector + ' > *:first-child > * {\n\
-  ' + colNrParentStyle + '\
-}\n\
-' + colFirstCellSelector + ':before {\n\
-  counter-increment: columnscounter;\n\
-  content: counter(columnscounter);\n\
-  ' + colNrStyle + '\
-}\n\
-' // style
-  addStyles(style)
+
+  selector = tableSelector
+  style = 'counter-reset: rowscounter;'
+  styleToSheet.addRule(selector, style)
+
+  selector += ':before'
+  style = 'content: attr(id);' + rowNrStyle
+  styleToSheet.addRule(selector, style)
+
+  selector = rowSelector + ':before'
+  style = `
+    counter-increment: rowscounter;
+    content: counter(rowscounter);
+    counter-reset: columnscounter;
+    ` + rowNrStyle
+  styleToSheet.addRule(selector, style)
+
+  selector = tableSelector + ' > *:first-child > *'
+  style = colNrParentStyle
+  styleToSheet.addRule(selector, style)
+
+  selector = colFirstCellSelector + ':before'
+  style = `
+  counter-increment: columnscounter;
+  content: counter(columnscounter);
+    ` + colNrStyle
+  styleToSheet.addRule(selector, style)
+
   } // showNrs
 }

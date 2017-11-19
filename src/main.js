@@ -5,6 +5,7 @@ function main(appEle=null) {
 
   appEle = addApp(appEle)
   addAppStyles()
+
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'
   addControls(controlsEle)
