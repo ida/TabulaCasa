@@ -93,9 +93,9 @@ function addTableStyle(prefix, showNrs=true) {
   overflow: visible;
 `
   var colNrPosTop = parseFloat(lineHeight) +
-                    2* parseFloat(padding) +
-                    2* parseFloat(borderWidth) + 'em'
-  var colNrPosLeft = parseFloat(borderWidth) + 'em'
+                    2* parseFloat(padding) + 0.01 + // dirty manual adjustment for now
+                    parseFloat(borderWidth)/2 + 'em'
+  var colNrPosLeft = '0.075em' // hardcoded for now, needs to be computed
   var colNrStyle = '\
   ' + cellStyle + '\
   ' + cellBorder + '\
@@ -118,6 +118,7 @@ function addTableStyle(prefix, showNrs=true) {
 
   selector += ':before'
   style = 'content: attr(id);' + rowNrStyle
+  style += 'padding-top: 0.15em' // hardcoded for now, needs to be computed
   styleToSheet.addRule(selector, style)
 
   selector = rowSelector + ':before'
