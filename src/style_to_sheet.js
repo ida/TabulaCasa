@@ -48,7 +48,7 @@ Why
     LESS or SASS, so one doesn't need to know about yet
     another tool, which saves time.
 
-3.) Have a programatical way to write CSS, as human-written
+3.) Have a programmatical way to write CSS, as human-written
     CSS is prone to inconsistencies, such as rules which are
     declared several times or properties which are declared
     several times within a rule. Won't happen with this tool.
