@@ -81,7 +81,6 @@ function addTableStyle(prefix, showNrs=true) {
  *
  */
   if(showNrs) {
-  tableSelector = '.' + appName + ' ' + tableSelector
   var colFirstCellSelector = rowSelector + 
                              ':first-child > ' +
                              cellTagName

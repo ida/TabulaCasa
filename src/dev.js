@@ -4,9 +4,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 //reload()
 //localStorage.clear()
-//setTimeout(function() {
-  //styleToSheet.showStyles()
-//}, 277);
+setTimeout(function() { styleToSheet.showStyles()}, 277);
 }); ////////////////////////////////////////////////////////////
 function showProps(props) {
 for(var i in props) dev(i); dev(props[i])
