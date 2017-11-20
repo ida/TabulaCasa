@@ -78,6 +78,14 @@ Authors
 Ida Ebkes <contact@ida-ebkes.eu>
 
 
+Credits
+=======
+
+PapaParse from Matt Holm is used to convert CSVs on upload:
+https://github.com/mholt/PapaParse
+
+
+
 License
 =======
 
