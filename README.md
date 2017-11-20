@@ -49,27 +49,41 @@ For a standalone-app clone this repo:
 
     git clone https://github.com/ida/TabulaCasa.git
 
-Or download the files 'index.html' and 'TabulaCasa.js'.
+Or download 'index.html', 'TabulaCasa.js' and 'papaparse-4.3.2min.js'.
 
-Then open the file 'index.html' in your browser.
+Then, open the file 'index.html' in your browser.
 
 
 To insert this app into an arbitrary element of your website,
-embed the script 'TtabulaCasa.js' in the head-ele of your site and
+embed the script 'TabulaCasa.js' in the head-ele of your site and
 initiate it in one of your Javascripts, upon an element:
 
     TabulaCasa(theEleYouPass)
 
 
+Bugs'n'hugs
+===========
+
+Found a bug, have constructive criticism, wanna rant along or give snarky comments?
+
+Tell me on github about it:
+https://github.com/ida/TabulaCasa/issues/new
+
+Or send an email and cross fingers, it gets through my spam-filters.
+
+
 Development
 ===========
 
-If you like to contribute, please file an issue in the bug-tracker.
-
-Newbies and peeps from so called marginalized groups are especially welcome.
 
 Development happens in the 'src'-directory of this repository, it contains
-a README also with further explanations.
+a README also, with further explanations.
+
+The ticketsystem for developers lives, here:
+http://euve4703.vserver.de:8080/steps/users/ida/0/
+
+Newbies and peeps from so called marginalized
+groups are especially welcome to participate.
 
 
 Authors
@@ -94,4 +108,4 @@ MIT License, a copy is attached in this folder.
 
 Last touched
 ============
-This README was last updated by a human on 14th November 2017.
+This README was last updated by a human on 20th November 2017.
