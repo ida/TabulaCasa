@@ -54,21 +54,29 @@ function listenControlsAction(controlsEle) {
   var whatEle = controlsEle.getElementsByClassName('what')[0]
   var tableKey = null
   var targetPositionEle = controlsEle.getElementsByClassName('targetPosition')[0]
+
+  // Show and hide control-eles depending on the choosen options:
   actionEle.onkeyup = function(eve) {
     var options = whatEle.getElementsByTagName('option')
+    // If 'move' was choosen:
     if(eve.target.value == 'move') {
+      // Hide upload-button:
+      importEle.style.display = 'none'
+      // Show targetPosition-input-field:
       targetPositionEle.style.display = 'inline'
       for(var i=0; i < options.length; i++) {
+        // Remove 'Table' from what-options:
         if(options[i].value == 'Table') {
           options[i].remove()
         }
       }
     }
-    else if(eve.target.value == 'import') {
-      importEle.style.display = 'inline'
-    }
     else {
+      // Hide the targetPosition-field:
       targetPositionEle.style.display = 'none'
+      // Hide upload-button:
+      importEle.style.display = 'none'
+      // If 'Table' is not available in options, add it:
       var hasOptionTable = false
       for(var i=0; i < options.length; i++) {
         if(options[i].value == 'Table') {
@@ -81,9 +89,24 @@ function listenControlsAction(controlsEle) {
         whatEle.appendChild(optionEle)
       }
     }
+    // If 'import' was choosen:
+    if(eve.target.value == 'import') {
+      // Hide targetPosition:
+      targetPositionEle.style.display = 'none'
+      // Show upload-button:
+      importEle.style.display = 'inline'
+      // Select 'Table' as what-option:
+      for(var i=0; i < options.length; i++) {
+        if(options[i].value == 'Table') {
+          options[i].setAttribute('selected', 'selected')
+        }
+      }
+    }
+    // For any other choosen action:
   }
+  // Execute choosen action when return-/enter-key was pressed:
   controlsEle.onkeyup = function(eve) {
-    if(eve.keyCode == 13) { // is enter-key
+    if(eve.keyCode == 13) { // is return-/enter-key
       var tableKey = getKey()
       var args = [getKey()]
       var action = actionEle.value
@@ -96,13 +119,13 @@ function listenControlsAction(controlsEle) {
                              || ( action == 'delete' && ! keyExists(positions) )
             )
         ) {
-                if(funcName == 'addRow')  addRow(tableKey, positions)
-        else if(funcName == 'addColumn')  addColumn(tableKey, positions)
-        else if(funcName == 'addTable')   addTable(positions)
-        else if(funcName == 'delRow')     delRow(tableKey, positions)
-        else if(funcName == 'delColumn')  delColumn(tableKey, positions)
-        else if(funcName == 'delTable')   delTable(positions)
-        else if(funcName == 'moveRow')    moveRow(tableKey, positions, targetPosition)
+             if(funcName ==     'addRow') addRow(tableKey, positions)
+        else if(funcName ==  'addColumn') addColumn(tableKey, positions)
+        else if(funcName ==   'addTable') addTable(positions)
+        else if(funcName ==     'delRow') delRow(tableKey, positions)
+        else if(funcName ==  'delColumn') delColumn(tableKey, positions)
+        else if(funcName ==   'delTable') delTable(positions)
+        else if(funcName ==    'moveRow') moveRow(tableKey, positions, targetPosition)
         else if(funcName == 'moveColumn') moveColumn(tableKey, positions, targetPosition)
       }
     } // is enter-key

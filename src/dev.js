@@ -4,15 +4,13 @@
 document.addEventListener("DOMContentLoaded", function(event) {
 //reload()
 //localStorage.clear()
-//showStyles()
+//setTimeout(function() {
+  //styleToSheet.showStyles()
+//}, 277);
 }); ////////////////////////////////////////////////////////////
 function showProps(props) {
 for(var i in props) dev(i); dev(props[i])
 console.debug(props)
-}
-function showStyles(styleEle) {
-  var styles = getStyles().split('\n')
-  for(var i in styles) dev(styles[i])
 }
 function reload(ms=2727) {
   setInterval(function() {

@@ -83,12 +83,15 @@ Variable names and structures
   rules: [],         // know the rules before you break them
   selectors: [],    //  needed for quick-comparison in selectorExists()
   styleEle: null,  //   output rules on any changement in this ele
+  prefix: '',     //    optionally prefix all rules with a selector
+
 
   addRule: function(selector, style) {
 
     // Initially add style-ele when first rule is added:
     if( ! this.styleEle ) this.addStyleEle()
 
+    selector = this.prefix + selector
 
     // Compare and update rules:
     var props = this.getProps(style)
@@ -210,13 +213,17 @@ Variable names and structures
   },
 
 
-  showStyles: function() {
+  showStyles: function(ele=document.body) {
+    // Initially add style-ele, if not existing yet:
+    if( ! this.styleEle ) this.addStyleEle()
+
+
     var html = ''
     var styles = this.getStyles().split('\n')
     for(var i in styles) {
       html += styles[i] + '<br>'
     }
-    document.body.innerHTML = html
+    ele.innerHTML = html
   },
 
 

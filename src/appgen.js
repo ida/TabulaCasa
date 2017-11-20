@@ -1,6 +1,7 @@
 var appName = 'tabulaCasa'
 
 function addApp(appEle) {
+  styleToSheet.prefix = '.' + appName + ' '
   if(appEle===null) appEle = document.body
   appEle.className = appName
   return appEle
