@@ -9,6 +9,7 @@ function main(appEle=null) {
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'
   addControls(controlsEle)
+  addControlsStyle('.' + controlsEle.className + ' ')
 
   var tablesEle = addEle(appEle)
   tablesEle.className = 'tables'
