@@ -44,6 +44,7 @@ function genControlsActionHtml() {
     '<option>Row</option>' +
     '<option>Column</option>' +
     '<option>Table</option>' +
+    '<option>SumColumn</option>' +
   '</select>' +
   '<input class="positions" value="1">' +
   '<span class="targetPosition" style="display: none;"> to position ' +
@@ -125,6 +126,7 @@ function listenControlsAction(controlsEle) {
         ) {
              if(funcName ==     'addRow') addRow(tableKey, positions)
         else if(funcName ==  'addColumn') addColumn(tableKey, positions)
+        else if(funcName ==   'addSumColumn') addSumColumn(positions)
         else if(funcName ==   'addTable') addTable(positions)
         else if(funcName ==     'delRow') delRow(tableKey, positions)
         else if(funcName ==  'delColumn') delColumn(tableKey, positions)

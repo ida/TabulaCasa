@@ -125,7 +125,7 @@ function addTableStyle(prefix, showNrs=true) {
     counter-increment: rowscounter;
     content: counter(rowscounter);
     counter-reset: columnscounter;
-    ` + rowNrStyle
+  ` + rowNrStyle
   styleToSheet.addRule(selector, style)
 
   selector = tableSelector + ' > *:first-child > *'
@@ -136,8 +136,15 @@ function addTableStyle(prefix, showNrs=true) {
   style = `
   counter-increment: columnscounter;
   content: counter(columnscounter);
-    ` + colNrStyle
+  ` + colNrStyle
   styleToSheet.addRule(selector, style)
+
+  selector = colFirstCellSelector + '.sum:before'
+  style = `
+  content: 'SUM';
+  `
+  styleToSheet.addRule(selector, style)
+
 
   } // showNrs
 }
