@@ -31,7 +31,6 @@ function addSumColumn() {
   var rowEle = tableEle.firstChild
   var lastCellEle = rowEle.children[rowEle.children.length-1]
   lastCellEle.classList.add('sum')
-  lastCellEle.classList.add('summ')
 
 }
 function delSumColumn() {
