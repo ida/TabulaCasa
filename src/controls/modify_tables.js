@@ -124,15 +124,16 @@ function listenControlsAction(controlsEle) {
                              || ( action == 'delete' && ! keyExists(positions) )
             )
         ) {
-             if(funcName ==     'addRow') addRow(tableKey, positions)
-        else if(funcName ==  'addColumn') addColumn(tableKey, positions)
-        else if(funcName ==   'addSumColumn') addSumColumn(positions)
-        else if(funcName ==   'addTable') addTable(positions)
-        else if(funcName ==     'delRow') delRow(tableKey, positions)
-        else if(funcName ==  'delColumn') delColumn(tableKey, positions)
-        else if(funcName ==   'delTable') delTable(positions)
-        else if(funcName ==    'moveRow') moveRow(tableKey, positions, targetPosition)
-        else if(funcName == 'moveColumn') moveColumn(tableKey, positions, targetPosition)
+             if(funcName ==         'addRow') addRow(tableKey, positions)
+        else if(funcName ==      'addColumn') addColumn(tableKey, positions)
+        else if(funcName ==   'addSumColumn') addSumColumn()
+        else if(funcName ==       'addTable') addTable(positions)
+        else if(funcName ==         'delRow') delRow(tableKey, positions)
+        else if(funcName ==      'delColumn') delColumn(tableKey, positions)
+        else if(funcName ==   'delSumColumn') delSumColumn()
+        else if(funcName ==       'delTable') delTable(positions)
+        else if(funcName ==        'moveRow') moveRow(tableKey, positions, targetPosition)
+        else if(funcName ==     'moveColumn') moveColumn(tableKey, positions, targetPosition)
       }
     } // is enter-key
   } // a key is pressed

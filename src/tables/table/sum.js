@@ -26,11 +26,25 @@ function addSumColumn() {
   }
   showTableOnly(key)
 
-  // Get lst col-nr, replace it with 'SUM'
-var tableEle = document.getElementById(key)
-var rowEle = tableEle.firstChild
-var lastCellEle = rowEle.children[rowEle.children.length-1]
-lastCellEle.classList.add('sum')
+  // Add class to last cell, so col-nr gets replaced with 'SUM' via CSS-rule:
+  var tableEle = document.getElementById(key)
+  var rowEle = tableEle.firstChild
+  var lastCellEle = rowEle.children[rowEle.children.length-1]
+  lastCellEle.classList.add('sum')
+  lastCellEle.classList.add('summ')
 
-//var tableEle = tablesEle
 }
+function delSumColumn() {
+// If a sum-column exists, remove it.
+  var tableKey = getKey()
+  var tableEle = document.getElementById(tableKey)
+  var rowEle = tableEle.firstChild
+  var colPos = rowEle.children.length-1
+  var lastCellEle = rowEle.children[colPos]
+
+  if(lastCellEle.className.indexOf('sum') != -1) { // is sum-col
+    delColumn(tableKey, colPos)
+  }
+
+}
+
