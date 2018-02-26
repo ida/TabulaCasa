@@ -16,10 +16,13 @@ function addSumColumn() {
     var row = rows[i]
     var cells = row.split(cellDeli)
     var cellValue = cells[cells.length-1]
-    if(isNaN(cellValue) === false) { // is a nr
-      cellValueNew += Number(cellValue)
+
+    // Cell-value is a number or float (ignore thousands-deli-commas):
+    if(isNaN(cellValue.split(',').join('')) === false) {
+      cellValueNew += Number(cellValue.split(',').join(''))
       addCell(key, i, cells.length, cellValueNew)
     }
+    // Cell-value is a number or float:
     else {
       addCell(key, i, cells.length, nothingChangedSymbol)
     }
