@@ -39,6 +39,7 @@ function genControlsActionHtml() {
     '<option>del</option>' +
     '<option>move</option>' +
     '<option>import</option>' +
+    '<option>sort</option>' +
   '</select>' +
   '<select class="what">' +
     '<option>Row</option>' +
@@ -135,6 +136,7 @@ function listenControlsAction(controlsEle) {
         else if(funcName ==       'delTable') delTable(positions)
         else if(funcName ==        'moveRow') moveRow(tableKey, positions-1, targetPosition-1)
         else if(funcName ==     'moveColumn') moveColumn(tableKey, positions-1, targetPosition-1)
+        else if(funcName ==     'sortColumn') sortColumnByDate(positions-1)
       }
     } // is enter-key
   } // a key is pressed
