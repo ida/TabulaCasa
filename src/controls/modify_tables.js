@@ -28,8 +28,8 @@ function addModifyTablesEle(controlsEle) {
 function doAfterFileUpload(csv) {
   // In case imported CSV uses other delimiters than
   // this app, convert CSV to fit app, using Papa:
-  csv = Papa.parse(csv)
-  csv = Papa.unparse(csv)
+//  csv = Papa.parse(csv)
+//  csv = Papa.unparse(csv)
   addTable(getKey(), csv)
 }
 function genControlsActionHtml() {
@@ -116,7 +116,8 @@ function listenControlsAction(controlsEle) {
       var args = [getKey()]
       var action = actionEle.value
       var what = whatEle.value
-      var positions = positionsEle.value
+      var positions = positionsEle.value - 1
+      var targetPosition = targetPositionEle.value - 1
       var funcName = action + what
       // Fail silently when existing table wants to be added or non-existing
       // table is supposed to be deleted:

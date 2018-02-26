@@ -1,4 +1,5 @@
 var cellDeli = ','
+var cellDeli = ';'
 var rowDeli = '\n'
 
 function main(appEle=null) {

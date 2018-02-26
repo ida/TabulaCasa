@@ -140,6 +140,13 @@ function delTable(key) {
     } // for each button
   } // key exists
 }
+function getCell(rowPos, colPos) {
+  var rows = getRows(getKey())
+  return getCellOfRows(rows, rowPos, colPos)
+}
+function getCellOfRows(rows, rowPos, colPos) {
+  return cell = rows[rowPos].split(cellDeli)[colPos]
+}
 function getKey() {
   var key = null
   var selectionEle = getComponentEle(getAppEle(), 'tablesSelection')
@@ -167,8 +174,6 @@ function getTable(key) {
   return localStorage.getItem(key)
 }
 function moveColumn(key, rowPos, targetPos) {
-  rowPos -= 1
-  targetPos -=1
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
     var row = rows[i].split(cellDeli)
@@ -184,8 +189,6 @@ function moveItem(array, itemPos, targetPos) {
   return array
 }
 function moveRow(key, rowPos, targetPos) {
-  rowPos -= 1
-  targetPos -=1
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
   }
