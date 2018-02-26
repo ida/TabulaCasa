@@ -137,6 +137,8 @@ function listenControlsAction(controlsEle) {
         else if(funcName ==        'moveRow') moveRow(tableKey, positions-1, targetPosition-1)
         else if(funcName ==     'moveColumn') moveColumn(tableKey, positions-1, targetPosition-1)
         else if(funcName ==     'sortColumn') sortColumnByDate(positions-1)
+        else console.info('The selection "' + funcName + '" is not wired to' +
+                          ' a function, we ignore that for now, nothing changed.')
       }
     } // is enter-key
   } // a key is pressed
