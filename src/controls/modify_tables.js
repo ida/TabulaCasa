@@ -116,8 +116,8 @@ function listenControlsAction(controlsEle) {
       var args = [getKey()]
       var action = actionEle.value
       var what = whatEle.value
-      var positions = positionsEle.value - 1
-      var targetPosition = targetPositionEle.value - 1
+      var positions = positionsEle.value
+      var targetPosition = targetPositionEle.value
       var funcName = action + what
       // Fail silently when existing table wants to be added or non-existing
       // table is supposed to be deleted:
@@ -125,16 +125,16 @@ function listenControlsAction(controlsEle) {
                              || ( action == 'delete' && ! keyExists(positions) )
             )
         ) {
-             if(funcName ==         'addRow') addRow(tableKey, positions)
-        else if(funcName ==      'addColumn') addColumn(tableKey, positions)
+             if(funcName ==         'addRow') addRow(tableKey, positions-1)
+        else if(funcName ==      'addColumn') addColumn(tableKey, positions-1)
         else if(funcName ==   'addSumColumn') addSumColumn()
         else if(funcName ==       'addTable') addTable(positions)
-        else if(funcName ==         'delRow') delRow(tableKey, positions)
-        else if(funcName ==      'delColumn') delColumn(tableKey, positions)
+        else if(funcName ==         'delRow') delRow(tableKey, positions-1)
+        else if(funcName ==      'delColumn') delColumn(tableKey, positions-1)
         else if(funcName ==   'delSumColumn') delSumColumn()
         else if(funcName ==       'delTable') delTable(positions)
-        else if(funcName ==        'moveRow') moveRow(tableKey, positions, targetPosition)
-        else if(funcName ==     'moveColumn') moveColumn(tableKey, positions, targetPosition)
+        else if(funcName ==        'moveRow') moveRow(tableKey, positions-1, targetPosition-1)
+        else if(funcName ==     'moveColumn') moveColumn(tableKey, positions-1, targetPosition-1)
       }
     } // is enter-key
   } // a key is pressed

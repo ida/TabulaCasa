@@ -33,7 +33,6 @@ function addCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
   addTable(key, csv, displayTable)
 }
 function addColumn(key, colPos, displayTable=true) {
-  colPos -= 1
   var csv = ''
   var rows = getRows(key)
   // No rows there, yet:
@@ -54,7 +53,6 @@ function addColumn(key, colPos, displayTable=true) {
   addTable(key, csv, displayTable)
 }
 function addRow(key, rowPos, vals='') {
-  rowPos -= 1
   var csv = null
   var rows = getRows(key)
   // No rows there, yet:
@@ -84,7 +82,6 @@ function addTable(key, csv='', displayTable=true) {
   }
 }
 function delColumn(key, colPos) {
-  colPos -= 1
   var csv = ''
   var rows = getRows(key)
   // Is not last col (remove last col = empty str for csv):
@@ -100,7 +97,7 @@ function delColumn(key, colPos) {
 }
 function delRow(key, rowPos) {
   var rows = getRows(key)
-  rows.splice(rowPos-1, 1) // at rowPos-1 remove 1 item
+  rows.splice(rowPos, 1) // at rowPos remove 1 item
   var csv = rows.join(rowDeli)
   addTable(key, csv, true)
 }
