@@ -2,8 +2,8 @@ document.addEventListener("DOMContentLoaded", function(event) { reload(
 9994000)
 
 
-dev('branch: fixsum')
-
+//dev('branch: master')
+/*
 setTimeout(function() {
 
   addTable(1, csv)
@@ -16,7 +16,7 @@ setTimeout(function() {
 
 
 }, 277);
-
+*/
 
 }); // DOM loaded //////////////////////////////////////////////////////
 function reload(ms=2727) {
