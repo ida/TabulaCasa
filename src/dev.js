@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(event) { reload(
-9994000)
+9994000); document.body.style = 'background: #000; color: #fff;'
 
 
 //dev('branch: master')

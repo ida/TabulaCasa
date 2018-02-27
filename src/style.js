@@ -1,8 +1,6 @@
 function addAppStyles() {
-  var background = '#000'
-  var color = '#fff'
-  var background = 'lightblue'
-  var color = '#111'
+  var background = 'inherit'
+  var color = 'inherit'
 
   var selector = ''
   var style = `
@@ -12,9 +10,7 @@ function addAppStyles() {
   styleToSheet.addRule(selector, style)
 
 
-  style += `
-    border: none;
-  `
+  style += 'border: none;'
   selector = ' input'
   styleToSheet.addRule(selector, style)
 
@@ -31,11 +27,10 @@ function addAppStyles() {
 
 
   selector = ' .controls'
-  style += `
+  style = `
     border: 1px solid;
     margin: 1em 0;
   `
   styleToSheet.addRule(selector, style)
-
 
 }
