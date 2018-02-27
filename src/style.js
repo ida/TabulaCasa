@@ -25,12 +25,4 @@ function addAppStyles() {
   `
   styleToSheet.addRule(selector, style)
 
-
-  selector = ' .controls'
-  style = `
-    border: 1px solid;
-    margin: 1em 0;
-  `
-  styleToSheet.addRule(selector, style)
-
 }

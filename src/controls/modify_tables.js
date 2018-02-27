@@ -61,55 +61,6 @@ function listenControlsAction(controlsEle) {
   var tableKey = null
   var targetPositionEle = controlsEle.getElementsByClassName('targetPosition')[0]
 
-  // Show and hide control-eles depending on the choosen options:
-  actionEle.onkeyup = function(eve) {
-    var options = whatEle.getElementsByTagName('option')
-    // If 'move' was choosen:
-    if(eve.target.value == 'move') {
-      // Hide upload-button:
-      importEle.style.display = 'none'
-      // Show targetPosition-input-field:
-      targetPositionEle.style.display = 'inline'
-      for(var i=0; i < options.length; i++) {
-        // Remove 'Table' from what-options:
-        if(options[i].value == 'Table') {
-          options[i].remove()
-        }
-      }
-    }
-    else {
-      // Hide the targetPosition-field:
-      targetPositionEle.style.display = 'none'
-      // Hide upload-button:
-      importEle.style.display = 'none'
-      // If 'Table' is not available in options, add it:
-      var hasOptionTable = false
-      for(var i=0; i < options.length; i++) {
-        if(options[i].value == 'Table') {
-          hasOptionTable = true
-        }
-      }
-      if(! hasOptionTable) {
-        var optionEle = document.createElement('option')
-        optionEle.innerHTML = 'Table'
-        whatEle.appendChild(optionEle)
-      }
-    }
-    // If 'import' was choosen:
-    if(eve.target.value == 'import') {
-      // Hide targetPosition:
-      targetPositionEle.style.display = 'none'
-      // Show upload-button:
-      importEle.style.display = 'inline'
-      // Select 'Table' as what-option:
-      for(var i=0; i < options.length; i++) {
-        if(options[i].value == 'Table') {
-          options[i].setAttribute('selected', 'selected')
-        }
-      }
-    }
-    // For any other choosen action:
-  }
   // Execute choosen action when return-/enter-key was pressed:
   controlsEle.onkeyup = function(eve) {
     if(eve.keyCode == 13) { // is return-/enter-key
@@ -142,4 +93,55 @@ function listenControlsAction(controlsEle) {
       }
     } // is enter-key
   } // a key is pressed
+  actionEle.onclick = function(eve) { onSelectionChange(eve, whatEle, targetPositionEle, importEle) }
+  actionEle.onkeyup = function(eve) { onSelectionChange(eve, whatEle, targetPositionEle, importEle) }
 } // listenControlsAction
+function onSelectionChange(eve, whatEle, targetPositionEle, importEle) {
+// Show and hide control-eles depending on the choosen options:
+  var options = whatEle.getElementsByTagName('option')
+  // If 'move' was choosen:
+  if(eve.target.value == 'move') {
+    // Hide upload-button:
+    importEle.style.display = 'none'
+    // Show targetPosition-input-field:
+    targetPositionEle.style.display = 'inline'
+    for(var i=0; i < options.length; i++) {
+      // Remove 'Table' from what-options:
+      if(options[i].value == 'Table') {
+        options[i].remove()
+      }
+    }
+  }
+  else {
+    // Hide the targetPosition-field:
+    targetPositionEle.style.display = 'none'
+    // Hide upload-button:
+    importEle.style.display = 'none'
+    // If 'Table' is not available in options, add it:
+    var hasOptionTable = false
+    for(var i=0; i < options.length; i++) {
+      if(options[i].value == 'Table') {
+        hasOptionTable = true
+      }
+    }
+    if(! hasOptionTable) {
+      var optionEle = document.createElement('option')
+      optionEle.innerHTML = 'Table'
+      whatEle.appendChild(optionEle)
+    }
+  }
+  // If 'import' was choosen:
+  if(eve.target.value == 'import') {
+    // Hide targetPosition:
+    targetPositionEle.style.display = 'none'
+    // Show upload-button:
+    importEle.style.display = 'inline'
+    // Select 'Table' as what-option:
+    for(var i=0; i < options.length; i++) {
+      if(options[i].value == 'Table') {
+        options[i].setAttribute('selected', 'selected')
+      }
+    }
+  }
+} // onSelectionChange
+
