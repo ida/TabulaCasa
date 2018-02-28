@@ -48,7 +48,7 @@ function genControlsActionHtml() {
     '<option>SumColumn</option>' +
   '</select>' +
   '<input class="positions" value="1">' +
-  '<span class="targetPosition" style="display: none;"> to position ' +
+  '<span class="targetPosition" style="display: none;"> to nr. ' +
   '<input value="2">' +
   '</span>'
   return html
@@ -60,7 +60,7 @@ function listenControlsAction(controlsEle) {
   var whatEle = controlsEle.getElementsByClassName('what')[0]
   var tableKey = null
   var targetPositionEle = controlsEle.getElementsByClassName('targetPosition')[0]
-
+  var targetPositionInput = targetPositionEle.children[0]
   // Execute choosen action when return-/enter-key was pressed:
   controlsEle.onkeyup = function(eve) {
     if(eve.keyCode == 13) { // is return-/enter-key
@@ -69,7 +69,7 @@ function listenControlsAction(controlsEle) {
       var action = actionEle.value
       var what = whatEle.value
       var positions = positionsEle.value
-      var targetPosition = targetPositionEle.value
+      var targetPosition = targetPositionInput.value
       var funcName = action + what
       // Fail silently when existing table wants to be added or non-existing
       // table is supposed to be deleted:

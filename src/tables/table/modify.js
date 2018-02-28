@@ -161,6 +161,7 @@ function moveItem(array, itemPos, targetPos) {
   return array
 }
 function moveRow(key, rowPos, targetPos) {
+//dev(rowPos, targetPos)
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
   }

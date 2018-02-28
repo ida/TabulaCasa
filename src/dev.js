@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", function(event) { reload(
-9994000); document.body.style = 'background: #000; color: #fff;'
-
-//dev('branch: master')
+9994000); //document.body.style = 'background: #000; color: #fff;'
+/*
+dev('branch: fixmove')
 setTimeout(function() {
+
   addTable(1, csv)
 
   var ele = document.getElementsByClassName('positions')[0]
-  ele.value = 4
-  var ele = document.getElementsByClassName('what')[0]
-  ele.focus()
-  ele = ele.children[ele.children.length-1]
-  ele.selected=true
+//  ele.value = 4
 
+  var ele = document.getElementsByClassName('action')[0]
+  ele.children[ele.children.length-3].selected=true // select move
+
+  ele.focus()
 
 }, 277);
-
+*/
 }); // DOM loaded //////////////////////////////////////////////////////
 function reload(ms=2727) {
   setInterval(function() {
