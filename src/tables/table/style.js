@@ -139,12 +139,6 @@ function addTableStyle(prefix, showNrs=true) {
   ` + colNrStyle
   styleToSheet.addRule(selector, style)
 
-  selector = colFirstCellSelector + '.sum:before'
-  style = `
-  content: 'SUM';
-  `
-  styleToSheet.addRule(selector, style)
-
 
   } // showNrs
-}
+} // addTableStyle
