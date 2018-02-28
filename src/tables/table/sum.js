@@ -1,52 +1,51 @@
-function addSumColumn() {
-// Append a column which shows the accumulated sum of nrs of the previous column.
-// Get last cell of every row and accumulate nrs, generate new col of it.
-  // Get current table-key:
+function addSumColumn(colPos) {
+// At colPos insert column, each cell showing the sum of
+// the previous cell and its upper sibling, where the sum
+// is accumulated with each addition. Non-number-values
+// in a cell are ignored. A number can be a whole number
+// or a float, and commas for visualizing thousands are
+// accepted, e.g. a million can look like this:
+//
+//   1,000,000.00
+//
+
+
   var key = getKey()
   var rows = getRows(key)
 
-  var lastNewCell = null
-  var newCell = null
-  
   var cellValue = null
+  var newCell = null
+  var newCells = []
+ 
   var cellValueNew = 0
   var nothingChangedSymbol = '-'
 
-  for(var i=0; i < rows.length; i++) {
-    var row = rows[i]
-    var cells = row.split(cellDeli)
-    var cellValue = cells[cells.length-1]
+  // Add sum-column at first pos doesn't make sense, omit that:
+  if(colPos > 0) {
 
-    // Cell-value is a number or float (ignore thousands-deli-commas):
-    if(isNaN(cellValue.split(',').join('')) === false) {
-      cellValueNew += Number(cellValue.split(',').join(''))
-      addCell(key, i, cells.length, cellValueNew)
+    for(var i=0; i < rows.length; i++) {
+      var row = rows[i]
+      var cells = row.split(cellDeli)
+      var cellValue = cells[colPos-1]
+
+      // Cell-value is *not* a number or float (ignore thousands-deli-commas):
+      if(isNaN(cellValue.split(',').join('')) === false) {
+        cellValueNew += Number(cellValue.split(',').join(''))
+        newCells.push(cellValueNew)
+      }
+      // Cell-value is a number or float:
+      else {
+        newCells.push(nothingChangedSymbol)
+      }
     }
-    // Cell-value is a number or float:
-    else {
-      addCell(key, i, cells.length, nothingChangedSymbol)
-    }
-  }
-  showTableOnly(key)
+    addColumn(key, colPos, newCells)
 
-  // Add class to last cell, so col-nr gets replaced with 'SUM' via CSS-rule:
-  var tableEle = document.getElementById(key)
-  var rowEle = tableEle.firstChild
-  var lastCellEle = rowEle.children[rowEle.children.length-1]
-  lastCellEle.classList.add('sum')
+    // Add class to first sum-col-cell,
+    // replaces col-nr with 'SUM' via CSS-rule:
+    var tableEle = document.getElementById(key)
+    var rowEle = tableEle.firstChild
+    rowEle.children[colPos].classList.add('sum')
 
-}
-function delSumColumn() {
-// If a sum-column exists, remove it.
-  var tableKey = getKey()
-  var tableEle = document.getElementById(tableKey)
-  var rowEle = tableEle.firstChild
-  var colPos = rowEle.children.length-1
-  var lastCellEle = rowEle.children[colPos]
-
-  if(lastCellEle.className.indexOf('sum') != -1) { // is sum-col
-    delColumn(tableKey, colPos)
-  }
-
-}
+  } // colPos > 0
+}  //  addSumColumn
 

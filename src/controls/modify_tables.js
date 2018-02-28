@@ -79,7 +79,7 @@ function listenControlsAction(controlsEle) {
         ) {
              if(funcName ==         'addRow') addRow(tableKey, positions-1)
         else if(funcName ==      'addColumn') addColumn(tableKey, positions-1)
-        else if(funcName ==   'addSumColumn') addSumColumn()
+        else if(funcName ==   'addSumColumn') addSumColumn(positions-1)
         else if(funcName ==       'addTable') addTable(positions)
         else if(funcName ==         'delRow') delRow(tableKey, positions-1)
         else if(funcName ==      'delColumn') delColumn(tableKey, positions-1)

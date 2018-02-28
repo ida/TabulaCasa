@@ -32,21 +32,26 @@ function addCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
   var csv = rows.join(rowDeli)
   addTable(key, csv, displayTable)
 }
-function addColumn(key, colPos, displayTable=true) {
-  var csv = ''
-  var rows = getRows(key)
+function addColumn(key, colPos, colCells=null, displayTable=true) {
+  var csv   = null
+  var cell  = null
+  var cells = null
+  var rows  = getRows(key)
   // No rows there, yet:
   if(rows == '') {
     // Represent first cell with a space,
-    // otherwise would interpreted as empty table:
+    // otherwise would be interpreted as empty table:
     rows = [' ']
   }
   // Some rows exist already: 
   else {
     for(var i=0;  i < rows.length; i++) {
-      var row = rows[i].split(cellDeli)
-      row.splice(colPos, 0, '') // insert empty str at pos
-      rows[i] = row.join(cellDeli)
+      cell = '' // default value
+      cells = rows[i].split(cellDeli)
+      // Cell-values have been pased, get cell-value:
+      if(colCells !== null && i <= cells.length) cell = colCells[i]
+      cells.splice(colPos, 0, cell) // insert cell at pos
+      rows[i] = cells.join(cellDeli)
     }
   }
   csv = rows.join(rowDeli)
