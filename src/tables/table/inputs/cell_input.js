@@ -53,7 +53,7 @@ function listenCells(tableEle) {
       var cellPos = getCellPos(eve.target.parentNode)
       var rowPos = getRowPos(eve.target.parentNode)
       var key = getKey()
-      addCell(key, rowPos, cellPos, eve.target.value)
+      setCell(key, rowPos, cellPos, eve.target.value)
     }
     // When a cell gains focus:
     cells[i].onfocus = function(eve) {

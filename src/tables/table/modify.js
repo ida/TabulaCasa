@@ -2,36 +2,6 @@
 // display the data as a table-like list after any modification.
 
 
-function addCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
-// Overwrite existing cell or add new cell.
-// Add empty rows and cells, if necessary.
-  // Get rows:
-  var rows = getRows(key)
-  // Fill up empty rows:
-  while(rowPos > rows.length-1) {
-    rows.push( (cellDeli).repeat(rows[0].split(cellDeli).length) )
-  }
-  // For each row:
-  for(var i=0;  i < rows.length; i++) {
-    var row = rows[i]
-    // Get its cells:
-    var cells = row.split(cellDeli)
-    // Fill up empty cells:
-    while(cellPos >= cells.length) {
-      cells.push('')
-    }
-    // It's the choosen row:
-    if(i == rowPos) {
-      // Add new cell-content:
-      cells.splice(cellPos, 1, cellContent)
-    }
-    // Set new cells in row:
-    rows[i] = cells.join(cellDeli)
-  }  // EO for each row.
-  // Set new rows:
-  var csv = rows.join(rowDeli)
-  addTable(key, csv, displayTable)
-}
 function addColumn(key, colPos, colCells=null, displayTable=true) {
   var csv   = null
   var cell  = null
@@ -210,3 +180,34 @@ function keyExists(key) {
   }
   return false
 }
+function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
+// Overwrite existing cell or add new cell.
+// Add empty rows and cells, if necessary.
+  // Get rows:
+  var rows = getRows(key)
+  // Fill up empty rows:
+  while(rowPos > rows.length-1) {
+    rows.push( (cellDeli).repeat(rows[0].split(cellDeli).length) )
+  }
+  // For each row:
+  for(var i=0;  i < rows.length; i++) {
+    var row = rows[i]
+    // Get its cells:
+    var cells = row.split(cellDeli)
+    // Fill up empty cells:
+    while(cellPos >= cells.length) {
+      cells.push('')
+    }
+    // It's the choosen row:
+    if(i == rowPos) {
+      // Add new cell-content:
+      cells.splice(cellPos, 1, cellContent)
+    }
+    // Set new cells in row:
+    rows[i] = cells.join(cellDeli)
+  }  // EO for each row.
+  // Set new rows:
+  var csv = rows.join(rowDeli)
+  addTable(key, csv, displayTable)
+}
+
