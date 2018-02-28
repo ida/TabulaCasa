@@ -19,7 +19,7 @@ function addColumn(key, colPos, colCells=null, displayTable=true) {
       cell = '' // default value
       cells = rows[i].split(cellDeli)
       // Cell-values have been pased, get cell-value:
-      if(colCells !== null && i <= cells.length) cell = colCells[i]
+      if(colCells !== null && i <= colCells.length) cell = colCells[i]
       cells.splice(colPos, 0, cell) // insert cell at pos
       rows[i] = cells.join(cellDeli)
     }
