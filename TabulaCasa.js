@@ -1,16 +1,270 @@
 function TabulaCasa(appEle) {
 var appName = 'TabulaCasa'
-function addStylesheet() {
-  // Add style-ele:
-  var styleEle = addEle(document.getElementsByTagName('head')[0], '', 'style')
-  styleEle.className = appName + 'Styles'
+function addAppStyles() {
+  var background = 'inherit'
+  var color = 'inherit'
 
-  // Add style for app-ele:
-  var selector = '.' + appName
-  var style = 'background: lightblue;'
-  addStyle(selector, style)
+  var selector = ''
+  var style = `
+    background: ` + background  + `;
+         color: ` + color       + `;
+  `
+  styleToSheet.addRule(selector, style)
 
-  genStyleTable('.' + appName)
+
+  style += 'border: none;'
+  selector = ' input'
+  styleToSheet.addRule(selector, style)
+
+
+  selector = ' select'
+  // Remove browser-styled arrow-down of selection-dropdown:
+  // Only for testing, not IE-compatible.
+  style += `
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  `
+  styleToSheet.addRule(selector, style)
+
+}
+var styleToSheet = {
+/*
+
+
+What
+----
+
+Dynamically style in Javascript during development,
+then export the generated styles as a static stylesheet.
+
+
+Usage
+-----
+
+
+Currently realized:
+
+  styleToSheet.addRule('div a', 'padding: 0; color: green;')
+
+  styleToSheet.downloadStyles()
+
+  styleToSheet.showStyles()
+
+
+TODO:
+  styleToSheet.delProp('div a', 'padding')
+  
+  styleToSheet.delRule('div a')
+
+  styleToSheet.delRules()
+
+
+
+Why
+---
+
+1.) Share script-variables with stylesheets, because we can
+    then set a className on an ele and use it furtheron as
+    a selector for the styling, and bind functions to eles
+    with that className.
+
+    Note: It is possible to share CSS-vars with scripts, but
+    then again a script needs to know the property-name of
+    the css-var.
+
+
+2.) Do everything in Javascript, no CSS-prepocessors like
+    LESS or SASS, so one doesn't need to know about yet
+    another tool, which saves time.
+
+3.) Have a programmatical way to write CSS, as human-written
+    CSS is prone to inconsistencies, such as rules which are
+    declared several times or properties which are declared
+    several times within a rule. Won't happen with this tool.
+
+
+How
+---
+
+Contain a rules-object and modification-functions for it.
+Insert rules into stylesheet in head-ele on any modification.
+Provide function for downloading stylesheet.
+
+
+
+Variable names and structures
+-----------------------------
+
+  selector     = 'body > div'
+
+  style        = 'background: red; color: green;'
+
+  styles        = 'div a {background: red; } body a { color: green; }'
+
+  props        = { background: 'red', color: 'green', } 
+
+  rule         = [selector, props]
+
+
+*/
+
+
+  rules: [],         // know the rules before you break them
+  selectors: [],    //  needed for quick-comparison in selectorExists()
+  styleEle: null,  //   output rules on any changement in this ele
+  prefix: '',     //    optionally prefix all rules with a selector
+
+
+  addRule: function(selector, style) {
+
+    // Initially add style-ele when first rule is added:
+    if( ! this.styleEle ) this.addStyleEle()
+
+    selector = this.prefix + selector
+
+    // Compare and update rules:
+    var props = this.getProps(style)
+
+    // Selector exists:
+    if(this.selectorExists(selector) ) {
+      for(var i in this.rules) {
+        var rule =   this.rules[i]
+        var ruleProps =    rule[1]
+        var ruleSelector = rule[0]
+
+        // Rule has same selector than passed one:
+        if(selector == ruleSelector) {
+          for(var propName in props) {
+            var propVal = props[propName]
+
+            // Prop-val differs:
+            if(ruleProps[propName] != propVal) {
+              // Set new val:
+              rule[1][propName] = propVal
+            }
+          }
+        }
+      }
+    }
+    // Selector does not exist:
+    else {
+      // Add new rule:
+      this.rules.push([selector, props])
+      // Collect selector:
+      this.selectors.push(selector)
+    }
+    
+    
+    // Set new rules:
+    this.setStyles()
+    
+    
+  },
+
+
+  addStyleEle: function() {
+    var parentEle = document.getElementsByTagName('head')[0]
+    var ele = document.createElement('style')
+    parentEle.appendChild(ele)
+    this.styleEle = ele
+  },
+
+
+  downloadStyles: function(fileName='styles.css') {
+    var a = addEle(document.body, 'Download styles', 'a')
+    a.setAttribute('download', fileName)
+    a.href = 'data:application/csv;charset=utf-8,'
+            + encodeURIComponent(this.getStyles())
+    a.click()
+  },
+
+
+  getProps: function(style) {
+    style = style.split(';')
+    var props = {}
+    for(var i in style) {
+      var pair = style[i].split(':')
+      if(pair != '') {
+        var prop = pair[0].trim()
+        if(prop != '') {
+          var val  = pair[1].trim()
+          props[prop] = val
+        }
+      }
+    }
+    return props
+  },
+
+
+  getRules: function() {
+    var rules = getStyles().split('}')
+    return rules
+  },
+
+
+  getStyles: function() {
+    return this.styleEle.innerHTML
+  },
+
+
+  selectorExists: function(selector) {
+    for(var i in this.selectors) {
+      if(this.selectors[i] == selector) {
+        return true
+      }
+    }
+    return false
+  },
+
+
+  setStyles: function() {
+
+    var styles = ''
+
+    for(var i in this.rules) {
+
+      var rule     = this.rules[i]
+      var selector = rule[0]
+      var props    = rule[1]
+
+      styles += selector + ' {\n'
+
+      for(var name in props) {
+        styles += '  '
+        styles += name
+        styles += ': '
+        styles += props[name]
+        styles += ';\n'
+      }
+      styles += '}\n'
+    }
+    this.styleEle.innerHTML = styles
+  },
+
+
+  showStyles: function(ele=document.body) {
+    // Initially add style-ele, if not existing yet:
+    if( ! this.styleEle ) this.addStyleEle()
+
+
+    var html = ''
+    var styles = this.getStyles().split('\n')
+    for(var i in styles) {
+      html += styles[i] + '<br>'
+    }
+    ele.innerHTML = html
+  },
+
+
+} // EO styleToSheet
+var appName = 'tabulaCasa'
+
+function addApp(appEle) {
+  styleToSheet.prefix = '.' + appName + ' '
+  if(appEle===null) appEle = document.body
+  appEle.className = appName
+  return appEle
 }
 /*
  *
@@ -40,150 +294,44 @@ function getComponentEle(appEle, componentName) {
   // componentName as className.
   return appEle.getElementsByClassName(componentName)[0]
 }
-/*
- *
- *  Styling
- *
- */
-function addStyle(newSelector, newStyle) {
-  // Example:
-  // addStyle('div > h1', 'background: red; color: green;')
-  var ruleChanged = false
-  var rules = getRules(getStyles())
-  for(var i in rules) {
-    var rule = rules[i]
-    var selector = rule.split('{')[0].trim()
-    var style = rule.split('{')[1].trim()
-    var props = getProps(style)
-    var newProps = getProps(newStyle)
-    // selector exists already:
-    if(selector == newSelector) {
-      for(var key in newProps) {
-        // prop exists already:
-        if(props[key] !== undefined) {
-          // old val differs new val:
-          if(props[key] != newProps[key]) {
-            // set new val:
-            props[key] = newProps[key]
-            ruleChanged = true
-          }
-        } // prop does not exist already:
-        else { 
-          // set prop and val:
-          props[key] = newProps[key]
-          ruleChanged = true
-        }
-      } // each newProp
-    } // selector exists
-    if(ruleChanged) { // set changed rule in rules:
-      style = ''
-      for(var key in props) {
-        style += key + ': ' + props[key] + ';\n'
-      }
-      rules[i] = selector + '{\n' + style
-      break
-    }
-  } // each rule
-  if(ruleChanged) { // rule exists and changed, set new styles:
-      setStyles(rules)
-  }
-  else { // rule doesn't exist, append to styles:
-    getStyleEle().innerHTML += newSelector + ' {\n' + newStyle + '}\n'
-  }
-}
-function addStyles(string) {
-  getStyleEle().innerHTML += string
-}
-function getProps(style) {
-  style = style.split(';')
-  style.pop() // last item is an empty str, remove it
-  props = {}
-  for(var i in style) {
-    var styl = style[i].trim()
-    var propValPair = styl.split(':')
-    var prop = propValPair[0].trim()
-    var val = propValPair[1].trim()
-    props[prop] = val
-  }
-  return props
-}
-function getRules(style) {
-  // Return rules of stylesheet as a list.
-  var rules = style.split('}')
-  rules.pop() // last item is an empty str, remove it
-  return rules
-}
-function getStyle(selector) {
-  var style = null
-  var styles = getStyles()
-  var rules = getRules(styles)
-  for(var i in rules) {
-    var rule = rules[i].trim()
-    var selectors = rule.split('{')[0].split(',')
-    for(var j in selectors) {
-      if(selectors[j].trim() == selector) {
-        style = rule.split('{')[1]
-      }
-    }
-  }
-  return style
-}
-function getStyleEle() {
-  // The styleEle is assumed to be the only ele within the head-ele
-  // which carries the appName plus 'Styles' as className.
-  var ele = document.getElementsByTagName('head')[0]
-  ele = ele.getElementsByClassName(appName + 'Styles')[0]
-  if(ele) return ele
-}
-function getStyles() {
-  var ele = getStyleEle()
-  return ele.innerHTML
-}
-function setStyles(rules) {
-  var styles = ''
-  for(var i in rules) {
-    var rule = rules[i]
-    styles += rule + '\n}'
-  }
-  getStyleEle().innerHTML = styles
-}
-var appName = 'tabulaCasa'
 var cellDeli = ','
+var cellDeli = ';'
 var rowDeli = '\n'
 
 function main(appEle=null) {
 
-  addStylesheet()
-
-  if(appEle===null) appEle = document.body
-  else appEle = appEle
-  appEle.className = appName
+  appEle = addApp(appEle)
+  addAppStyles()
 
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'
   addControls(controlsEle)
+  addControlsStyle('.' + controlsEle.className + ' ')
 
   var tablesEle = addEle(appEle)
   tablesEle.className = 'tables'
+  addTableStyle('.' + tablesEle.className + ' ')
 
   showTable(getKey())
 }
-/*
- * For dev-purposes only.
- */
-document.addEventListener("DOMContentLoaded", function(event) {
-//reload()
-//localStorage.clear()
-//showStyles()
-}); ////////////////////////////////////////////////////////////
-function showProps(props) {
-for(var i in props) dev(i); dev(props[i])
-console.debug(props)
-}
-function showStyles(styleEle) {
-  var styles = getStyles().split('\n')
-  for(var i in styles) dev(styles[i])
-}
+document.addEventListener("DOMContentLoaded", function(event) { reload(
+9994000); document.body.style = 'background: #000; color: #fff;'
+
+//dev('branch: master')
+setTimeout(function() {
+  addTable(1, csv)
+
+  var ele = document.getElementsByClassName('positions')[0]
+  ele.value = 4
+  var ele = document.getElementsByClassName('what')[0]
+  ele.focus()
+  ele = ele.children[ele.children.length-1]
+  ele.selected=true
+
+
+}, 277);
+
+}); // DOM loaded //////////////////////////////////////////////////////
 function reload(ms=2727) {
   setInterval(function() {
     window.location.href = window.location.href
@@ -191,18 +339,41 @@ function reload(ms=2727) {
 }
 function dev(html='') {
   var devEleId = 'dev'
-  var devEle = document.getElementById(devEleId) 
-  if(devEle == null) {
+  var devEle = document.getElementById(devEleId)
+  if(devEle == null) { // create devEle, if it doesn't exist already
     var parentEle = document.body
     devEle = document.createElement('div')
     devEle.id = devEleId
     parentEle.insertBefore(devEle, parentEle.firstChild)
   }
-  html += '<br>'
+  html += '<br>' // append passed html to devEle, prepend with a linebreak
   devEle.innerHTML += html
 }
+var csv = '23.01.1977' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
+        + '28.05.1937' + cellDeli + 'Chera' + cellDeli + '2' + rowDeli
+        + '02/25/2018' + cellDeli + 'Linde' + cellDeli + '6i' + rowDeli
+        + '21.09.2011' + cellDeli + 'Stewa' + cellDeli + '3'
 var csv = 'Ida' + cellDeli + 'Ebkes' + cellDeli + '42' + rowDeli
+        + 'Udo' + cellDeli + 'Linde' + cellDeli + '6i' + rowDeli
+        + 'Ame' + cellDeli + 'Chera' + cellDeli + '14' + rowDeli
         + 'Bob' + cellDeli + 'Stewa' + cellDeli + '33'
+var csv = 'Ida' + cellDeli + 'Ebkes' + cellDeli + '42' + rowDeli
+        + 'Udo' + cellDeli + 'Linde' + cellDeli + '6i' + rowDeli
+        + 'Ame' + cellDeli + 'Chera' + cellDeli + '1,500.00' + rowDeli
+        + 'Bob' + cellDeli + 'Stewa' + cellDeli + '33'
+function addControlsStyle(controlsSelector) {
+  var selector = controlsSelector
+  var style = `
+    border: 1px solid;
+    margin: 1em 0;
+    padding: 1em 0;
+  `
+  styleToSheet.addRule(selector, style)
+
+  selector += 'input'
+  style = 'width: 3em;'
+  styleToSheet.addRule(selector, style)
+}
 function addControls(controlsEle) {
   addSelectTableEle(controlsEle)
   addModifyTablesEle(controlsEle)
@@ -242,6 +413,10 @@ function addModifyTablesEle(controlsEle) {
     filter: alpha(opacity=0);'
 }
 function doAfterFileUpload(csv) {
+  // In case imported CSV uses other delimiters than
+  // this app, convert CSV to fit app, using Papa:
+//  csv = Papa.parse(csv)
+//  csv = Papa.unparse(csv)
   addTable(getKey(), csv)
 }
 function genControlsActionHtml() {
@@ -251,11 +426,13 @@ function genControlsActionHtml() {
     '<option>del</option>' +
     '<option>move</option>' +
     '<option>import</option>' +
+    '<option>sort</option>' +
   '</select>' +
   '<select class="what">' +
     '<option>Row</option>' +
     '<option>Column</option>' +
     '<option>Table</option>' +
+    '<option>SumColumn</option>' +
   '</select>' +
   '<input class="positions" value="1">' +
   '<span class="targetPosition" style="display: none;"> to position ' +
@@ -270,76 +447,91 @@ function listenControlsAction(controlsEle) {
   var whatEle = controlsEle.getElementsByClassName('what')[0]
   var tableKey = null
   var targetPositionEle = controlsEle.getElementsByClassName('targetPosition')[0]
-  actionEle.onkeyup = function(eve) {
-    var options = whatEle.getElementsByTagName('option')
-    if(eve.target.value == 'move') {
-      targetPositionEle.style.display = 'inline'
-      for(var i=0; i < options.length; i++) {
-        if(options[i].value == 'Table') {
-          options[i].remove()
-        }
-      }
-    }
-    else if(eve.target.value == 'import') {
-      importEle.style.display = 'inline'
-    }
-    else {
-      targetPositionEle.style.display = 'none'
-      var hasOptionTable = false
-      for(var i=0; i < options.length; i++) {
-        if(options[i].value == 'Table') {
-          hasOptionTable = true
-        }
-      }
-      if(! hasOptionTable) {
-        var optionEle = document.createElement('option')
-        optionEle.innerHTML = 'Table'
-        whatEle.appendChild(optionEle)
-      }
-    }
-  }
+
+  // Execute choosen action when return-/enter-key was pressed:
   controlsEle.onkeyup = function(eve) {
-    if(eve.keyCode == 13) {
+    if(eve.keyCode == 13) { // is return-/enter-key
+      var tableKey = getKey()
       var args = [getKey()]
       var action = actionEle.value
       var what = whatEle.value
       var positions = positionsEle.value
-      var funcName = action + what // Can be 'addRow', 'delColumn', etc.
-      // Collect args:
-      if(what == 'Table') {
-        args = [positions]
-      }
-      else {
-        if(action == 'move') {
-          var targetPosition = targetPositionEle.getElementsByTagName('input')[0].value
-          args.push(targetPosition)
-        }
-        else {
-          args.push(positions)
-        }
-      }
-      // Catch exceptions:
+      var targetPosition = targetPositionEle.value
+      var funcName = action + what
+      // Fail silently when existing table wants to be added or non-existing
+      // table is supposed to be deleted:
       if( ! (what == 'Table' && ( action == 'add' && keyExists(positions) )
                              || ( action == 'delete' && ! keyExists(positions) )
             )
         ) {
-        // Exe choosen func:
-        //window[funcName].apply(null, args)
-        // The above line does not work after wrappping app into a glob-func.
-        // Instead, we need to exe funcs explicitly:
-        if(funcName == 'addRow')          addRow.apply(null, args)
-        else if(funcName == 'addColumn')  addColumn.apply(null, args)
-        else if(funcName == 'addTable')   addTable.apply(null, args)
-        else if(funcName == 'delRow')     delRow.apply(null, args)
-        else if(funcName == 'delColumn')  delColumn.apply(null, args)
-        else if(funcName == 'delTable')   delTable.apply(null, args)
-        else if(funcName == 'moveRow')    moveRow.apply(null, args)
-        else if(funcName == 'moveColumn') moveColumn.apply(null, args)
-        else console.warn('There is no function named "' + funcName + '" available.')
+             if(funcName ==         'addRow') addRow(tableKey, positions-1)
+        else if(funcName ==      'addColumn') addColumn(tableKey, positions-1)
+        else if(funcName ==   'addSumColumn') addSumColumn(positions-1)
+        else if(funcName ==       'addTable') addTable(positions)
+        else if(funcName ==         'delRow') delRow(tableKey, positions-1)
+        else if(funcName ==      'delColumn') delColumn(tableKey, positions-1)
+        else if(funcName ==   'delSumColumn') delSumColumn()
+        else if(funcName ==       'delTable') delTable(positions)
+        else if(funcName ==        'moveRow') moveRow(tableKey, positions-1, targetPosition-1)
+        else if(funcName ==     'moveColumn') moveColumn(tableKey, positions-1, targetPosition-1)
+        else if(funcName ==     'sortColumn') sortColumnByDate(positions-1)
+        else console.info('The selection "' + funcName + '" is not wired to' +
+                          ' a function, we ignore that for now, nothing changed.')
       }
     } // is enter-key
   } // a key is pressed
+  actionEle.onclick = function(eve) { onSelectionChange(eve, whatEle, targetPositionEle, importEle) }
+  actionEle.onkeyup = function(eve) { onSelectionChange(eve, whatEle, targetPositionEle, importEle) }
 } // listenControlsAction
+function onSelectionChange(eve, whatEle, targetPositionEle, importEle) {
+// Show and hide control-eles depending on the choosen options:
+  var options = whatEle.getElementsByTagName('option')
+  // If 'move' was choosen:
+  if(eve.target.value == 'move') {
+    // Hide upload-button:
+    importEle.style.display = 'none'
+    // Show targetPosition-input-field:
+    targetPositionEle.style.display = 'inline'
+    for(var i=0; i < options.length; i++) {
+      // Remove 'Table' from what-options:
+      if(options[i].value == 'Table') {
+        options[i].remove()
+      }
+    }
+  }
+  else {
+    // Hide the targetPosition-field:
+    targetPositionEle.style.display = 'none'
+    // Hide upload-button:
+    importEle.style.display = 'none'
+    // If 'Table' is not available in options, add it:
+    var hasOptionTable = false
+    for(var i=0; i < options.length; i++) {
+      if(options[i].value == 'Table') {
+        hasOptionTable = true
+      }
+    }
+    if(! hasOptionTable) {
+      var optionEle = document.createElement('option')
+      optionEle.innerHTML = 'Table'
+      whatEle.appendChild(optionEle)
+    }
+  }
+  // If 'import' was choosen:
+  if(eve.target.value == 'import') {
+    // Hide targetPosition:
+    targetPositionEle.style.display = 'none'
+    // Show upload-button:
+    importEle.style.display = 'inline'
+    // Select 'Table' as what-option:
+    for(var i=0; i < options.length; i++) {
+      if(options[i].value == 'Table') {
+        options[i].setAttribute('selected', 'selected')
+      }
+    }
+  }
+} // onSelectionChange
+
 function addSelectTableEle(controlsEle) {
   var html = genTablesSelectionHtml()
   var controlEle = addEle(controlsEle, html, 'span')
@@ -374,12 +566,12 @@ function updateTablesSelection(key) {
   tablesSelectionEle.innerHTML = genTablesSelectionHtml(key)
   listenTablesSelection(tablesSelectionEle)
 }
-function genStyleTable(prefix, showNrs=true) {
+function addTableStyle(prefix, showNrs=true) {
   var tableTagName = 'div'
   var rowTagName = 'ul'
   var cellTagName = 'li'
 
-  var tableSelector = prefix + ' .tables > ' + tableTagName
+  var tableSelector = prefix + '> ' + tableTagName
   var rowSelector = tableSelector + ' > ' + rowTagName
   var cellSelector = rowSelector + ' > ' + cellTagName
 
@@ -425,23 +617,23 @@ function genStyleTable(prefix, showNrs=true) {
   border-right: 1px solid;
   border-bottom: 1px solid;
   line-height: ` + lineHeight + ';'
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = rowSelector
   style = 'white-space: nowrap; margin: 0; padding: 0;'
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector
   style = cellStyle + cellBorder
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector + ':focus'
   style = cellOverflowStyle
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector + ':hover'
   style = cellOverflowStyle
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 
   selector = cellSelector + ' input'
   style = 'background: inherit;\n\
@@ -450,7 +642,7 @@ function genStyleTable(prefix, showNrs=true) {
   font: inherit;\n\
   margin: 0;\n\
   padding: 0;\n'
-  addStyle(selector, style)
+  styleToSheet.addRule(selector, style)
 /*
  *
  * NUMBERING
@@ -468,9 +660,9 @@ function genStyleTable(prefix, showNrs=true) {
   overflow: visible;
 `
   var colNrPosTop = parseFloat(lineHeight) +
-                    2* parseFloat(padding) +
-                    2* parseFloat(borderWidth) + 'em'
-  var colNrPosLeft = parseFloat(borderWidth) + 'em'
+                    2* parseFloat(padding) + 0.01 + // dirty manual adjustment for now
+                    parseFloat(borderWidth)/2 + 'em'
+  var colNrPosLeft = '0.075em' // hardcoded for now, needs to be computed
   var colNrStyle = '\
   ' + cellStyle + '\
   ' + cellBorder + '\
@@ -486,91 +678,68 @@ function genStyleTable(prefix, showNrs=true) {
   min-width: 1.75em;\n\
   ' // rowNrStyle
 
-  style = '\
-' + tableSelector + ' {\n\
-  counter-reset: rowscounter;\n\
-}\n\
-/* TABLE-ID: */\n\
-' + tableSelector + ':before {\n\
-  content: attr(id);\n\
-  ' + rowNrStyle + '\
-}\n\
-' + rowSelector + ':before {\n\
-  counter-increment: rowscounter;\n\
-  content: counter(rowscounter);\n\
-  counter-reset: columnscounter;\n\
-  ' + rowNrStyle + '\
-}\n\
-/* COL-NRS: */\n\
-' + tableSelector + ' > *:first-child > * {\n\
-  ' + colNrParentStyle + '\
-}\n\
-' + colFirstCellSelector + ':before {\n\
-  counter-increment: columnscounter;\n\
-  content: counter(columnscounter);\n\
-  ' + colNrStyle + '\
-}\n\
-' // style
-  addStyles(style)
+
+  selector = tableSelector
+  style = 'counter-reset: rowscounter;'
+  styleToSheet.addRule(selector, style)
+
+  selector += ':before'
+  style = 'content: attr(id);' + rowNrStyle
+  style += 'padding-top: 0.15em' // hardcoded for now, needs to be computed
+  styleToSheet.addRule(selector, style)
+
+  selector = rowSelector + ':before'
+  style = `
+    counter-increment: rowscounter;
+    content: counter(rowscounter);
+    counter-reset: columnscounter;
+  ` + rowNrStyle
+  styleToSheet.addRule(selector, style)
+
+  selector = tableSelector + ' > *:first-child > *'
+  style = colNrParentStyle
+  styleToSheet.addRule(selector, style)
+
+  selector = colFirstCellSelector + ':before'
+  style = `
+  counter-increment: columnscounter;
+  content: counter(columnscounter);
+  ` + colNrStyle
+  styleToSheet.addRule(selector, style)
+
+
   } // showNrs
-}
+} // addTableStyle
 // This file contains all functions for modifying the localStorage and
 // display the data as a table-like list after any modification.
 
 
-function addCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
-// Overwrite existing cell or add new cell.
-// Add empty rows and cells, if necessary.
-  // Get rows:
-  var rows = getRows(key)
-  // Fill up empty rows:
-  while(rowPos > rows.length-1) {
-    rows.push( (cellDeli).repeat(rows[0].split(cellDeli).length) )
-  }
-  // For each row:
-  for(var i=0;  i < rows.length; i++) {
-    var row = rows[i]
-    // Get its cells:
-    var cells = row.split(cellDeli)
-    // Fill up empty cells:
-    while(cellPos >= cells.length) {
-      cells.push('')
-    }
-    // It's the choosen row:
-    if(i == rowPos) {
-      // Add new cell-content:
-      cells.splice(cellPos, 1, cellContent)
-    }
-    // Set new cells in row:
-    rows[i] = cells.join(cellDeli)
-  }  // EO for each row.
-  // Set new rows:
-  var csv = rows.join(rowDeli)
-  addTable(key, csv, displayTable)
-}
-function addColumn(key, colPos, displayTable=true) {
-  colPos -= 1
-  var csv = ''
-  var rows = getRows(key)
+function addColumn(key, colPos, colCells=null, displayTable=true) {
+  var csv   = null
+  var cell  = null
+  var cells = null
+  var rows  = getRows(key)
   // No rows there, yet:
   if(rows == '') {
     // Represent first cell with a space,
-    // otherwise would interpreted as empty table:
+    // otherwise would be interpreted as empty table:
     rows = [' ']
   }
   // Some rows exist already: 
   else {
     for(var i=0;  i < rows.length; i++) {
-      var row = rows[i].split(cellDeli)
-      row.splice(colPos, 0, '') // insert empty str at pos
-      rows[i] = row.join(cellDeli)
+      cell = '' // default value
+      cells = rows[i].split(cellDeli)
+      // Cell-values have been pased, get cell-value:
+      if(colCells !== null && i <= colCells.length) cell = colCells[i]
+      cells.splice(colPos, 0, cell) // insert cell at pos
+      rows[i] = cells.join(cellDeli)
     }
   }
   csv = rows.join(rowDeli)
   addTable(key, csv, displayTable)
 }
 function addRow(key, rowPos, vals='') {
-  rowPos -= 1
   var csv = null
   var rows = getRows(key)
   // No rows there, yet:
@@ -600,7 +769,6 @@ function addTable(key, csv='', displayTable=true) {
   }
 }
 function delColumn(key, colPos) {
-  colPos -= 1
   var csv = ''
   var rows = getRows(key)
   // Is not last col (remove last col = empty str for csv):
@@ -616,7 +784,7 @@ function delColumn(key, colPos) {
 }
 function delRow(key, rowPos) {
   var rows = getRows(key)
-  rows.splice(rowPos-1, 1) // at rowPos-1 remove 1 item
+  rows.splice(rowPos, 1) // at rowPos remove 1 item
   var csv = rows.join(rowDeli)
   addTable(key, csv, true)
 }
@@ -656,6 +824,13 @@ function delTable(key) {
     } // for each button
   } // key exists
 }
+function getCell(rowPos, colPos) {
+  var rows = getRows(getKey())
+  return getCellOfRows(rows, rowPos, colPos)
+}
+function getCellOfRows(rows, rowPos, colPos) {
+  return cell = rows[rowPos].split(cellDeli)[colPos]
+}
 function getKey() {
   var key = null
   var selectionEle = getComponentEle(getAppEle(), 'tablesSelection')
@@ -683,8 +858,6 @@ function getTable(key) {
   return localStorage.getItem(key)
 }
 function moveColumn(key, rowPos, targetPos) {
-  rowPos -= 1
-  targetPos -=1
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
     var row = rows[i].split(cellDeli)
@@ -700,8 +873,6 @@ function moveItem(array, itemPos, targetPos) {
   return array
 }
 function moveRow(key, rowPos, targetPos) {
-  rowPos -= 1
-  targetPos -=1
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
   }
@@ -720,6 +891,92 @@ function keyExists(key) {
     }
   }
   return false
+}
+function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
+// Overwrite existing cell or add new cell.
+// Add empty rows and cells, if necessary.
+  // Get rows:
+  var rows = getRows(key)
+  // Fill up empty rows:
+  while(rowPos > rows.length-1) {
+    rows.push( (cellDeli).repeat(rows[0].split(cellDeli).length) )
+  }
+  // For each row:
+  for(var i=0;  i < rows.length; i++) {
+    var row = rows[i]
+    // Get its cells:
+    var cells = row.split(cellDeli)
+    // Fill up empty cells:
+    while(cellPos >= cells.length) {
+      cells.push('')
+    }
+    // It's the choosen row:
+    if(i == rowPos) {
+      // Add new cell-content:
+      cells.splice(cellPos, 1, cellContent)
+    }
+    // Set new cells in row:
+    rows[i] = cells.join(cellDeli)
+  }  // EO for each row.
+  // Set new rows:
+  var csv = rows.join(rowDeli)
+  addTable(key, csv, displayTable)
+}
+
+function dateToNumber(string) {
+  // Expects 'DD.MM.YYYY' or 'MM/DD/YYYY', returns 'YYYYMMD'.
+  if(string.indexOf('/') > -1) {
+    string = string.slice(3, 5) + '.'
+           + string.slice(0, 2) + '.'
+           + string.slice(6, 10)
+  }
+  return string.split('.').reverse().join('')
+}
+
+
+function sortColumnByDate(colPos) {
+  // For each row compare cell of colPos with previous row's cell of colPos.
+  // If previous cell is lesser than current cell, remember previous-pos and
+  // continue with next previous row, until all rows are compared.
+  // Then move row to new position, if it's lesser that previous cells.
+
+  var key = getKey()
+  var rows = getRows(key)
+  var cell, cellPrevious, rowNewPos, rowPreviousPos = null
+
+  for(rowPos=0; rowPos < rows.length; rowPos++) {
+
+    // Get current cell:
+    cell = getCellOfRows(rows, rowPos, colPos)
+    cell = dateToNumber(cell)
+
+    // Omit comparison for first row:
+    if(rowPos != 0) {
+
+      rowNewPos = rowPos
+      rowPreviousPos = rowPos - 1
+
+      while( rowPreviousPos >= 0) {
+
+        // Get previous cell:
+        cellPrevious = getCellOfRows(rows, rowPreviousPos, colPos)
+        cellPrevious = dateToNumber(cellPrevious)
+
+        // Previous is lesser than this cell:
+        if(cell <= cellPrevious) {
+          // Remember pos of previous:
+          rowNewPos = rowPreviousPos
+        }
+        // Go to next previous row:
+        rowPreviousPos -=1
+      }
+      // Cell-value is lesser than previous cell-value(s):
+      if(rowPos != rowNewPos) {
+        // Move row to new pos:
+        moveRow(key, rowPos, rowNewPos)
+      }
+    }
+  }
 }
 function genTableHtml(key) {
 // Each row is an unordered list, containing cells as list-items.
@@ -772,6 +1029,49 @@ function showTables(keys=null) {
     showTable(keys[i])
   }
 }
+function addSumColumn(colPos) {
+// At colPos insert column, each cell showing the sum of
+// the previous cell and its upper sibling, where the sum
+// is accumulated with each addition. Non-number-values
+// in a cell are ignored. A number can be a whole number
+// or a float, and commas for visualizing thousands are
+// accepted, e.g. a million can look like this:
+//
+//   1,000,000.00
+//
+
+
+  var key = getKey()
+  var rows = getRows(key)
+
+  var cellValue = null
+  var newCells = []
+ 
+  var accumulatedSum = 0
+  var nothingChangedSymbol = '-'
+
+  for(var i=0; i < rows.length; i++) {
+    cellValue = rows[i].split(cellDeli)[colPos-1]
+
+    // Cell-value is a number or float (ignore thousands-deli-commas):
+    if(isNaN(cellValue.split(',').join('')) === false) {
+      accumulatedSum += Number(cellValue.split(',').join(''))
+      newCells.push(accumulatedSum)
+    }
+    // Cell-value is *not* a number or float:
+    else {
+      newCells.push(nothingChangedSymbol)
+    }
+  }
+
+  // Replace first cell with 'SUM':
+  newCells.splice(0, 1, '<b style="margin-left: 37%">SUM</b>')
+
+  addColumn(key, colPos, newCells)
+
+
+} // addSumColumn
+
 function cursorIsAtBeginning(input) {
   if(input.selectionStart == 0
     && input.selectionEnd == 0) {
@@ -955,7 +1255,7 @@ function listenCells(tableEle) {
       var cellPos = getCellPos(eve.target.parentNode)
       var rowPos = getRowPos(eve.target.parentNode)
       var key = getKey()
-      addCell(key, rowPos, cellPos, eve.target.value)
+      setCell(key, rowPos, cellPos, eve.target.value)
     }
     // When a cell gains focus:
     cells[i].onfocus = function(eve) {
