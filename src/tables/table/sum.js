@@ -14,37 +14,30 @@ function addSumColumn(colPos) {
   var rows = getRows(key)
 
   var cellValue = null
-  var newCell = null
   var newCells = []
  
-  var cellValueNew = 0
+  var accumulatedSum = 0
   var nothingChangedSymbol = '-'
 
-  // Add sum-column at first pos doesn't make sense, omit that:
-  if(colPos > 0) {
+  for(var i=0; i < rows.length; i++) {
+    cellValue = rows[i].split(cellDeli)[colPos-1]
 
-    for(var i=0; i < rows.length; i++) {
-      var row = rows[i]
-      var cells = row.split(cellDeli)
-      cellValue = cells[colPos-1]
-
-      // Cell-value is *not* a number or float (ignore thousands-deli-commas):
-      if(isNaN(cellValue.split(',').join('')) === false) {
-        cellValueNew += Number(cellValue.split(',').join(''))
-        newCells.push(cellValueNew)
-      }
-      // Cell-value is a number or float:
-      else {
-        newCells.push(nothingChangedSymbol)
-      }
+    // Cell-value is a number or float (ignore thousands-deli-commas):
+    if(isNaN(cellValue.split(',').join('')) === false) {
+      accumulatedSum += Number(cellValue.split(',').join(''))
+      newCells.push(accumulatedSum)
     }
+    // Cell-value is *not* a number or float:
+    else {
+      newCells.push(nothingChangedSymbol)
+    }
+  }
 
-    // Replace first cell with 'SUM':
-    newCells.splice(0, 1, '<b style="margin-left: 37%">SUM</b>')
+  // Replace first cell with 'SUM':
+  newCells.splice(0, 1, '<b style="margin-left: 37%">SUM</b>')
 
-    addColumn(key, colPos, newCells)
+  addColumn(key, colPos, newCells)
 
 
-  } // colPos > 0
 } // addSumColumn
 
