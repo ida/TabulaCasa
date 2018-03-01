@@ -1,8 +1,6 @@
-document.addEventListener("DOMContentLoaded", function(event) { reload(
-9994000); //document.body.style = 'background: #000; color: #fff;'
+reload(
+9994000);dev('branch: appster')
 /*
-dev('branch: fixmove')
-setTimeout(function() {
 
   addTable(1, csv)
 
@@ -14,9 +12,7 @@ setTimeout(function() {
 
   ele.focus()
 
-}, 277);
 */
-}); // DOM loaded //////////////////////////////////////////////////////
 function reload(ms=2727) {
   setInterval(function() {
     window.location.href = window.location.href
@@ -34,6 +30,8 @@ function dev(html='') {
   html += '<br>' // append passed html to devEle, prepend with a linebreak
   devEle.innerHTML += html
 }
+if(cellDeli === undefined) var cellDeli = ';'
+if(rowDeli === undefined) var rowDeli = '\n'
 var csv = '23.01.1977' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '28.05.1937' + cellDeli + 'Chera' + cellDeli + '2' + rowDeli
         + '02/25/2018' + cellDeli + 'Linde' + cellDeli + '6i' + rowDeli

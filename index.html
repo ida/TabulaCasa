@@ -1,16 +1,145 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Tabula casa</title>
-<script type="text/javascript" src="vendors/papaparse-4.3.2.min.js"></script>
-<script type="text/javascript" src="TabulaCasa.js"></script>
-</head>
-<body lang="en" dir="ltr">
-  <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(event) {
-      TabulaCasa(document.body)
-    });
-  </script>
-</body>
-</html>
+<head><meta charset="utf-8"><title></title>
+<script src="vendors/style_to_sheet.js"></script>
+<script>
+
+var scriptPathsFile = 'scripts.txt'
+
+// Read script-paths of a line-separated list in a file, wrap them into one
+// single function named after this directory, and insert it as a script-ele.
+// The result  like:
+//
+//     function Thisdirname(appName) { [LOADED SCRIPTS] }
+//
+//
+// Where the var 'appName' can then be used of within the loaded funcs.
+//
+// To generate a scriptPathsFile that contains all found scripts of this
+// directory, open a terminal and enter this:
+//
+//     find . -type f -name "*.js" | sort > scripts.txt
+//
+// That will create a file named 'scripts.txt' in reversed alphabetic order,
+// so it should like this if you prepend fileNames with two-digit-numbers:
+// ['01_main.js', '02_style.js', '03_controls/01_main.js', '03_controls/02_style.js']
+//
+// That way you don't need to register anything, just name files in wanted
+// load-order.
+
+generates a file with all js-files listed, separated byl""
+var appName = null  // Defaults to dir-name, alternatively set other name, here.
+
+var scriptPaths = [] // The scripts to be loaded. You can add paths here, too.
+
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+// Get capitalized name of this file's parent-directory of the browser-address:
+if(appName === null) {
+  appName = window.location.href  // get url of browser-address-bar
+  if( appName.endsWith('/') ) {
+    appName = appName.slice(0, appName.length-2) // remove ending slash
+  }
+  appName = appName.split('/')        // split by slashes
+  appName = appName[appName.length-2] // get second last split: parent-dir-name
+  appName = appName.charAt(0).toUpperCase() + appName.slice(1) // capitalize name
+}
+
+function loadFileAndDoSthWithText(filePath, doSthWithText) {
+  if(filePath.startsWith('./')) filePath = filePath.slice(2)
+  if(filePath.endsWith('/')) filePath = filePath.slice(0, filePath.length-2)
+  var request = new XMLHttpRequest()
+  request.overrideMimeType("text/plain") // fixes err 'not well formed'
+  request.open('GET', filePath, true)
+  request.onerror = function(error) {
+    console.error("Couldn't get a connection to '" + filePath + "'.")
+    console.error(error)
+  }
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      doSthWithText(request.responseText)
+    }
+    else {
+      console.error("Couldn't load text of '" + filePath + "'.")
+    }
+  }
+  request.onerror = function(error) {
+    console.error("Couldn't get a connection to '" + filePath + "'.")
+    console.error(error)
+  }
+  request.send()
+}
+
+
+function loadFilesAndDoSthWithTexts(filePaths, doSthWithTexts) {
+  var texts = ''
+  function addTextToTexts(text) {
+    texts += text     
+    texts += '\n'
+    if(filePaths.length > 0) {
+      loadFileAndDoSthWithText(filePaths.shift(), addTextToTexts)
+    }
+    else {
+      doSthWithTexts(texts)
+    }
+  }
+  loadFileAndDoSthWithText(filePaths.shift(), addTextToTexts)
+}
+
+
+
+function getScriptPaths(scriptPathsFile, doAfter) {
+    loadFileAndDoSthWithText(scriptPathsFile, function(text) {
+    text = text.split('\n')
+    text.pop() // last entry is empty string, remove it
+    scriptPaths.push.apply(scriptPaths, text)
+    doAfter()
+  });
+}
+
+
+
+function wrapAndInsertScripts(scripts) {
+
+  var scriptEle = document.createElement('script')
+  var scriptText = ''
+  
+  scriptText += 'function ' + appName + '(appName) {'
+  scriptText += '\n'
+  scriptText += '\n'
+  scriptText += scripts
+  scriptText += '}'
+  scriptText += '\n'
+  scriptText +=  appName + '(appName)'
+  
+  scriptEle.innerHTML += scriptText
+  document.head.appendChild(scriptEle)
+}
+
+
+
+function loadScripts() {
+  loadFilesAndDoSthWithTexts(scriptPaths, wrapAndInsertScripts)
+}
+
+
+
+function main() {
+
+  // Set document's title to be the appName:
+  document.getElementsByTagName('title')[0].innerHTML = appName
+
+
+  // Load, wrap and insert scripts:
+  if(scriptPathsFile !== null ) getScriptPaths('scripts.txt', loadScripts)
+  else loadScripts()
+  // We don't need *this* script-ele anymore, remove it:
+  var s=document.getElementsByTagName('script');s[s.length-1].remove()
+
+}
+
+
+main()
+
+
+</script></head>

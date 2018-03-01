@@ -18,3 +18,5 @@ function main(appEle=null) {
 
   showTable(getKey())
 }
+
+main()
