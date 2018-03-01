@@ -26,10 +26,6 @@ function addModifyTablesEle(controlsEle) {
     filter: alpha(opacity=0);'
 }
 function doAfterFileUpload(csv) {
-  // In case imported CSV uses other delimiters than
-  // this app, convert CSV to fit app, using Papa:
-//  csv = Papa.parse(csv)
-//  csv = Papa.unparse(csv)
   addTable(getKey(), csv)
 }
 function genControlsActionHtml() {

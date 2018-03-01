@@ -1,7 +1,5 @@
-reload(
-9994000);dev('branch: appster')
+var arr=[1,2,3,4];for(k in arr) if(k>1) dev(k);var a=arr.splice(k,1);
 /*
-
   addTable(1, csv)
 
   var ele = document.getElementsByClassName('positions')[0]
