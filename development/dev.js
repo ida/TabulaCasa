@@ -1,4 +1,3 @@
-var arr=[1,2,3,4];for(k in arr) if(k>1) dev(k);var a=arr.splice(k,1);
 /*
   addTable(1, csv)
 
