@@ -26,11 +26,12 @@ function genTableHtml(key) {
   return html
 }
 function showTable(key) {
+console.log(key)
   var tablesEle = getComponentEle(getAppEle(), 'tables')
   var tableEle = document.getElementById(key)
   if(tableEle === null || tableEle === undefined) {
     tableEle = addEle(tablesEle)
-    tableEle.id = key
+    if(key !== null) tableEle.id = key
   }
   tableEle.innerHTML = genTableHtml(key)
   tableEle.style.display = 'inline-block'
