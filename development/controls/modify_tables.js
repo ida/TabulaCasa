@@ -59,40 +59,47 @@ function listenControlsAction(controlsEle) {
   var targetPositionInput = targetPositionEle.children[0]
   // Execute choosen action when return-/enter-key was pressed:
   controlsEle.onkeyup = function(eve) {
-    if(eve.keyCode == 13) { // is return-/enter-key
+    if(eve.keyCode == 13 || eve.keyCode == 38 || eve.keyCode == 40) { // is arrow-down/up or enter-key
       var tableKey = getKey()
       var args = [getKey()]
       var action = actionEle.value
-      var what = whatEle.value
-      var positions = positionsEle.value
-      var targetPosition = targetPositionInput.value
-      var funcName = action + what
-      // Fail silently when existing table wants to be added or non-existing
-      // table is supposed to be deleted:
-      if( ! (what == 'Table' && ( action == 'add' && keyExists(positions) )
-                             || ( action == 'delete' && ! keyExists(positions) )
-            )
-        ) {
-             if(funcName ==         'addRow') addRow(tableKey, positions-1)
-        else if(funcName ==      'addColumn') addColumn(tableKey, positions-1)
-        else if(funcName ==   'addSumColumn') addSumColumn(positions-1)
-        else if(funcName ==       'addTable') addTable(positions)
-        else if(funcName ==         'delRow') delRow(tableKey, positions-1)
-        else if(funcName ==      'delColumn') delColumn(tableKey, positions-1)
-        else if(funcName ==   'delSumColumn') delSumColumn()
-        else if(funcName ==       'delTable') delTable(positions)
-        else if(funcName ==        'moveRow') moveRow(tableKey, positions-1, targetPosition-1)
-        else if(funcName ==     'moveColumn') moveColumn(tableKey, positions-1, targetPosition-1)
-        else if(funcName ==     'sortColumn') sortColumnByDate(positions-1)
-        else console.info('The selection "' + funcName + '" is not wired to' +
-                          ' a function, we ignore that for now, nothing changed.')
+      if(eve.keyCode == 38 || eve.keyCode == 40) {
+        if(action == 'import') whatEle.value = 'Table'
+        if(action == 'sort') whatEle.value = 'Column'
       }
-    } // is enter-key
+      else {
+        var what = whatEle.value
+        var positions = positionsEle.value
+        var targetPosition = targetPositionInput.value
+        var funcName = action + what
+        // Fail silently when existing table wants to be added or non-existing
+        // table is supposed to be deleted:
+        if( ! (what == 'Table' && ( action == 'add' && keyExists(positions) )
+                               || ( action == 'delete' && ! keyExists(positions) )
+              )
+          ) {
+               if(funcName ==         'addRow') addRow(tableKey, positions-1)
+          else if(funcName ==      'addColumn') addColumn(tableKey, positions-1)
+          else if(funcName ==   'addSumColumn') addSumColumn(positions-1)
+          else if(funcName ==       'addTable') addTable(positions)
+          else if(funcName ==         'delRow') delRow(tableKey, positions-1)
+          else if(funcName ==      'delColumn') delColumn(tableKey, positions-1)
+          else if(funcName ==   'delSumColumn') delSumColumn()
+          else if(funcName ==       'delTable') delTable(positions)
+          else if(funcName ==        'moveRow') moveRow(tableKey, positions-1, targetPosition-1)
+          else if(funcName ==     'moveColumn') moveColumn(tableKey, positions-1, targetPosition-1)
+          else if(funcName == 'importTable') importEle.children[1].focus()
+          else if(funcName ==     'sortColumn') sortColumnByDate(positions-1)
+          else console.info('The selection "' + funcName + '" is not wired to' +
+                            ' a function, we ignore that for now, nothing changed.')
+        }
+      } // is enter-key
+    } // is arrow-up, or arrow-down-, or enter-key
   } // a key is pressed
-  actionEle.onclick = function(eve) { onSelectionChange(eve, whatEle, targetPositionEle, importEle) }
-  actionEle.onkeyup = function(eve) { onSelectionChange(eve, whatEle, targetPositionEle, importEle) }
+  actionEle.onclick = function(eve) { onSelectionChange(eve, whatEle, positionsEle, targetPositionEle, importEle) }
+  actionEle.onkeyup = function(eve) { onSelectionChange(eve, whatEle, positionsEle, targetPositionEle, importEle) }
 } // listenControlsAction
-function onSelectionChange(eve, whatEle, targetPositionEle, importEle) {
+function onSelectionChange(eve, whatEle, positionsEle, targetPositionEle, importEle) {
 // Show and hide control-eles depending on the choosen options:
   var options = whatEle.getElementsByTagName('option')
   // If 'move' was choosen:
@@ -132,12 +139,5 @@ function onSelectionChange(eve, whatEle, targetPositionEle, importEle) {
     targetPositionEle.style.display = 'none'
     // Show upload-button:
     importEle.style.display = 'inline'
-    // Select 'Table' as what-option:
-    for(var i=0; i < options.length; i++) {
-      if(options[i].value == 'Table') {
-        options[i].setAttribute('selected', 'selected')
-      }
-    }
   }
 } // onSelectionChange
-

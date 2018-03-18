@@ -26,7 +26,6 @@ function genTableHtml(key) {
   return html
 }
 function showTable(key) {
-console.log(key)
   var tablesEle = getComponentEle(getAppEle(), 'tables')
   var tableEle = document.getElementById(key)
   if(tableEle === null || tableEle === undefined) {
