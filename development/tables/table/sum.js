@@ -41,3 +41,11 @@ function addSumColumn(colPos) {
 
 } // addSumColumn
 
+
+
+function addSumRow(rowPos) {
+// Look for nrs in cells of same pos in other rows,
+// accumulate them and append a row with the sums.
+
+
+} // addSumRow
