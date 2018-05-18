@@ -10,7 +10,7 @@ function addSumColumn(colPos) {
 //
 
 
-  var key = getKey()
+  var key = getTableId()
   var rows = getRows(key)
 
   var cellValue = null

@@ -15,7 +15,7 @@ function sortColumnByDate(colPos) {
   // continue with next previous row, until all rows are compared.
   // Then move row to new position, if it's lesser that previous cells.
 
-  var key = getKey()
+  var key = getTableId()
   var rows = getRows(key)
   var cell, cellPrevious, rowNewPos, rowPreviousPos = null
 

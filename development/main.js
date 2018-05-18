@@ -16,7 +16,7 @@ function main(appEle=null) {
   tablesEle.className = 'tables'
   addTableStyle('.' + tablesEle.className + ' ')
 
-  showTable(getKey())
+  showTable(getTableId())
 }
 
 main()

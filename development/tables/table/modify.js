@@ -113,13 +113,13 @@ function delTable(key) {
   } // key exists
 }
 function getCell(rowPos, colPos) {
-  var rows = getRows(getKey())
+  var rows = getRows(getTableId())
   return getCellOfRows(rows, rowPos, colPos)
 }
 function getCellOfRows(rows, rowPos, colPos) {
   return cell = rows[rowPos].split(cellDeli)[colPos]
 }
-function getKey() {
+function getTableId() {
   var key = null
   var selectionEle = getComponentEle(getAppEle(), 'tablesSelection')
   var options = selectionEle.getElementsByTagName('option')
@@ -130,7 +130,7 @@ function getKey() {
   }
   return key
 }
-function getKeys() {
+function getTableIds() {
   var keys = []
   for(var i=0; i < localStorage.length; i++) {
     keys.push(localStorage.key(i))
@@ -173,7 +173,7 @@ function moveRow(key, rowPos, targetPos) {
   addTable(key, csv)
 }
 function keyExists(key) {
-  keys = getKeys()
+  keys = getTableIds()
   for(var i=0; i < keys.length; i++) {
     if(keys[i] == key) {
       return true
