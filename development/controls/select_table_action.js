@@ -56,10 +56,10 @@ function addCustomUploadButton(parentEle) {
   return wrapper
 }
 function doAfterFileUpload(csv) {
-  addTable(getKey(), csv)
+  addTable(getTableId(), csv)
 }
 function getAction(parentEle) {
-  var tableId = getKey()
+  var tableId = getTableId()
   var values = []
   for(var i=0; i < parentEle.children.length; i++) {
     var value = parentEle.children[i].value

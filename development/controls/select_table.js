@@ -6,7 +6,7 @@ function addSelectTableEle(controlsEle) {
 function genTablesSelectionHtml(key=null) {
   //var html = 'Table: <select>'
   var html = '<select>'
-  var keys = getKeys()
+  var keys = getTableIds()
   for(var i=0; i < keys.length; i++) {
     html += '<option'
     if( (key === null && i==0) || (key !== null && keys[i] == key) ) {

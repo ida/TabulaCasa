@@ -44,7 +44,7 @@ function showTableOnly(key) {
   showTable(key)
 }
 function showTables(keys=null) {
-  if(keys === null) { keys = getKeys() }
+  if(keys === null) { keys = getTableIds() }
   for(var i=0; i < keys.length; i++) {
     showTable(keys[i])
   }
