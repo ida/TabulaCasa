@@ -10,6 +10,7 @@ function addAppStyles() {
   styleToSheet.addRule(selector, style)
 
 
+/*
   style += 'border: none;'
   selector = ' input'
   styleToSheet.addRule(selector, style)
@@ -24,5 +25,6 @@ function addAppStyles() {
     appearance: none;
   `
   styleToSheet.addRule(selector, style)
+*/
 
 }

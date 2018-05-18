@@ -1,6 +1,7 @@
 /*
-  addTable(1, csv)
+setTimeout(function() { addTable(1, csv)}, 27)
 
+localStorage.clear()
   var ele = document.getElementsByClassName('positions')[0]
 //  ele.value = 4
 
