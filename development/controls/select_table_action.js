@@ -59,9 +59,7 @@ function doAfterFileUpload(csv) {
   addTable(getKey(), csv)
 }
 function getAction(parentEle) {
-  parentEle.style = 'border: 1px solid red;'
   var tableId = getKey()
-
   var values = []
   for(var i=0; i < parentEle.children.length; i++) {
     var value = parentEle.children[i].value
