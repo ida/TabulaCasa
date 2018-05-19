@@ -48,8 +48,10 @@ function isNr(value) {
 
 function valueToNumber(value) {
   // If value is not a number, return zero.
+  // Strip commas, considered to be thousands-separator.
+  value = value.split(',').join('')
   value = Number(value)
-  if(isNan(value) === true) value = 0
+  if(isNaN(value) === true) value = 0
   return value
 }
 function addSumRow(rowPos) {
@@ -58,18 +60,21 @@ function addSumRow(rowPos) {
 // CSV: '1,2,3;4,5,6' ---> '1,2,3;4,5,6;5,7,9'
   var cell = null
   var cells = null
+  var newCell = null
   var newCells = []
   var rows = getRows(getTableId())
-  for(var i=0; i < rows.length; i++) {
-    cells = rows[i]
+  if(isNaN(rowPos) === true || rowPos < 1) rowPos = rows.length
+  for(var i=0; i < rowPos; i++) {
+    cells = rows[i].split(cellDeli)
     for(var j=0; j < cells.length; j++) {
       cell = cells[j]
       cell = valueToNumber(cell)
       if(i == 0) newCells[j] = 0
-      newCells[j] = newCells[j] + cell
+      newCell = newCells[j]
+      newCells[j] = newCell + cell
     }
   }
-console.debug(newCells)
-
-
+  newCells = newCells.join(cellDeli)
+  addRow(getTableId(), rowPos, newCells)
 } // addSumRow
+

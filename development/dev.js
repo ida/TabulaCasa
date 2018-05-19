@@ -32,10 +32,10 @@ var csv = 'Ida' + cellDeli + 'Ebkes' + cellDeli + '42' + rowDeli
 
 
 /*
-localStorage.clear(); addTable(1, csv)
 */
+localStorage.clear(); addTable(1, csv)
 document.getElementsByTagName('select')[2].selectedIndex = 3 // choose SumRow
-document.getElementsByTagName('input')[0].value = 3
+//document.getElementsByTagName('input')[0].value = 3
 var tableActionEle = document.getElementsByClassName('selectTableAction')[0]
 executeSelectedTableAction(tableActionEle)
 
