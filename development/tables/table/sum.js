@@ -22,12 +22,10 @@ function addSumColumn(colPos) {
   for(var i=0; i < rows.length; i++) {
     cellValue = rows[i].split(cellDeli)[colPos-1]
 
-    // Cell-value is a number or float (ignore thousands-deli-commas):
-    if(isNaN(cellValue.split(',').join('')) === false) {
-      accumulatedSum += Number(cellValue.split(',').join(''))
+    if(isNumber(cellValue) === true) {
+      accumulatedSum += valueToNumber(cellValue)
       newCells.push(accumulatedSum)
     }
-    // Cell-value is *not* a number or float:
     else {
       newCells.push(nothingChangedSymbol)
     }
@@ -41,19 +39,7 @@ function addSumColumn(colPos) {
 
 } // addSumColumn
 
-function isNr(value) {
-  // Regard `Number` returns zero for empty strings.
-  return value != '' && isNaN(Number(value)) === false
-}
 
-function valueToNumber(value) {
-  // If value is not a number, return zero.
-  // Strip commas, considered to be thousands-separator.
-  value = value.split(',').join('')
-  value = Number(value)
-  if(isNaN(value) === true) value = 0
-  return value
-}
 function addSumRow(rowPos) {
 // Look for nrs in cells of same pos in other rows,
 // accumulate them and append a row with the sums.
@@ -77,4 +63,22 @@ function addSumRow(rowPos) {
   newCells = newCells.join(cellDeli)
   addRow(getTableId(), rowPos, newCells)
 } // addSumRow
+
+
+function isNumber(value) {
+  // Regard `Number` returns zero for empty strings.
+  // Ignore commas, considered to be thousands-indicator.
+  value = value.split(',').join('')
+  return value != '' && isNaN(Number(value)) === false
+}
+
+
+function valueToNumber(value) {
+  // If value is not a number, return zero.
+  // Strip commas, considered to be thousands-indicator.
+  value = value.split(',').join('')
+  value = Number(value)
+  if(isNaN(value) === true) value = 0
+  return value
+}
 
