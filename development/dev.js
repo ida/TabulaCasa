@@ -1,16 +1,3 @@
-/*
-setTimeout(function() { addTable(1, csv)}, 27)
-
-localStorage.clear()
-  var ele = document.getElementsByClassName('positions')[0]
-//  ele.value = 4
-
-  var ele = document.getElementsByClassName('action')[0]
-  ele.children[ele.children.length-3].selected=true // select move
-
-  ele.focus()
-
-*/
 function reload(ms=2727) {
   setInterval(function() {
     window.location.href = window.location.href
@@ -42,3 +29,15 @@ var csv = 'Ida' + cellDeli + 'Ebkes' + cellDeli + '42' + rowDeli
         + 'Udo' + cellDeli + 'Linde' + cellDeli + '6i' + rowDeli
         + 'Ame' + cellDeli + 'Chera' + cellDeli + '1,500.00' + rowDeli
         + 'Bob' + cellDeli + 'Stewa' + cellDeli + '33'
+
+
+/*
+localStorage.clear(); addTable(1, csv)
+*/
+document.getElementsByTagName('select')[2].selectedIndex = 3 // choose SumRow
+document.getElementsByTagName('input')[0].value = 3
+var tableActionEle = document.getElementsByClassName('selectTableAction')[0]
+executeSelectedTableAction(tableActionEle)
+
+
+

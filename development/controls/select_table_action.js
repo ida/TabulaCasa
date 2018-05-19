@@ -3,7 +3,7 @@ function addSelectTableActionEles(parentEle) {
   parentEle.className = 'selectTableAction'
   var actionOptions = ['add', 'del', 'move', 'import', 'sort']
   var actionEle = addSelectEle(parentEle, actionOptions)
-  var whatOptions = ['Row', 'Column', 'SumColumn', 'Table']
+  var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table']
   var whatEle = addSelectEle(parentEle, whatOptions)
   var startNrEle = addEle(parentEle, null, 'input')
   var targetNrEle = addEle(parentEle, null, 'input')
@@ -58,7 +58,7 @@ function addCustomUploadButton(parentEle) {
 function doAfterFileUpload(csv) {
   addTable(getTableId(), csv)
 }
-function getAction(parentEle) {
+function executeSelectedTableAction(parentEle) {
   var tableId = getTableId()
   var values = []
   for(var i=0; i < parentEle.children.length; i++) {
@@ -68,23 +68,24 @@ function getAction(parentEle) {
   var actionName = values[0] + values[1]
   var startNr = values[2] - 1
   var targetNr = values[3] - 1
-       console.debug(actionName,startNr,targetNr)
-       if(actionName == 'addRow')      addRow(tableId, startNr)
-  else if(actionName == 'delRow')      delRow(tableId, startNr)
-  else if(actionName == 'moveRow')     moveRow(tableId, startNr, targetNr)
-  else if(actionName == 'addColumn')   addColumn(tableId, startNr)
-  else if(actionName == 'delColumn')   delColumn(tableId, startNr)
-  else if(actionName == 'moveColumn')  moveColumn(tableId, startNr, targetNr)
-  else if(actionName == 'sortColumn')  sortColumnByDate(tableId, startNr)
-  else if(actionName == 'addTable')    addTable(values[2])
-  else if(actionName == 'delTable')    delTable(values[2])
-  else if(actionName == 'importTable') parentEle.children[parentEle.children.length-1].children[1].focus()
+       if(actionName == 'addRow')       addRow(tableId, startNr)
+  else if(actionName == 'delRow')       delRow(tableId, startNr)
+  else if(actionName == 'moveRow')      moveRow(tableId, startNr, targetNr)
+  else if(actionName == 'addColumn')    addColumn(tableId, startNr)
+  else if(actionName == 'delColumn')    delColumn(tableId, startNr)
+  else if(actionName == 'moveColumn')   moveColumn(tableId, startNr, targetNr)
+  else if(actionName == 'sortColumn')   sortColumnByDate(tableId, startNr)
+  else if(actionName == 'addTable')     addTable(values[2])
+  else if(actionName == 'delTable')     delTable(values[2])
+  else if(actionName == 'importTable')  parentEle.children[parentEle.children.length-1].children[1].focus()
+  else if(actionName == 'addSumColumn') addSumColumn(startNr)
+  else if(actionName == 'addSumRow')    addSumRow(startNr)
   else console.debug(`Action-name "${actionName}" is an unknown case, nothing changes.`)
 }
 function listenSelectTableActionEles(parentEle) {
   parentEle.onkeydown = function(eve) {
     if(eve.keyCode == 13) {
-      var action = getAction(parentEle)
+      var action = executeSelectedTableAction(parentEle)
     }
   }
 }

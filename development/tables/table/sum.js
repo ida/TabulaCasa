@@ -41,11 +41,35 @@ function addSumColumn(colPos) {
 
 } // addSumColumn
 
+function isNr(value) {
+  // Regard `Number` returns zero for empty strings.
+  return value != '' && isNaN(Number(value)) === false
+}
 
-
+function valueToNumber(value) {
+  // If value is not a number, return zero.
+  value = Number(value)
+  if(isNan(value) === true) value = 0
+  return value
+}
 function addSumRow(rowPos) {
 // Look for nrs in cells of same pos in other rows,
 // accumulate them and append a row with the sums.
+// CSV: '1,2,3;4,5,6' ---> '1,2,3;4,5,6;5,7,9'
+  var cell = null
+  var cells = null
+  var newCells = []
+  var rows = getRows(getTableId())
+  for(var i=0; i < rows.length; i++) {
+    cells = rows[i]
+    for(var j=0; j < cells.length; j++) {
+      cell = cells[j]
+      cell = valueToNumber(cell)
+      if(i == 0) newCells[j] = 0
+      newCells[j] = newCells[j] + cell
+    }
+  }
+console.debug(newCells)
 
 
 } // addSumRow
