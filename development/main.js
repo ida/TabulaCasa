@@ -1,5 +1,7 @@
 var cellDeli = ','
 var cellDeli = ';'
+var decimalSeparator = '.'
+var decimalSeparator = ','
 var rowDeli = '\n'
 
 function main(appEle=null) {

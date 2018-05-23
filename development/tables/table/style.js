@@ -6,7 +6,8 @@ function addTableStyle(prefix, showNrs=true) {
   var tableSelector = prefix + '> ' + tableTagName
   var rowSelector = tableSelector + ' > ' + rowTagName
   var cellSelector = rowSelector + ' > ' + cellTagName
-
+  var sumRowSelector = tableSelector + ' > ' + rowTagName + '.sum'
+  var sumCellSelector = sumRowSelector + ' > ' + cellTagName
   var background = '#000'
   var borderWidth = '0.1em'
   var border = borderWidth + ' solid'
@@ -53,6 +54,10 @@ function addTableStyle(prefix, showNrs=true) {
 
   selector = rowSelector
   style = 'white-space: nowrap; margin: 0; padding: 0;'
+  styleToSheet.addRule(selector, style)
+
+  selector = sumCellSelector
+  style = 'font-weight: bold;'
   styleToSheet.addRule(selector, style)
 
   selector = cellSelector
@@ -107,7 +112,7 @@ function addTableStyle(prefix, showNrs=true) {
   ' + cellStyleBase + '\
   ' + cellBorder + '\
   text-align: right;\n\
-  min-width: 1.75em;\n\
+  min-width: 2.27em;\n\
   ' // rowNrStyle
 
 
@@ -120,11 +125,17 @@ function addTableStyle(prefix, showNrs=true) {
   style += 'padding-top: 0.15em' // hardcoded for now, needs to be computed
   styleToSheet.addRule(selector, style)
 
-  selector = rowSelector + ':before'
+  selector = rowSelector + ':not(.sum):before'
   style = `
     counter-increment: rowscounter;
     content: counter(rowscounter);
     counter-reset: columnscounter;
+  ` + rowNrStyle
+  styleToSheet.addRule(selector, style)
+
+  selector = rowSelector + '.sum:before'
+  style = `
+    content: "sum";
   ` + rowNrStyle
   styleToSheet.addRule(selector, style)
 

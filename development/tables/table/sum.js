@@ -1,4 +1,4 @@
-function addSumColumn(colPos) {
+function addSumColumn(tableId, colPos) {
 // At colPos insert column, each cell showing the sum of
 // the previous cell and its upper sibling, where the sum
 // is accumulated with each addition. Non-number-values
@@ -10,8 +10,7 @@ function addSumColumn(colPos) {
 //
 
 
-  var key = getTableId()
-  var rows = getRows(key)
+  var rows = getRows(tableId)
 
   var cellValue = null
   var newCells = []
@@ -23,7 +22,7 @@ function addSumColumn(colPos) {
     cellValue = rows[i].split(cellDeli)[colPos-1]
 
     if(isNumber(cellValue) === true) {
-      accumulatedSum += valueToNumber(cellValue)
+      accumulatedSum += valueToNumber(cellValue, '.', true)
       newCells.push(accumulatedSum)
     }
     else {
@@ -34,13 +33,13 @@ function addSumColumn(colPos) {
   // Replace first cell with 'SUM':
   newCells.splice(0, 1, '<b style="margin-left: 37%">SUM</b>')
 
-  addColumn(key, colPos, newCells)
+  addColumn(tableId, colPos, newCells)
 
 
 } // addSumColumn
 
 
-function addSumRow(rowPos) {
+function addSumRow(tableId, rowPos, decimalSeparator='.') {
 // Look for nrs in cells of same pos in other rows,
 // accumulate them and append a row with the sums.
 // CSV: '1,2,3;4,5,6' ---> '1,2,3;4,5,6;5,7,9'
@@ -48,37 +47,47 @@ function addSumRow(rowPos) {
   var cells = null
   var newCell = null
   var newCells = []
-  var rows = getRows(getTableId())
-  if(isNaN(rowPos) === true || rowPos < 1) rowPos = rows.length
+  var rows = getRows(tableId)
+
+  if( isNaN(rowPos) === true || rowPos < 1 ) rowPos = rows.length
+  if(rowPos > rows.length) rowPos = rows.length
+
   for(var i=0; i < rowPos; i++) {
     cells = rows[i].split(cellDeli)
     for(var j=0; j < cells.length; j++) {
       cell = cells[j]
-      cell = valueToNumber(cell)
+      cell = valueToNumber(cell, decimalSeparator, true)
       if(i == 0) newCells[j] = 0
       newCell = newCells[j]
       newCells[j] = newCell + cell
     }
   }
-  newCells = newCells.join(cellDeli)
-  addRow(getTableId(), rowPos, newCells)
+
+  rowPos = dataRowPosToVisualRowPos(rowPos)
+  newCells = prettifyNumbers(newCells)
+  showVisualRow(rowPos, newCells)
+
 } // addSumRow
 
 
-function isNumber(value) {
-  // Regard `Number` returns zero for empty strings.
-  // Ignore commas, considered to be thousands-indicator.
-  value = value.split(',').join('')
-  return value != '' && isNaN(Number(value)) === false
-}
-
-
-function valueToNumber(value) {
-  // If value is not a number, return zero.
-  // Strip commas, considered to be thousands-indicator.
-  value = value.split(',').join('')
-  value = Number(value)
-  if(isNaN(value) === true) value = 0
-  return value
+function addSumRowEveryNMonths(firstSumRowPos=null, months=1, dateColumnPos=0) {
+// Accumulate sums until a new month starts, add sum-row,
+// clear sum, repeat until end of table.
+  var cells = null
+  var month = 0
+  var row = null
+  var tableId = getTableId()
+  var rows = getRows(getTableId())
+  var value = null
+  for(var i=0; i < rows.length; i++) {
+    row = rows[i]
+    cells = row.split(cellDeli)
+    value = cells[dateColumnPos]
+    number = dateToNumber(value)
+    if(number.slice(4, 6) != month) {
+      month = number.slice(4, 7)
+      addSumRow(tableId, i, decimalSeparator)
+    }
+  }
 }
 

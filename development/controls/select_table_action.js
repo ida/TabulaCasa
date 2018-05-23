@@ -78,8 +78,8 @@ function executeSelectedTableAction(parentEle) {
   else if(actionName == 'addTable')     addTable(values[2])
   else if(actionName == 'delTable')     delTable(values[2])
   else if(actionName == 'importTable')  parentEle.children[parentEle.children.length-1].children[1].focus()
-  else if(actionName == 'addSumColumn') addSumColumn(startNr)
-  else if(actionName == 'addSumRow')    addSumRow(startNr)
+  else if(actionName == 'addSumColumn') addSumColumn(tableId, startNr)
+  else if(actionName == 'addSumRow')    addSumRow(tableId, startNr)
   else console.debug(`Action-name "${actionName}" is an unknown case, nothing changes.`)
 }
 function listenSelectTableActionEles(parentEle) {

@@ -181,9 +181,23 @@ function keyExists(key) {
   }
   return false
 }
+function visualRowPosToDataRowPos(tableId, rowPos) {
+// The diplayed table may contain non-data-rows(haveClass sum), subtract those of pos.
+  var newRowPos = rowPos
+  var tableEle = document.getElementById(tableId)
+  var rowEles = tableEle.children
+  for(var i=0; i < rowPos; i++) {
+    var rowEle = rowEles[i]
+    if(rowEle.className.indexOf('sum') > -1) {
+      newRowPos -=1
+    }
+  }
+  return newRowPos
+}
 function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
 // Overwrite existing cell or add new cell.
 // Add empty rows and cells, if necessary.
+  rowPos = visualRowPosToDataRowPos(key, rowPos)
   // Get rows:
   var rows = getRows(key)
   // Fill up empty rows:
