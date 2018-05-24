@@ -49,11 +49,11 @@ for(var i=0; i < testRows.length; i++) {
   for(var j=0; j < testRowCells.length; j++) {
     var testRowCell = testRowCells[j]
     console.debug(testRowCell, prettifyNumberString(testRowCell))
-
+ 
   }
 }
 
 reload()
-addSumRowEveryNMonths()
 */
+addSumRowEveryNMonths()
 

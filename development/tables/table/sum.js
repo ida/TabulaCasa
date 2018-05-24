@@ -85,7 +85,7 @@ function addSumRowEveryNMonths(firstSumRowPos=null, months=1, dateColumnPos=0) {
     value = cells[dateColumnPos]
     number = dateToNumber(value)
     if(number.slice(4, 6) != month) {
-      month = number.slice(4, 7)
+      month = number.slice(4, 6)
       addSumRow(tableId, i, decimalSeparator)
     }
   }
