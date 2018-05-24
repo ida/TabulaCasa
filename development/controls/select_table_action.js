@@ -3,7 +3,7 @@ function addSelectTableActionEles(parentEle) {
   parentEle.className = 'selectTableAction'
   var actionOptions = ['add', 'del', 'move', 'import', 'sort']
   var actionEle = addSelectEle(parentEle, actionOptions)
-  var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table']
+  var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table', 'SumRowPerMonth']
   var whatEle = addSelectEle(parentEle, whatOptions)
   var startNrEle = addEle(parentEle, null, 'input')
   var targetNrEle = addEle(parentEle, null, 'input')
@@ -80,6 +80,7 @@ function executeSelectedTableAction(parentEle) {
   else if(actionName == 'importTable')  parentEle.children[parentEle.children.length-1].children[1].focus()
   else if(actionName == 'addSumColumn') addSumColumn(tableId, startNr)
   else if(actionName == 'addSumRow')    addSumRow(tableId, startNr)
+  else if(actionName == 'addSumRowPerMonth')    addSumRowEveryNMonths(tableId)
   else console.debug(`Action-name "${actionName}" is an unknown case, nothing changes.`)
 }
 function listenSelectTableActionEles(parentEle) {

@@ -70,14 +70,13 @@ function addSumRow(tableId, rowPos, decimalSeparator='.') {
 } // addSumRow
 
 
-function addSumRowEveryNMonths(firstSumRowPos=null, months=1, dateColumnPos=0) {
+function addSumRowEveryNMonths(tableId, firstSumRowPos=null, months=1, dateColumnPos=0) {
 // Accumulate sums until a new month starts, add sum-row,
 // clear sum, repeat until end of table.
   var cells = null
   var month = 0
   var row = null
-  var tableId = getTableId()
-  var rows = getRows(getTableId())
+  var rows = getRows(tableId)
   var value = null
   for(var i=0; i < rows.length; i++) {
     row = rows[i]

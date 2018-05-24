@@ -54,6 +54,6 @@ for(var i=0; i < testRows.length; i++) {
 }
 
 reload()
+addSumRowEveryNMonths(getTableId())
 */
-addSumRowEveryNMonths()
 
