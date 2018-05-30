@@ -17,4 +17,5 @@
 ./tables/table/sum.js
 ./style.js
 ./main.js
+tables/table/model.js
 ./dev.js

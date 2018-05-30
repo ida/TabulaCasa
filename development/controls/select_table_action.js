@@ -1,6 +1,8 @@
 function addSelectTableActionEles(parentEle) {
+
   parentEle = addEle(parentEle, null, 'span')
   parentEle.className = 'selectTableAction'
+
   var actionOptions = ['add', 'del', 'move', 'import', 'sort']
   var actionEle = addSelectEle(parentEle, actionOptions)
   var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table', 'SumRowPerMonth']
@@ -8,8 +10,8 @@ function addSelectTableActionEles(parentEle) {
   var startNrEle = addEle(parentEle, null, 'input')
   var targetNrEle = addEle(parentEle, null, 'input')
   var importEle = addCustomUploadButton(parentEle)
-  
-  // Set options of follwoing fields depending on value of preceding fields:
+ 
+  // Set options of following fields depending on value of preceding fields:
   addDependentFieldAction(actionEle, whatEle, 'add', whatOptions)
   whatOptions = ['Row', 'Column', 'Table']
   addDependentFieldAction(actionEle, whatEle, 'del', whatOptions)
@@ -17,11 +19,19 @@ function addSelectTableActionEles(parentEle) {
   addDependentFieldAction(actionEle, whatEle, 'move', whatOptions)
   addDependentFieldAction(actionEle, whatEle, 'import', ['Table'])
   addDependentFieldAction(actionEle, whatEle, 'sort', ['Column'])
+
   // Hide importEle for all actions, but action 'import':
   for(var i=0; i < actionOptions[i].length; i++) {
     addDependentFieldAction(actionEle, importEle, actionOptions[i], hideEle)
   }
   addDependentFieldAction(actionEle, importEle, 'import', showEle)
+
+  // When import was chosen...
+  addDependentFieldAction(actionEle, importEle, 'import', function(dependentEle) {
+    // ... insert current table-id into startNr-input and set focus on it:
+    startNrEle.value = table.id; startNrEle.focus()
+  });
+
   // Hide targetNrEle for all actions, but action 'move':
   for(var i=0; i < actionOptions[i].length; i++) {
     addDependentFieldAction(actionEle, targetNrEle, actionOptions[i], hideEle)
@@ -56,38 +66,36 @@ function addCustomUploadButton(parentEle) {
   return wrapper
 }
 function doAfterFileUpload(csv) {
-  addTable(getTableId(), csv)
+  addTable(table.id, csv)
 }
-function executeSelectedTableAction(parentEle) {
-  var tableId = getTableId()
-  var values = []
+function callSelectedTableAction(parentEle) {
+  var args = []
   for(var i=0; i < parentEle.children.length; i++) {
-    var value = parentEle.children[i].value
-    values.push(value)
+    args.push(parentEle.children[i].value)
   }
-  var actionName = values[0] + values[1]
-  var startNr = values[2] - 1
-  var targetNr = values[3] - 1
-       if(actionName == 'addRow')       addRow(tableId, startNr)
-  else if(actionName == 'delRow')       delRow(tableId, startNr)
-  else if(actionName == 'moveRow')      moveRow(tableId, startNr, targetNr)
-  else if(actionName == 'addColumn')    addColumn(tableId, startNr)
-  else if(actionName == 'delColumn')    delColumn(tableId, startNr)
-  else if(actionName == 'moveColumn')   moveColumn(tableId, startNr, targetNr)
-  else if(actionName == 'sortColumn')   sortColumnByDate(tableId, startNr)
-  else if(actionName == 'addTable')     addTable(values[2])
-  else if(actionName == 'delTable')     delTable(values[2])
-  else if(actionName == 'importTable')  parentEle.children[parentEle.children.length-1].children[1].focus()
-  else if(actionName == 'addSumColumn') addSumColumn(tableId, startNr)
-  else if(actionName == 'addSumRow')    addSumRow(tableId, startNr)
-  else if(actionName == 'addSumRowPerMonth')    addSumRowEveryNMonths(tableId)
-  else console.debug(`Action-name "${actionName}" is an unknown case, nothing changes.`)
+  args = validateTableActionArgs(args)
+  table[args.shift() + args.shift()](...args)
 }
 function listenSelectTableActionEles(parentEle) {
   parentEle.onkeydown = function(eve) {
-    if(eve.keyCode == 13) {
-      var action = executeSelectedTableAction(parentEle)
+    if(eve.keyCode == 13) { // is enter/return-key
+      callSelectedTableAction(parentEle)
     }
   }
+}
+function validateTableActionArgs(args) {
+  if(args[1] != 'Table') {
+    if(isNumber(args[2]) === false) {
+      if(args[1] == 'Row') args[2] = getLastRowPos(table.id)
+      else if(args[1] == 'Column') args[2] = getLastColumnPos(table.id)
+    }
+    if(args[0] == 'add') {
+      args[2] += 1 // default to one more than last
+    }
+    else {
+      args[2] = Number(args[2]) - 1 // humanNumberToListPosition
+    }
+  }
+  return args
 }
 

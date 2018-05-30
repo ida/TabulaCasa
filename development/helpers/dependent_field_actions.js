@@ -142,7 +142,7 @@ function addDependentFieldAction(major, minor, majorValue, action) {
   // Initially create dependentFields-map and attach change-listener:
   if(major.dependentFields === undefined) {
     major.dependentFields = new Map()
-    major.onchange = function(eve){ major.changeDependentFields(eve.target) }
+    major.onchange = function(eve) { major.changeDependentFields(major) }
   }
 
   // If it's the first action for the dependent-field, add and empty

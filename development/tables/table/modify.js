@@ -50,6 +50,7 @@ function addRow(key, rowPos, vals='') {
   addTable(key, csv)
 }
 function addTable(key, csv='', displayTable=true) {
+  table = new Table(key)
   localStorage.setItem(key, csv)
   if(displayTable==true) {
     showTableOnly(key)
@@ -102,7 +103,7 @@ function delTable(key) {
           else {
             // We have more than one table:
             if(buttons.length > 1) {
-              // select second table-button:
+              // Select second table-button:
               buttons[1].selected = true
             }
           }
@@ -113,11 +114,17 @@ function delTable(key) {
   } // key exists
 }
 function getCell(rowPos, colPos) {
-  var rows = getRows(getTableId())
+  var rows = getRows(table.id)
   return getCellOfRows(rows, rowPos, colPos)
 }
 function getCellOfRows(rows, rowPos, colPos) {
   return cell = rows[rowPos].split(cellDeli)[colPos]
+}
+function getLastColumnPos(tableId) {
+  return getRows(tableId)[0].length-1
+}
+function getLastRowPos(tableId) {
+  return getRows(tableId).length-1
 }
 function getTableId() {
   var key = null
@@ -145,6 +152,20 @@ function getRows(key) {
 function getTable(key) {
   return localStorage.getItem(key)
 }
+function importTable(key, pos) {
+  //EGG
+  if(key != pos) addTable(pos)
+  console.debug(table)
+}
+function keyExists(key) {
+  keys = getTableIds()
+  for(var i=0; i < keys.length; i++) {
+    if(keys[i] == key) {
+      return true
+    }
+  }
+  return false
+}
 function moveColumn(key, rowPos, targetPos) {
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
@@ -171,28 +192,6 @@ function moveRow(key, rowPos, targetPos) {
   rows.splice(targetPos, 0, row)
   var csv = rows.join(rowDeli)
   addTable(key, csv)
-}
-function keyExists(key) {
-  keys = getTableIds()
-  for(var i=0; i < keys.length; i++) {
-    if(keys[i] == key) {
-      return true
-    }
-  }
-  return false
-}
-function visualRowPosToDataRowPos(tableId, rowPos) {
-// The diplayed table may contain non-data-rows(haveClass sum), subtract those of pos.
-  var newRowPos = rowPos
-  var tableEle = document.getElementById(tableId)
-  var rowEles = tableEle.children
-  for(var i=0; i < rowPos; i++) {
-    var rowEle = rowEles[i]
-    if(rowEle.className.indexOf('sum') > -1) {
-      newRowPos -=1
-    }
-  }
-  return newRowPos
 }
 function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
 // Overwrite existing cell or add new cell.
@@ -224,5 +223,25 @@ function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
   // Set new rows:
   var csv = rows.join(rowDeli)
   addTable(key, csv, displayTable)
+}
+function tableIdExists(tableId) {
+  var tableIds = getTableIds()
+  for(var i=0; i < items.length; i++) {
+    if(tableId == tableIds[i]) return true
+  }
+  return false
+}
+function visualRowPosToDataRowPos(tableId, rowPos) {
+// The diplayed table may contain non-data-rows(haveClass sum), subtract those of pos.
+  var newRowPos = rowPos
+  var tableEle = document.getElementById(tableId)
+  var rowEles = tableEle.children
+  for(var i=0; i < rowPos; i++) {
+    var rowEle = rowEles[i]
+    if(rowEle.className.indexOf('sum') > -1) {
+      newRowPos -=1
+    }
+  }
+  return newRowPos
 }
 

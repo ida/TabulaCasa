@@ -32,14 +32,11 @@ var csv = '23.01.2014' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '02.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
         + '21.09.2014' + cellDeli + 'Stewa' + cellDeli + '3'
 
-
 /*
-localStorage.clear(); addTable(1, csv);
-
-document.getElementsByTagName('select')[2].selectedIndex = 1 // choose 'Column'
-document.getElementsByTagName('input')[0].value = 0 // set startNr
-document.getElementsByTagName('input')[0].focus() // focus startNr
-console.debug(decimalSeparator)
+localStorage.clear(); addTable(27, csv)
+var actionEle = document.getElementsByTagName('select')[1]
+actionEle.selectedIndex = 3 // choose 'import'
+actionEle.onchange(actionEle) // trigger change-event
 
 var testRows = getRows(1)
 var testCells = []
@@ -54,6 +51,9 @@ for(var i=0; i < testRows.length; i++) {
 }
 
 reload()
-addSumRowEveryNMonths(getTableId())
+addSumRowEveryNMonths(table.id)
+addRow(table.id, 2, 'a'+cellDeli+'b'+cellDeli+'g')
 */
+
+
 

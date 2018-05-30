@@ -3,6 +3,8 @@ var cellDeli = ';'
 var decimalSeparator = '.'
 var decimalSeparator = ','
 var rowDeli = '\n'
+var tables = []
+var table = null
 
 function main(appEle=null) {
 
@@ -18,6 +20,11 @@ function main(appEle=null) {
   tablesEle.className = 'tables'
   addTableStyle('.' + tablesEle.className + ' ')
 
+  var tablesIds = getTableIds()
+  for(var i=0; i < tablesIds.length; i++) {
+    table = new Table(tablesIds[i])
+    tables.push(table)
+  }
   showTable(getTableId())
 }
 

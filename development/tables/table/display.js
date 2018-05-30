@@ -30,7 +30,7 @@ function showVisualRow(rowPos, rowContent=null) {
   // to be part of the table.
   // `rowContent` is expected to be an array, if it's null,
   // empty cells are inserted.
-  var tableEle = document.getElementById(getTableId())
+  var tableEle = document.getElementById(table.id)
   var rowEles = tableEle.children
   var rowEle = rowEles[rowPos]
   var newRowEle = document.createElement('ul')
