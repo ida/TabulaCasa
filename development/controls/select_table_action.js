@@ -84,17 +84,30 @@ function listenSelectTableActionEles(parentEle) {
   }
 }
 function validateTableActionArgs(args) {
+  var startNr = args[2]
+
   if(args[1] != 'Table') {
-    if(isNumber(args[2]) === false) {
-      if(args[1] == 'Row') args[2] = getLastRowPos(table.id)
-      else if(args[1] == 'Column') args[2] = getLastColumnPos(table.id)
-    }
-    if(args[0] == 'add') {
-      args[2] += 1 // default to one more than last
-    }
-    else {
-      args[2] = Number(args[2]) - 1 // humanNumberToListPosition
-    }
+
+    if(isNumber(startNr) === false) {
+
+      if(args[1].indexOf('Row') != -1) {
+        startNr = getLastRowPos(table.id)
+      }
+      else if(args[1].indexOf('Column') != -1) {
+        startNr = getLastColumnPos(table.id)
+      }
+
+      startNr = Number(startNr)
+
+      if(args[0] == 'add') {
+        startNr += 1 // default to one more than last
+      }
+
+    } // startNr is NaN
+    
+    startNr -= 1 // humanNumberToListPosition
+
+    args[2] = startNr
   }
   return args
 }

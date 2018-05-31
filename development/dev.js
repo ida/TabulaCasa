@@ -33,10 +33,21 @@ var csv = '23.01.2014' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '21.09.2014' + cellDeli + 'Stewa' + cellDeli + '3'
 
 /*
-localStorage.clear(); addTable(27, csv)
 var actionEle = document.getElementsByTagName('select')[1]
+var whatEle = document.getElementsByTagName('select')[2]
+var startNr = document.getElementsByTagName('input')[0]
+actionEle.value = 'del'
+whatEle.value = 'Column'
+startNr.value = 3
+callSelectedTableAction(actionEle.parentNode)
+actionEle.value = 'add'
+whatEle.value = 'SumColumn'
+callSelectedTableAction(actionEle.parentNode)
+startNr.focus()
 actionEle.selectedIndex = 3 // choose 'import'
 actionEle.onchange(actionEle) // trigger change-event
+
+localStorage.clear(); addTable(27, csv)
 
 var testRows = getRows(1)
 var testCells = []
@@ -51,9 +62,5 @@ for(var i=0; i < testRows.length; i++) {
 }
 
 reload()
-addSumRowEveryNMonths(table.id)
-addRow(table.id, 2, 'a'+cellDeli+'b'+cellDeli+'g')
 */
-
-
 

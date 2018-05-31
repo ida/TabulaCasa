@@ -17,8 +17,16 @@ function addSumColumn(tableId, colPos) {
  
   var accumulatedSum = 0
   var nothingChangedSymbol = '-'
+console.debug(colPos)
 
   for(var i=0; i < rows.length; i++) {
+    var row = rows[i]
+    var cells = row.split(cellDeli)
+    var cell = cells[colPos-1]
+console.debug(
+  colPos,
+  cell
+)
     cellValue = rows[i].split(cellDeli)[colPos-1]
 
     if(isNumber(cellValue) === true) {
@@ -70,7 +78,7 @@ function addSumRow(tableId, rowPos, decimalSeparator='.') {
 } // addSumRow
 
 
-function addSumRowEveryNMonths(tableId, firstSumRowPos=null, months=1, dateColumnPos=0) {
+function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
 // Accumulate sums until a new month starts, add sum-row,
 // clear sum, repeat until end of table.
   var cells = null
@@ -83,6 +91,7 @@ function addSumRowEveryNMonths(tableId, firstSumRowPos=null, months=1, dateColum
     cells = row.split(cellDeli)
     value = cells[dateColumnPos]
     number = dateToNumber(value)
+//    if(i == 0) month = number.slice(4, 6)
     if(number.slice(4, 6) != month) {
       month = number.slice(4, 6)
       addSumRow(tableId, i, decimalSeparator)
