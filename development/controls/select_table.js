@@ -30,7 +30,7 @@ function listenTablesSelection(tablesSelectionEle) {
           }
         }
         // Show newly selected table:
-        showTableOnly(eve.target.children[i].value)
+        table.show()
       }
     }
   }
