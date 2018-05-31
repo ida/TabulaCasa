@@ -32,14 +32,19 @@ var csv = '23.01.2014' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '02.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
         + '21.09.2014' + cellDeli + 'Stewa' + cellDeli + '3'
 
+var actionEle = document.getElementsByTagName('select')[1]
+var actionsEle = actionEle.parentNode
+var whatEle = document.getElementsByTagName('select')[2]
+whatEle.value = 'SumRowPerMonth'
+callSelectedTableAction(actionsEle)
+reload(5555)
 /*
 var actionEle = document.getElementsByTagName('select')[1]
-var whatEle = document.getElementsByTagName('select')[2]
 var startNr = document.getElementsByTagName('input')[0]
 actionEle.value = 'del'
 whatEle.value = 'Column'
 startNr.value = 3
-callSelectedTableAction(actionEle.parentNode)
+callSelectedTableAction(actionsEle)
 actionEle.value = 'add'
 whatEle.value = 'SumColumn'
 callSelectedTableAction(actionEle.parentNode)

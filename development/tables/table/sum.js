@@ -47,7 +47,7 @@ console.debug(
 } // addSumColumn
 
 
-function addSumRow(tableId, rowPos, decimalSeparator='.') {
+function addSumRow(tableId, rowPos, startFromRowPos=0) {
 // Look for nrs in cells of same pos in other rows,
 // accumulate them and append a row with the sums.
 // CSV: '1,2,3;4,5,6' ---> '1,2,3;4,5,6;5,7,9'
@@ -56,16 +56,19 @@ function addSumRow(tableId, rowPos, decimalSeparator='.') {
   var newCell = null
   var newCells = []
   var rows = getRows(tableId)
+  var row = null
 
   if( isNaN(rowPos) === true || rowPos < 1 ) rowPos = rows.length
   if(rowPos > rows.length) rowPos = rows.length
 
-  for(var i=0; i < rowPos; i++) {
-    cells = rows[i].split(cellDeli)
+  for(var i=startFromRowPos; i < rowPos; i++) {
+    row = rows[i]
+    cells = row.split(cellDeli)
+    console.debug(cells)
     for(var j=0; j < cells.length; j++) {
       cell = cells[j]
       cell = valueToNumber(cell, decimalSeparator, true)
-      if(i == 0) newCells[j] = 0
+      if(i == startFromRowPos) newCells[j] = 0
       newCell = newCells[j]
       newCells[j] = newCell + cell
     }
@@ -81,21 +84,25 @@ function addSumRow(tableId, rowPos, decimalSeparator='.') {
 function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
 // Accumulate sums until a new month starts, add sum-row,
 // clear sum, repeat until end of table.
-  var cells = null
-  var month = 0
-  var row = null
   var rows = getRows(tableId)
-  var value = null
-  for(var i=0; i < rows.length; i++) {
+  var row = rows[0]
+  var cells = row.split(cellDeli)
+  var date = cells[dateColumnPos]
+  var date = dateToNumber(date)
+  var month = date.slice(4, 6)
+  var startFromRowPos = 0
+  for(var i=1; i < rows.length; i++) {
     row = rows[i]
     cells = row.split(cellDeli)
-    value = cells[dateColumnPos]
-    number = dateToNumber(value)
-//    if(i == 0) month = number.slice(4, 6)
-    if(number.slice(4, 6) != month) {
-      month = number.slice(4, 6)
-      addSumRow(tableId, i, decimalSeparator)
+    date = cells[dateColumnPos]
+    date = dateToNumber(date)
+    if(date.slice(4, 6) != month) {
+      month = date.slice(4, 6)
+      addSumRow(tableId, i, startFromRowPos)
+      startFromRowPos = i
     }
   }
+  addSumRow(tableId, 0)
+  addSumRow(tableId, i, startFromRowPos)
 }
 
