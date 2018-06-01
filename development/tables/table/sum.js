@@ -75,6 +75,31 @@ function addSumRow(tableId, rowPos, startFromRowPos=0) {
 } // addSumRow
 
 
+function addSumRowEveryNDays(tableId, days=7, dateColumnPos=0) {
+// Accumulate sums until a new week starts, add sum-row,
+// clear sum, repeat until end of table.
+  var diffInDays = 0
+  var rows = getRows(tableId)
+  var row = rows[0]
+  var cells = row.split(cellDeli)
+  var date = cells[dateColumnPos]
+  var startFromRowPos = 0
+  for(var i=1; i < rows.length; i++) {
+    row = rows[i]
+    cells = row.split(cellDeli)
+    var dateNew = cells[dateColumnPos]
+    diffInDays += getDateDiffInDays(date, dateNew)
+    if(diffInDays >= days) {
+      diffInDays = 0
+      addSumRow(tableId, i, startFromRowPos)
+      startFromRowPos = i
+    }
+    date = dateNew
+  }
+  addSumRow(tableId, 0)
+  addSumRow(tableId, i, startFromRowPos)
+} // addSumRowEveryNDays
+
 function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
 // Accumulate sums until a new month starts, add sum-row,
 // clear sum, repeat until end of table.
@@ -96,10 +121,10 @@ function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
   }
   addSumRow(tableId, 0)
   addSumRow(tableId, i, startFromRowPos)
-}
+} // addSumRowEveryNMonths
 
 
 function addSumRowEveryWeek(tableId, dateColumnPos=0) {
-//  console.debug('BEGIN addSumRowEveryWeek')
+  addSumRowEveryNDays(table.id)
 } // addSumRowEveryWeek
 

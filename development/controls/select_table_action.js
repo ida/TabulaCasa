@@ -5,7 +5,7 @@ function addSelectTableActionEles(parentEle) {
 
   var actionOptions = ['add', 'del', 'move', 'import', 'sort']
   var actionEle = addSelectEle(parentEle, actionOptions)
-  var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table', 'SumRowPerMonth']
+  var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table', 'SumRowPerMonth', 'SumRowPerWeek']
   var whatEle = addSelectEle(parentEle, whatOptions)
   var startNrEle = addEle(parentEle, null, 'input')
   var targetNrEle = addEle(parentEle, null, 'input')

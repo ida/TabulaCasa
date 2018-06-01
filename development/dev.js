@@ -29,65 +29,34 @@ var csv = '23.01.1977' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '21.09.2011' + cellDeli + 'Stewa' + cellDeli + '3'
 var csv = '23.01.2014' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '27.01.2014' + cellDeli + 'Chera' + cellDeli + '2.3.727,27' + rowDeli
-        + '28.01.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
-        + '12.02.2014' + cellDeli + 'Stewa' + cellDeli + '3'
+        + '03.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '04.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '05.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '06.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '07.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '08.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '09.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '10.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '11.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '12.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '13.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '14.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '15.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '16.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '17.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '18.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '12.02.2016' + cellDeli + 'Stewa' + cellDeli + '3'
 
 /*
-  180623
-- 180613
-=     10
-
-  180623
-- 180513
-=    110 --> 1 month and 10 days
-
-
-
-
+localStorage.clear(); addTable(27, csv)
 var actionEle = document.getElementsByTagName('select')[1]
 var actionsEle = actionEle.parentNode
 var whatEle = document.getElementsByTagName('select')[2]
-whatEle.value = 'SumRowPerMonth'
-callSelectedTableAction(actionsEle)
-reload(5555)
-var actionEle = document.getElementsByTagName('select')[1]
 var startNr = document.getElementsByTagName('input')[0]
-actionEle.value = 'del'
-whatEle.value = 'Column'
-startNr.value = 3
-callSelectedTableAction(actionsEle)
-actionEle.value = 'add'
-whatEle.value = 'SumColumn'
-callSelectedTableAction(actionEle.parentNode)
-startNr.focus()
-actionEle.selectedIndex = 3 // choose 'import'
 actionEle.onchange(actionEle) // trigger change-event
 
-
-var testRows = getRows(1)
-var testCells = []
-for(var i=0; i < testRows.length; i++) {
-  var testRow = testRows[i]
-  var testRowCells = testRow.split(cellDeli)
-  for(var j=0; j < testRowCells.length; j++) {
-    var testRowCell = testRowCells[j]
-    console.debug(testRowCell, prettifyNumberString(testRowCell))
- 
-  }
-}
-
-localStorage.clear(); addTable(27, csv)
-
-table.addSumRowPerMonth()
-addSumRowEveryWeek(table.id)
 */
-
-var dateOld = '04/18/2017'
-var date = '05/03/2018'
-var days = getDateDiffInDays(dateOld, date)
-console.debug(days)
-var days = getDateDiffInDays(date, dateOld)
-console.debug(days)
-
-reload(5555)
+addSumRowEveryWeek(table.id)
+reload(
+55555)
 

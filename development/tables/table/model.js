@@ -15,6 +15,9 @@ function Table(id) {
   this.addSumRowPerMonth = function() {
     addSumRowEveryNMonths(this.id)
   }
+  this.addSumRowPerWeek = function() {
+    addSumRowEveryNDays(this.id)
+  }
   this.addTable = function(tableId) {
     table = new Table(tableId)
     addTable(tableId)
