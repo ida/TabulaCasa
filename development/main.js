@@ -8,6 +8,13 @@ var table = null
 
 function main(appEle=null) {
 
+  var tablesIds = getTableIds()
+  for(var i=0; i < tablesIds.length; i++) {
+    table = new Table(tablesIds[i])
+    tables.push(table)
+  }
+  table = tables[0]
+
   appEle = addApp(appEle)
   addAppStyles()
 
@@ -20,12 +27,8 @@ function main(appEle=null) {
   tablesEle.className = 'tables'
   addTableStyle('.' + tablesEle.className + ' ')
 
-  var tablesIds = getTableIds()
-  for(var i=0; i < tablesIds.length; i++) {
-    table = new Table(tablesIds[i])
-    tables.push(table)
-  }
-  showTable(getTableId())
+  table.show()
+
 }
 
 main()

@@ -15,15 +15,6 @@ function showEle(ele) {
 
 // NUMBERS
 
-function dateToNumber(string) {
-  // Expects 'DD.MM.YYYY' or 'MM/DD/YYYY', returns 'YYYYMMD'.
-  if(string.indexOf('/') > -1) {
-    string = string.slice(3, 5) + '.'
-           + string.slice(0, 2) + '.'
-           + string.slice(6, 10)
-  }
-  return string.split('.').reverse().join('')
-}
 function decimalCommaToDot(value) {
   value = value.replace(/,/, '.')
   return value
@@ -54,7 +45,7 @@ function prettifyNumber(number) {
   else if(number.split('.')[1].length < 2) {
     number = number + '0'
   }
-  // Has more than 2 chara after dot:
+  // Has more than 2 chars after dot:
   else if(number.split('.')[1].length > 2) {
     number = number.slice(0, number.indexOf('.') + 3)
   }

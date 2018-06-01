@@ -1,24 +1,38 @@
 function addSelectTableEle(controlsEle) {
+
   var html = genTablesSelectionHtml()
+
   var controlEle = addEle(controlsEle, html, 'span')
+
   controlEle.className = 'tablesSelection'
+
 }
-function genTablesSelectionHtml(key=null) {
-  //var html = 'Table: <select>'
+function genTablesSelectionHtml(selectedTableId=null) {
+
   var html = '<select>'
-  var keys = getTableIds()
-  for(var i=0; i < keys.length; i++) {
+
+  for(var i=0; i < tables.length; i++) {
+
     html += '<option'
-    if( (key === null && i==0) || (key !== null && keys[i] == key) ) {
+
+    if(
+        (selectedTableId === null && i==0)
+      ||
+        (selectedTableId !== null && tables[i].id == selectedTableId)
+      ) {
+
       html += ' selected'
     }
-    html += '>' + keys[i] + '</option>'
+
+    html += '>' + tables[i].id + '</option>'
   }
+
   html += '</select>'
+
   return html
+
 }
 function listenTablesSelection(tablesSelectionEle) {
-  var tableIds = getTableIds()
   var tablesSelectEle = tablesSelectionEle.children[0]
   tablesSelectEle.onchange = function(eve) {
     for(var i=0; i < eve.target.children.length; i++) {

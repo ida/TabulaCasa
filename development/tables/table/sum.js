@@ -17,16 +17,11 @@ function addSumColumn(tableId, colPos) {
  
   var accumulatedSum = 0
   var nothingChangedSymbol = '-'
-console.debug(colPos)
 
   for(var i=0; i < rows.length; i++) {
     var row = rows[i]
     var cells = row.split(cellDeli)
     var cell = cells[colPos-1]
-console.debug(
-  colPos,
-  cell
-)
     cellValue = rows[i].split(cellDeli)[colPos-1]
 
     if(isNumber(cellValue) === true) {
@@ -87,15 +82,13 @@ function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
   var rows = getRows(tableId)
   var row = rows[0]
   var cells = row.split(cellDeli)
-  var date = cells[dateColumnPos]
-  var date = dateToNumber(date)
+  var date = dateToNumber(cells[dateColumnPos])
   var month = date.slice(4, 6)
   var startFromRowPos = 0
   for(var i=1; i < rows.length; i++) {
     row = rows[i]
     cells = row.split(cellDeli)
-    date = cells[dateColumnPos]
-    date = dateToNumber(date)
+    date = dateToNumber(cells[dateColumnPos])
     if(date.slice(4, 6) != month) {
       month = date.slice(4, 6)
       addSumRow(tableId, i, startFromRowPos)
@@ -105,4 +98,8 @@ function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
   addSumRow(tableId, 0)
   addSumRow(tableId, i, startFromRowPos)
 }
+
+
+function addSumRowEveryWeek(tableId, dateColumnPos=0) {
+} // addSumRowEveryWeek
 

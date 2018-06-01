@@ -1,5 +1,6 @@
 ../dependencies/style_to_sheet.js
 ./helpers/misc.js
+./helpers/date.js
 ./helpers/dependent_field_actions.js
 ./helpers/upload.js
 ./helpers/select_helpers.js
