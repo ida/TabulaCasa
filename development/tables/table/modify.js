@@ -153,9 +153,7 @@ function getTable(key) {
   return localStorage.getItem(key)
 }
 function importTable(key, pos) {
-  //EGG
   if(key != pos) addTable(pos)
-  console.debug(table)
 }
 function keyExists(key) {
   keys = getTableIds()

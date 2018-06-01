@@ -89,7 +89,6 @@ function validateTableActionArgs(args) {
   if(args[1] != 'Table') {
 
     if(isNumber(startNr) === false) {
-console.debug(startNr)
 
       if(args[1].indexOf('Row') != -1) {
         startNr = getLastRowPos(table.id)

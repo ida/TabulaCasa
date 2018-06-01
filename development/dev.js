@@ -28,11 +28,22 @@ var csv = '23.01.1977' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
         + '02/25/2018' + cellDeli + 'Linde' + cellDeli + '6i' + rowDeli
         + '21.09.2011' + cellDeli + 'Stewa' + cellDeli + '3'
 var csv = '23.01.2014' + cellDeli + 'Ebkes' + cellDeli + '1' + rowDeli
-        + '28.05.2014' + cellDeli + 'Chera' + cellDeli + '2.3.727,27' + rowDeli
-        + '02.02.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
-        + '21.09.2014' + cellDeli + 'Stewa' + cellDeli + '3'
+        + '27.01.2014' + cellDeli + 'Chera' + cellDeli + '2.3.727,27' + rowDeli
+        + '28.01.2014' + cellDeli + 'Linde' + cellDeli + '6' + rowDeli
+        + '12.02.2014' + cellDeli + 'Stewa' + cellDeli + '3'
 
 /*
+  180623
+- 180613
+=     10
+
+  180623
+- 180513
+=    110 --> 1 month and 10 days
+
+
+
+
 var actionEle = document.getElementsByTagName('select')[1]
 var actionsEle = actionEle.parentNode
 var whatEle = document.getElementsByTagName('select')[2]
@@ -52,7 +63,6 @@ startNr.focus()
 actionEle.selectedIndex = 3 // choose 'import'
 actionEle.onchange(actionEle) // trigger change-event
 
-localStorage.clear(); addTable(27, csv)
 
 var testRows = getRows(1)
 var testCells = []
@@ -66,6 +76,18 @@ for(var i=0; i < testRows.length; i++) {
   }
 }
 
-reload()
+localStorage.clear(); addTable(27, csv)
+
+table.addSumRowPerMonth()
+addSumRowEveryWeek(table.id)
 */
+
+var dateOld = '04/18/2017'
+var date = '05/03/2018'
+var days = getDateDiffInDays(dateOld, date)
+console.debug(days)
+var days = getDateDiffInDays(date, dateOld)
+console.debug(days)
+
+reload(5555)
 

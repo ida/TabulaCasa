@@ -11,7 +11,7 @@ function sortColumnByDate(tableId, colPos) {
 
     // Get current cell:
     cell = getCellOfRows(rows, rowPos, colPos)
-    cell = dateToNumber(cell)
+    cell = dateToNumberString(cell)
 
     // Omit comparison for first row:
     if(rowPos != 0) {
@@ -23,7 +23,7 @@ function sortColumnByDate(tableId, colPos) {
 
         // Get previous cell:
         cellPrevious = getCellOfRows(rows, rowPreviousPos, colPos)
-        cellPrevious = dateToNumber(cellPrevious)
+        cellPrevious = dateToNumberString(cellPrevious)
 
         // Previous is lesser than this cell:
         if(cell <= cellPrevious) {
