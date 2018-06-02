@@ -4,6 +4,15 @@ function dateIsOlderThanOtherDate(aDate, anotherDate) {
   return anotherDate - aDate > 0
 }
 
+function dateNumberToDate(dateNr) {
+  // Expects 'YYYYMMDD', returns 'DD.MM.YYYY'.
+  var string = String(dateNr)
+  string = string.slice(6)    + '.'
+         + string.slice(4, 6) + '.'
+         + string.slice(0, 4)
+  return string
+}
+
 function dateToNumberString(string) {
   // Expects 'DD.MM.YYYY' or 'MM/DD/YYYY', returns 'YYYYMMDD'.
   if(string.indexOf('/') > -1) {
@@ -12,6 +21,30 @@ function dateToNumberString(string) {
            + string.slice(6, 10)
   }
   return string.split('.').reverse().join('')
+}
+
+function genDates(startDate, days) {
+  var dateNumberString = dateToNumberString(startDate)
+  var dateNumber = Number(dateNumberString)
+  var daysLeft = getDaysUntilEndOfMonth(dateNumberString)
+  var dates = [startDate]
+  var date = null
+  while(days > 0) {
+    if(daysLeft == 0) { // month's over
+      if(String(dateNumber).slice(4, 6) == 12) { // year's over
+        dateNumber -= 1100
+        dateNumber += 10000
+      }
+      dateNumber += 100
+      dateNumber = parseInt(dateNumber/100) * 100
+    }
+    dateNumber += 1
+    date = dateNumberToDate(dateNumber)
+    dates.push(date)
+    daysLeft -= 1
+    days -= 1
+  }
+  return dates
 }
 
 function getDayNrOfDateNrStr(dateNrStr) {
