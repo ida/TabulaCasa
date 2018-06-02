@@ -31,13 +31,13 @@ function genDates(startDate, days) {
   var date = null
   while(days > 0) {
     if(daysLeft == 0) { // month's over
-    dateNumber += 100
-    dateNumber = parseInt(dateNumber/100) * 100
-    }
       if(String(dateNumber).slice(4, 6) == 12) { // year's over
-        console.debug("year over")
+        dateNumber -= 1100
         dateNumber += 10000
       }
+      dateNumber += 100
+      dateNumber = parseInt(dateNumber/100) * 100
+    }
     dateNumber += 1
     date = dateNumberToDate(dateNumber)
     dates.push(date)

@@ -33,7 +33,7 @@ function addCalendarColumnYear(year=1970, columnPos=0) {
       date += '.'
 
       if(months < 10) date += '0'
-      
+
       date += String(months) + '.' + String(year)
 
       table.addRow(day-1)
