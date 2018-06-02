@@ -16,7 +16,9 @@
 ./tables/table/sort.js
 ./tables/table/style.js
 ./tables/table/sum.js
+./tables/table/calendar.js
 ./style.js
 tables/table/model.js
 tables/table/view.js
 ./main.js
+dev.js
