@@ -1,5 +1,6 @@
 function Table(id) {
   this.id = id
+  this.ele = null
   this.addColumn = function(columnPos) {
     addColumn(this.id, columnPos)
   }
@@ -19,7 +20,6 @@ function Table(id) {
     addSumRowEveryNDays(this.id)
   }
   this.addTable = function(tableId) {
-    table = new Table(tableId)
     addTable(tableId)
   }
   this.delColumn = function(columnPos) {

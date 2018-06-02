@@ -62,6 +62,7 @@ function showTable(key) {
   var tableEle = document.getElementById(key)
   if(tableEle === null || tableEle === undefined) {
     tableEle = addEle(tablesEle)
+    table.ele = tableEle
     if(key !== null) tableEle.id = key
   }
   tableEle.innerHTML = genTableHtml(key)

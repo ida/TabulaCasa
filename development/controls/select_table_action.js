@@ -66,30 +66,40 @@ function addCustomUploadButton(parentEle) {
   return wrapper
 }
 function doAfterFileUpload(csv) {
-  addTable(table.id, csv)
+  setTable(table.id, csv)
 }
-function callSelectedTableAction(parentEle) {
-  var args = []
-  for(var i=0; i < parentEle.children.length; i++) {
-    args.push(parentEle.children[i].value)
+function callSelectedTableAction(args) {
+  args = modulateTableActionArgs(args)
+  if(table === undefined) {
+    addTable(args[2]) // also sets var 'table'
+    // Remove text-node "There are no tables, yet":
+    table.ele.parentNode.firstChild.remove()
   }
-  args = validateTableActionArgs(args)
-  table[args.shift() + args.shift()](...args)
+  else table[args.shift() + args.shift()](...args)
+}
+function getActionValues(actionsEle) {
+  var args = []
+  for(var i=0; i < actionsEle.children.length; i++) {
+    args.push(actionsEle.children[i].value)
+  }
+  return args
 }
 function listenSelectTableActionEles(parentEle) {
   parentEle.onkeydown = function(eve) {
     if(eve.keyCode == 13) { // is enter/return-key
-      callSelectedTableAction(parentEle)
+      var args = getActionValues(parentEle)
+      if(validateTableActionArgs(args) === true) callSelectedTableAction(args)
     }
   }
 }
-function validateTableActionArgs(args) {
+function modulateTableActionArgs(args) {
   var startNr = args[2]
 
   if(args[1] != 'Table') {
 
     if(isNumber(startNr) === false) {
 
+      // Default to last pos:
       if(args[1].indexOf('Row') != -1) {
         startNr = getLastRowPos(table.id)
       }
@@ -99,16 +109,29 @@ function validateTableActionArgs(args) {
 
       startNr = Number(startNr)
 
-      if(args[0] == 'add') {
-        startNr += 1 // default to one more than last
-      }
-
-    } // startNr is NaN
-    
-    startNr -= 1 // humanNumberToListPosition
+      // For add-actions default to one more than last pos:
+      if(args[0] == 'add') startNr += 1
+    }
+    // Transform entered human-number to list-position:
+    startNr -= 1
 
     args[2] = startNr
   }
   return args
+}
+function validateTableActionArgs(args) {
+  if(args[1] == 'Table') {
+    var tableId = args[2]
+    if(tableId == '') {
+      addInfo('Please enter a name for the table.')
+      return false
+    }
+    else if(tableIdExists(tableId)) {
+      addInfo('A table named "' + args[2] + '" exists already.')
+      return false
+    }
+    return true
+  }
+  return true
 }
 

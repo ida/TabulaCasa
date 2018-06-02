@@ -25,7 +25,7 @@ function addColumn(key, colPos, colCells=null, displayTable=true) {
     }
   }
   csv = rows.join(rowDeli)
-  addTable(key, csv, displayTable)
+  setTable(key, csv, displayTable)
 }
 function addRow(key, rowPos, vals='') {
   var csv = null
@@ -47,12 +47,16 @@ function addRow(key, rowPos, vals='') {
     rows.splice(rowPos, 0, vals)
   }
   csv = rows.join(rowDeli)
-  addTable(key, csv)
+  setTable(key, csv)
 }
 function addTable(key, csv='', displayTable=true) {
   table = new Table(key)
+  tables.push(table)
+  setTable(key, csv, displayTable)
+}
+function setTable(key, csv='', displayTable=true) {
   localStorage.setItem(key, csv)
-  if(displayTable==true) {
+  if(displayTable === true) {
     showTableOnly(key)
     updateTablesSelection(key)
   }
@@ -69,13 +73,13 @@ function delColumn(key, colPos) {
     }
     csv = rows.join(rowDeli)
   }
-  addTable(key, csv)
+  setTable(key, csv)
 }
 function delRow(key, rowPos) {
   var rows = getRows(key)
   rows.splice(rowPos, 1) // at rowPos remove 1 item
   var csv = rows.join(rowDeli)
-  addTable(key, csv, true)
+  setTable(key, csv, true)
 }
 function delTable(key) {
   if(keyExists(key)) {
@@ -172,7 +176,7 @@ function moveColumn(key, rowPos, targetPos) {
     rows[i] = row.join(cellDeli)
   }
   var csv = rows.join(rowDeli)
-  addTable(key, csv)
+  setTable(key, csv)
 }
 function moveItem(array, itemPos, targetPos) {
   var item = array.splice(itemPos, 1) // at itemPos remove 1 item
@@ -189,7 +193,7 @@ function moveRow(key, rowPos, targetPos) {
   // At targetPos add item:
   rows.splice(targetPos, 0, row)
   var csv = rows.join(rowDeli)
-  addTable(key, csv)
+  setTable(key, csv)
 }
 function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
 // Overwrite existing cell or add new cell.
@@ -220,11 +224,11 @@ function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
   }  // EO for each row.
   // Set new rows:
   var csv = rows.join(rowDeli)
-  addTable(key, csv, displayTable)
+  setTable(key, csv, displayTable)
 }
 function tableIdExists(tableId) {
   var tableIds = getTableIds()
-  for(var i=0; i < items.length; i++) {
+  for(var i=0; i < tableIdExists.length; i++) {
     if(tableId == tableIds[i]) return true
   }
   return false

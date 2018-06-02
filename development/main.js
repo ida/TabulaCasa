@@ -14,7 +14,6 @@ function main(appEle=null) {
     tables.push(table)
   }
   table = tables[0]
-
   appEle = addApp(appEle)
   addAppStyles()
 
@@ -27,8 +26,9 @@ function main(appEle=null) {
   tablesEle.className = 'tables'
   addTableStyle('.' + tablesEle.className + ' ')
 
-  table.show()
+  if(table === undefined) tablesEle.innerHTML = 'No tables there, yet.'
+  else table.show()
 
 }
 
-main()
+main(document.body)

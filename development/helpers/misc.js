@@ -13,6 +13,20 @@ function showEle(ele) {
   ele.style.display = 'inline-block'
 }
 
+// USER-MESSAGE
+
+function addInfo(msg) {
+  var parentEle = table.ele.parentNode.parentNode
+  var msgEle = addEle(parentEle, msg)
+  parentEle.insertBefore(msgEle, parentEle.firstChild)
+  msgEle.style.position = 'absolute'
+  var closeMsgEle = addEle(msgEle, 'x', 'span')
+  closeMsgEle.tabIndex = 0
+  closeMsgEle.onclick = function() msgEle.remove()
+  closeMsgEle.onkeydown = function(eve) { if(eve.keyCode == 13) eve.target.click() }
+  setTimeout(function() { closeMsgEle.click() }, 10000)
+}
+
 // NUMBERS
 
 function decimalCommaToDot(value) {
