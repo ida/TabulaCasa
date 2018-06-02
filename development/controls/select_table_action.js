@@ -126,7 +126,7 @@ function validateTableActionArgs(args) {
       addInfo('Please enter a name for the table.')
       return false
     }
-    else if(tableIdExists(tableId)) {
+    else if(tableIdExists(tableId) && args[0] == 'add') {
       addInfo('A table named "' + args[2] + '" exists already.')
       return false
     }
