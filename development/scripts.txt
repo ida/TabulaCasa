@@ -1,5 +1,6 @@
 ../dependencies/style_to_sheet.js
 ./helpers/misc.js
+./helpers/numbers.js
 ./helpers/date.js
 ./helpers/dependent_field_actions.js
 ./helpers/upload.js
@@ -21,4 +22,3 @@
 tables/table/model.js
 tables/table/view.js
 ./main.js
-dev.js
