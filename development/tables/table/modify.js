@@ -55,7 +55,7 @@ function addTable(key, csv='', displayTable=true) {
   tables.push(table)
   setTable(key, csv, displayTable)
 }
-function delColumn(key, colPos) {
+function delColumn(key, colPos, displayTable=true) {
   var csv = ''
   var rows = getRows(key)
   // Is not last col (remove last col = empty str for csv):
@@ -67,13 +67,13 @@ function delColumn(key, colPos) {
     }
     csv = rows.join(rowSeparator)
   }
-  setTable(key, csv)
+  setTable(key, csv, displayTable)
 }
-function delRow(key, rowPos) {
+function delRow(key, rowPos, displayTable=true) {
   var rows = getRows(key)
   rows.splice(rowPos, 1) // at rowPos remove 1 item
   var csv = rows.join(rowSeparator)
-  setTable(key, csv, true)
+  setTable(key, csv, displayTable)
 }
 function delTable(key) {
   if(keyExists(key)) {
@@ -171,7 +171,7 @@ function keyExists(key) {
   }
   return false
 }
-function moveColumn(key, rowPos, targetPos) {
+function moveColumn(key, rowPos, targetPos, displayTable=true) {
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
     var row = rows[i].split(cellSeparator)
@@ -179,15 +179,14 @@ function moveColumn(key, rowPos, targetPos) {
     rows[i] = row.join(cellSeparator)
   }
   var csv = rows.join(rowSeparator)
-  setTable(key, csv)
+  setTable(key, csv, displayTable)
 }
 function moveItem(array, itemPos, targetPos) {
   var item = array.splice(itemPos, 1) // at itemPos remove 1 item
   array.splice(targetPos, 0, item) // at targetPos add item
   return array
 }
-function moveRow(key, rowPos, targetPos) {
-//dev(rowPos, targetPos)
+function moveRow(key, rowPos, targetPos, displayTable=true) {
   var rows = getRows(key)
   for(var i=0; i < rows.length; i++) {
   }
@@ -196,7 +195,7 @@ function moveRow(key, rowPos, targetPos) {
   // At targetPos add item:
   rows.splice(targetPos, 0, row)
   var csv = rows.join(rowSeparator)
-  setTable(key, csv)
+  setTable(key, csv, displayTable)
 }
 function setCell(key, rowPos, cellPos, cellContent='', displayTable=false) {
 // Overwrite existing cell or add new cell.
@@ -244,7 +243,9 @@ function setTable(key, csv='', displayTable=false) {
   }
 }
 function visualRowPosToDataRowPos(tableId, rowPos) {
-// The diplayed table may contain non-data-rows(haveClass sum), subtract those of pos.
+// The displayed table may contain non-data-rows
+// (for now that is the case, if a row has 'sum' in the class-attr),
+// subtract those of pos.
   var newRowPos = rowPos
   var tableEle = document.getElementById(tableId)
   var rowEles = tableEle.children
