@@ -12,7 +12,7 @@ function genTableHtml(key) {
     if(rows != '') {
       for(var i=0; i < rows.length; i++) {
         html += '<ul>'
-        cells = rows[i].split(cellDeli)
+        cells = rows[i].split(cellSeparator)
         for(var j=0; j < cells.length; j++) {
           html += '<li tabindex="0">' + cells[j] + '</li>'
         }

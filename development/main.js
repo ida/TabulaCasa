@@ -1,8 +1,8 @@
-var cellDeli = ','
-var cellDeli = ';'
+var cellSeparator = ','
+var cellSeparator = ';'
 var decimalSeparator = ','
 var decimalSeparator = '.'
-var rowDeli = '\n'
+var rowSeparator = '\n'
 var tables = []
 var table = null
 

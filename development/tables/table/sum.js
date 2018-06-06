@@ -19,7 +19,7 @@ function addSumColumn(tableId, colPos) {
   var nothingChangedSymbol = '-'
 
   for(var i=0; i < rows.length; i++) {
-    cellValue = rows[i].split(cellDeli)[colPos-1]
+    cellValue = rows[i].split(cellSeparator)[colPos-1]
 
     if(isNumber(cellValue) === true) {
       accumulatedSum += valueToNumber(cellValue, true) // true is for treating non-nrs as 0
@@ -54,7 +54,7 @@ function addSumRow(tableId, rowPos, startFromRowPos=0) {
 
   for(var i=startFromRowPos; i < rowPos; i++) {
     row = rows[i]
-    cells = row.split(cellDeli)
+    cells = row.split(cellSeparator)
     for(var j=0; j < cells.length; j++) {
       cell = cells[j]
       cell = valueToNumber(cell, true)
@@ -75,12 +75,12 @@ function addVisualRowEveryNDays(tableId, days=7, dateColumnPos=0) {
   var diffInDays = 0
   var rows = getRows(tableId)
   var row = rows[0]
-  var cells = row.split(cellDeli)
+  var cells = row.split(cellSeparator)
   var date = cells[dateColumnPos]
   var startFromRowPos = 0
   for(var i=1; i < rows.length; i++) {
     row = rows[i]
-    cells = row.split(cellDeli)
+    cells = row.split(cellSeparator)
     var dateNew = cells[dateColumnPos]
     diffInDays += getDateDiffInDays(date, dateNew)
     if(diffInDays >= days) {
@@ -99,12 +99,12 @@ function addSumRowEveryNDays(tableId, days=7, dateColumnPos=0) {
   var diffInDays = 0
   var rows = getRows(tableId)
   var row = rows[0]
-  var cells = row.split(cellDeli)
+  var cells = row.split(cellSeparator)
   var date = cells[dateColumnPos]
   var startFromRowPos = 0
   for(var i=1; i < rows.length; i++) {
     row = rows[i]
-    cells = row.split(cellDeli)
+    cells = row.split(cellSeparator)
     var dateNew = cells[dateColumnPos]
     diffInDays += getDateDiffInDays(date, dateNew)
     if(diffInDays >= days) {
@@ -124,13 +124,13 @@ function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
 // clear sum, repeat until end of table.
   var rows = getRows(tableId)
   var row = rows[0]
-  var cells = row.split(cellDeli)
+  var cells = row.split(cellSeparator)
   var date = dateToNumberString(cells[dateColumnPos])
   var month = date.slice(4, 6)
   var startFromRowPos = 0
   for(var i=1; i < rows.length; i++) {
     row = rows[i]
-    cells = row.split(cellDeli)
+    cells = row.split(cellSeparator)
     date = dateToNumberString(cells[dateColumnPos])
     if(date.slice(4, 6) != month) {
       month = date.slice(4, 6)
@@ -147,7 +147,7 @@ function getRowPosOfDateMetOrPassed(tableId, passDate, startRowPos=0, dateColumn
 
   var rows = getRows(tableId)
   for(var startRowPos=0; startRowPos < rows.length; startRowPos++) {
-    var date = rows[startRowPos].split(cellDeli)[dateColumnPos]
+    var date = rows[startRowPos].split(cellSeparator)[dateColumnPos]
     if(dateIsOlderThanOtherDate(passDate, date) === true) {
       return startRowPos
     }
@@ -164,7 +164,7 @@ function getColumnSum(tableId, colPos, startRowPos=0, endRowPos=null) {
   var rows = getRows(tableId)
   if(endRowPos === null) endRowPos = rows.length-1
   for(var i=startRowPos; i < endRowPos+1; i++) {
-    var cell = rows[i].split(cellDeli)[colPos]
+    var cell = rows[i].split(cellSeparator)[colPos]
     var nr = valueToNumber(cell)
     sum += nr
   }
