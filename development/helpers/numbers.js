@@ -49,7 +49,7 @@ function prettifyNumbers(numbers) {
 
   return numbers
 
-} // prettifyNumberStrings
+} // prettifyNumbers
 
 
 function thousandifyNumberString(numberStr) {
@@ -73,19 +73,15 @@ function thousandifyNumberString(numberStr) {
 } // thousandifyNumberString
 
 
-function valueToNumber(value, decimalSeparator='.', NanEqualsZero=false) {
-  // If value is not a number, and NanEqualsZero===true, return zero.
-  // Distinct whether a comma is the decimal-separator
-  // or a dot, same for visual thousands-indicator.
-  // Convert decimal-comma to decimal-dot, strip thousands-indicator.
+function valueToNumber(value, NanEqualsZero=false) {
+  // If value is not a number and NanEqualsZero is true, return zero.
+  // `decimalSeparator` is expected to be present as a glob-var.
   var thousandsSeparator = ','
   if(decimalSeparator == ',') {
     thousandsSeparator = '.'
   }
   value = stripThousandsSeparator(value, thousandsSeparator)
-  if(decimalSeparator == ',') {
-    value = decimalCommaToDot(value)
-  }
+  if(decimalSeparator == ',') value = decimalCommaToDot(value)
   value = Number(value)
   if(NanEqualsZero === true && isNaN(value) === true) value = Number(0)
   return value

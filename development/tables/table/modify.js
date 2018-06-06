@@ -27,7 +27,7 @@ function addColumn(key, colPos, colCells=null, displayTable=true) {
   csv = rows.join(rowDeli)
   setTable(key, csv, displayTable)
 }
-function addRow(key, rowPos, vals='') {
+function addRow(key, rowPos, vals='', displayTable=true) {
   var csv = null
   var rows = getRows(key)
   // No rows there, yet:
@@ -36,7 +36,8 @@ function addRow(key, rowPos, vals='') {
   }
   // Some rows exist already: 
   else {
-    vals = vals.split(cellDeli)
+    if(vals.indexOf(cellDeli) != -1) vals = vals.split(cellDeli)
+    else vals = [vals]
     while(vals.length < rows[0].split(cellDeli).length) {
       vals.push('')
     }
@@ -47,19 +48,12 @@ function addRow(key, rowPos, vals='') {
     rows.splice(rowPos, 0, vals)
   }
   csv = rows.join(rowDeli)
-  setTable(key, csv)
+  setTable(key, csv, displayTable)
 }
 function addTable(key, csv='', displayTable=true) {
   table = new Table(key)
   tables.push(table)
   setTable(key, csv, displayTable)
-}
-function setTable(key, csv='', displayTable=true) {
-  localStorage.setItem(key, csv)
-  if(displayTable === true) {
-    showTableOnly(key)
-    updateTablesSelection(key)
-  }
 }
 function delColumn(key, colPos) {
   var csv = ''
@@ -117,15 +111,24 @@ function delTable(key) {
     } // for each button
   } // key exists
 }
-function getCell(rowPos, colPos) {
-  var rows = getRows(table.id)
+function genEmptyRowArray(tableId) {
+  var row = []
+  var cellsAmount = getLastColumnPos(tableId)
+  console.debug(cellsAmount)
+  for(var i=0; i < cellsAmount; i++) {
+    row.push('')
+  }
+  return row
+}
+function getCell(tableId, rowPos, colPos) {
+  var rows = getRows(tableId)
   return getCellOfRows(rows, rowPos, colPos)
 }
 function getCellOfRows(rows, rowPos, colPos) {
   return cell = rows[rowPos].split(cellDeli)[colPos]
 }
 function getLastColumnPos(tableId) {
-  return getRows(tableId)[0].length-1
+  return getRows(tableId)[0].split(cellDeli).length-1
 }
 function getLastRowPos(tableId) {
   return getRows(tableId).length-1
@@ -232,6 +235,13 @@ function tableIdExists(tableId) {
     if(tableId == tableIds[i]) return true
   }
   return false
+}
+function setTable(key, csv='', displayTable=false) {
+  localStorage.setItem(key, csv)
+  if(displayTable === true) {
+    showTableOnly(key)
+    updateTablesSelection(key)
+  }
 }
 function visualRowPosToDataRowPos(tableId, rowPos) {
 // The diplayed table may contain non-data-rows(haveClass sum), subtract those of pos.

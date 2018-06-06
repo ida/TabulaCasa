@@ -25,12 +25,12 @@ function genTableHtml(key) {
   }
   return html
 }
-function showVisualRow(rowPos, rowContent=null) {
+function showVisualRow(tableId, rowPos, rowContent=null) {
   // A visual row's content is not stored and not regarded
   // to be part of the table.
   // `rowContent` is expected to be an array, if it's null,
   // empty cells are inserted.
-  var tableEle = document.getElementById(table.id)
+  var tableEle = document.getElementById(tableId)
   var rowEles = tableEle.children
   var rowEle = rowEles[rowPos]
   var newRowEle = document.createElement('ul')

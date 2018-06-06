@@ -1,3 +1,12 @@
+function addNDaysToDate(date, days) {
+  var dates = genDates(date, days)
+  return dates[dates.length-1]
+}
+function dateEqualsOtherDate(aDate, anotherDate) {
+  anotherDate = Number(dateToNumberString(anotherDate))
+  aDate = Number(dateToNumberString(aDate))
+  return anotherDate - aDate == 0
+}
 function dateIsOlderThanOtherDate(aDate, anotherDate) {
   anotherDate = Number(dateToNumberString(anotherDate))
   aDate = Number(dateToNumberString(aDate))
@@ -44,6 +53,7 @@ function genDates(startDate, days) {
     daysLeft -= 1
     days -= 1
   }
+//  console.debug(dates.length,dates)
   return dates
 }
 

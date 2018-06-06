@@ -19,13 +19,10 @@ function addSumColumn(tableId, colPos) {
   var nothingChangedSymbol = '-'
 
   for(var i=0; i < rows.length; i++) {
-    var row = rows[i]
-    var cells = row.split(cellDeli)
-    var cell = cells[colPos-1]
     cellValue = rows[i].split(cellDeli)[colPos-1]
 
     if(isNumber(cellValue) === true) {
-      accumulatedSum += valueToNumber(cellValue, '.', true)
+      accumulatedSum += valueToNumber(cellValue, true) // true is for treating non-nrs as 0
       newCells.push(accumulatedSum)
     }
     else {
@@ -38,8 +35,7 @@ function addSumColumn(tableId, colPos) {
 
   addColumn(tableId, colPos, newCells)
 
-
-} // addSumColumn
+}
 
 
 function addSumRow(tableId, rowPos, startFromRowPos=0) {
@@ -61,7 +57,7 @@ function addSumRow(tableId, rowPos, startFromRowPos=0) {
     cells = row.split(cellDeli)
     for(var j=0; j < cells.length; j++) {
       cell = cells[j]
-      cell = valueToNumber(cell, decimalSeparator, true)
+      cell = valueToNumber(cell, true)
       if(i == startFromRowPos) newCells[j] = 0
       newCell = newCells[j]
       newCells[j] = newCell + cell
@@ -70,9 +66,31 @@ function addSumRow(tableId, rowPos, startFromRowPos=0) {
 
   rowPos = dataRowPosToVisualRowPos(rowPos)
   newCells = prettifyNumbers(newCells)
-  showVisualRow(rowPos, newCells)
+  showVisualRow(tableId, rowPos, newCells)
 
-} // addSumRow
+}
+
+
+function addVisualRowEveryNDays(tableId, days=7, dateColumnPos=0) {
+  var diffInDays = 0
+  var rows = getRows(tableId)
+  var row = rows[0]
+  var cells = row.split(cellDeli)
+  var date = cells[dateColumnPos]
+  var startFromRowPos = 0
+  for(var i=1; i < rows.length; i++) {
+    row = rows[i]
+    cells = row.split(cellDeli)
+    var dateNew = cells[dateColumnPos]
+    diffInDays += getDateDiffInDays(date, dateNew)
+    if(diffInDays >= days) {
+      diffInDays = 0
+      showVisualRow(tableId, i, startFromRowPos)
+      startFromRowPos = i
+    }
+    date = dateNew
+  }
+}
 
 
 function addSumRowEveryNDays(tableId, days=7, dateColumnPos=0) {
@@ -98,7 +116,8 @@ function addSumRowEveryNDays(tableId, days=7, dateColumnPos=0) {
   }
   addSumRow(tableId, 0)
   addSumRow(tableId, i, startFromRowPos)
-} // addSumRowEveryNDays
+}
+
 
 function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
 // Accumulate sums until a new month starts, add sum-row,
@@ -121,10 +140,75 @@ function addSumRowEveryNMonths(tableId, months=1, dateColumnPos=0) {
   }
   addSumRow(tableId, 0)
   addSumRow(tableId, i, startFromRowPos)
-} // addSumRowEveryNMonths
+}
 
 
-function addSumRowEveryWeek(tableId, dateColumnPos=0) {
-  addSumRowEveryNDays(table.id)
-} // addSumRowEveryWeek
+function getRowPosOfDateMetOrPassed(tableId, passDate, startRowPos=0, dateColumnPos=0) {
+
+  var rows = getRows(tableId)
+  for(var startRowPos=0; startRowPos < rows.length; startRowPos++) {
+    var date = rows[startRowPos].split(cellDeli)[dateColumnPos]
+    if(dateIsOlderThanOtherDate(passDate, date) === true) {
+      return startRowPos
+    }
+    if(dateEqualsOtherDate(passDate, date) === true) {
+      return startRowPos + 1
+    }
+  }
+  return startRowPos
+}
+
+
+function getColumnSum(tableId, colPos, startRowPos=0, endRowPos=null) {
+  var sum = 0
+  var rows = getRows(tableId)
+  if(endRowPos === null) endRowPos = rows.length-1
+  for(var i=startRowPos; i < endRowPos+1; i++) {
+    var cell = rows[i].split(cellDeli)[colPos]
+    var nr = valueToNumber(cell)
+    sum += nr
+  }
+  return sum
+}
+
+
+function addSumRowPerWeek(tableId, dateColumnPos=0, sumColumnPos=null) {
+
+  if(sumColumnPos === null) sumColumnPos = getLastColumnPos(tableId)
+
+  var rowPosStart = 0
+  var rowPosEnd = rowPosStart-1 // must be one less than rowPos to start with
+  var dateStart = getCell(tableId, rowPosStart, dateColumnPos)
+  var dateEnd = addNDaysToDate(dateStart, 6)
+  var sum = null
+  var visualRowContent = null
+  var visualRowPos = null
+  var visualRowsAmount = 0
+
+  function addVisualSumRow(dateEnd, rowPosStart) {
+    sum = getColumnSum(tableId, sumColumnPos, rowPosStart, rowPosEnd)
+    visualRowContent = genEmptyRowArray(tableId)
+    visualRowContent[dateColumnPos] = dateEnd
+    visualRowContent[sumColumnPos] = sum
+    visualRowPos = rowPosEnd + visualRowsAmount + 1
+    showVisualRow(tableId, visualRowPos, visualRowContent)
+    visualRowsAmount += 1
+  }
+
+  function addVisualSumRowAfterAWeek() {
+    rowPosStart = rowPosEnd + 1
+    if(rowPosStart > 0) {
+      dateStart = addNDaysToDate(dateEnd, 1)
+      dateEnd = addNDaysToDate(dateStart, 6)
+    }
+    rowPosEnd = getRowPosOfDateMetOrPassed(tableId, dateEnd)
+    rowPosEnd -= 1
+    addVisualSumRow(dateEnd, rowPosStart, visualRowsAmount)
+  }
+
+  // As long as there are rows, add sum-row after every week:
+  while(rowPosEnd < getLastRowPos(tableId)) {
+    addVisualSumRowAfterAWeek()
+  }
+}
 
