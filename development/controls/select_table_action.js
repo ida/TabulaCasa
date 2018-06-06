@@ -65,8 +65,8 @@ function addCustomUploadButton(parentEle) {
 
   return wrapper
 }
-function doAfterFileUpload(csv) {
-  setTable(table.id, csv)
+function doAfterFileUpload(csv, displayTable=true) {
+  setTable(table.id, csv, displayTable)
 }
 function callSelectedTableAction(args) {
   args = modulateTableActionArgs(args)
