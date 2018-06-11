@@ -119,12 +119,14 @@ function addDependentFieldAction(major, minor, majorValue, action) {
         }
         // Action is an array, insert it as option-eles in minor-field:
         else if(action instanceof Array) {
+          var selectedValue = minor.value // remember selection
           minor.innerHTML = ''
           for(var j=0; j < action.length; j++) {
             var option = document.createElement('option')
             option.innerHTML = action[j]
             minor.appendChild(option)
           }
+          minor.value = selectedValue // reset selection
         }
         // Action is a string, insert it as value in minor-field:
         else {
