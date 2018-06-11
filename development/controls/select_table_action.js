@@ -97,6 +97,7 @@ function modulateTableActionArgs(args) {
 
   if(args[1] != 'Table') {
 
+    // startNr is not a nr:
     if(isNumber(startNr) === false) {
 
       // Default to last pos:
@@ -107,13 +108,11 @@ function modulateTableActionArgs(args) {
         startNr = getLastColumnPos(table.id)
       }
 
-      startNr = Number(startNr)
-
       // For add-actions default to one more than last pos:
       if(args[0] == 'add') startNr += 1
     }
-    // Transform entered human-number to list-position:
-    startNr -= 1
+    // startNr is a nr, transform entered human-number to list-position:
+    else startNr -= 1
 
     args[2] = startNr
   }
