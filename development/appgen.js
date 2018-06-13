@@ -6,17 +6,6 @@ function addApp(appEle) {
 }
 /*
  *
- * General helper-func
- *
- */
-function addEle(parentEle, html=null, tagName='div') {
-  var ele = document.createElement(tagName)
-  if(html) { ele.innerHTML = html }
-  parentEle.appendChild(ele)
-  return ele
-}
-/*
- *
  * Getter-conventions
  *
  */
