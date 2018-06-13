@@ -6,6 +6,18 @@ var rowSeparator = '\n'
 var tables = []
 var table = null
 
+function addApp(appEle) {
+  styleToSheet.prefix = '.' + appName + ' '
+  if(appEle===null) appEle = document.body
+  appEle.className = appName
+  return appEle
+}
+function getAppEle() {
+  return document.getElementsByClassName(appName)[0]
+}
+function getComponentEle(appEle, componentName) {
+  return appEle.getElementsByClassName(componentName)[0]
+}
 function main(appEle=null) {
 
   var tablesIds = getTableIds()

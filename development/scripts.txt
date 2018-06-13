@@ -5,7 +5,6 @@
 ./helpers/dependent_field_actions.js
 ./helpers/upload.js
 ./helpers/select_helpers.js
-./appgen.js
 ./controls/main.js
 ./controls/select_table.js
 ./controls/select_table_action.js
