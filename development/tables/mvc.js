@@ -1,4 +1,4 @@
-function Tables(parentEle) {
+function Tables(viewParentEle, controlParentEle=viewParentEle) {
 
 
   var model = {
@@ -8,7 +8,7 @@ function Tables(parentEle) {
 
 
   var view = {
-    ele: addEle(parentEle),
+    ele: addEle(viewParentEle),
     render: function() {
       table.ele.innerHTML = genTableHtml(model.table.id)
     },
@@ -21,7 +21,7 @@ function Tables(parentEle) {
 
   var control = {
 
-    ele: addSelectEle(parentEle),
+    ele: addSelectEle(controlParentEle),
 
     render: function() {
       addOptionEles(this.ele, model.tableIds)
