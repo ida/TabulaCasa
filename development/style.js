@@ -1,8 +1,8 @@
 function addAppStyles() {
-  var background = '#000'
-  var color = '#fff'
   var background = 'inherit'
   var color = 'inherit'
+  var background = '#000'
+  var color = '#fff'
 
   var selector = ''
   var style = `

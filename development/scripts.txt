@@ -20,4 +20,6 @@
 ./style.js
 tables/table/model.js
 tables/table/view.js
+tables/mvc.js
 ./main.js
+dev.js
