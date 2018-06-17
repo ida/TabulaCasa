@@ -37,6 +37,8 @@ function main(appEle=null) {
 
   appEle = addApp(appEle)
 
+
+/*
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'
   addControls(controlsEle)
@@ -48,6 +50,8 @@ function main(appEle=null) {
 
   if(table === undefined) tablesEle.innerHTML = 'No tables there, yet.'
   else table.show()
+
+*/
 
 }
 

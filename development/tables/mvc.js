@@ -3,9 +3,15 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
 
   var model = {
     table: null,
-    tableIds: getTableIds(),
+    tableIds: null,
     ini: function() {
-      this.table = getTableById(model.tableIds[0])
+      this.tableIds = getTableIds()
+      for(var i=0; i < this.tableIds.length; i++) {
+        var table = new Tabla(this.tableIds[i], viewParentEle)
+        tables.push(table)
+      }
+      this.table = tables[0]
+      console.debug(this.table)
     },
   }
 
@@ -13,7 +19,7 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
   var view = {
     ele: addEle(viewParentEle),
     render: function() {
-      table.ele.innerHTML = genTableHtml(model.table.id)
+      table.ele.innerHTML = genTableHtml(table.id)
     },
     ini: function() {
       this.ele.className = 'tables'
