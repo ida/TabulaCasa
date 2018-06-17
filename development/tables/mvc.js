@@ -2,8 +2,11 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
 
 
   var model = {
-    table: table,
+    table: null,
     tableIds: getTableIds(),
+    ini: function() {
+      this.table = getTableById(model.tableIds[0])
+    },
   }
 
 
@@ -42,6 +45,7 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
   }
 
 
+  model.ini()
   view.ini()
   control.ini()
 

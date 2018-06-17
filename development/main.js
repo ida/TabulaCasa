@@ -29,7 +29,7 @@ function main(appEle=null) {
 
   var tablesIds = getTableIds()
   for(var i=0; i < tablesIds.length; i++) {
-    table = new Table(tablesIds[i])
+    table = new Table(tablesIds[i], appEle)
     tables.push(table)
   }
 
