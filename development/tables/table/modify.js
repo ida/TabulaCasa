@@ -150,7 +150,6 @@ function getTableById(tableId) {
       return tables[i]
     }
   }
-  return null
 }
 function getTableIds() {
   var keys = []
