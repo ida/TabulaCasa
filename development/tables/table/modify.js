@@ -144,6 +144,14 @@ function getTableId() {
   }
   return key
 }
+function getTableById(tableId) {
+  for(var i=0; i < tables.length; i++) {
+    if(tableId == tables[i].id) {
+      return tables[i]
+    }
+  }
+  return null
+}
 function getTableIds() {
   var keys = []
   for(var i=0; i < localStorage.length; i++) {
