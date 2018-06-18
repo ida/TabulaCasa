@@ -4,22 +4,31 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
   var model = {
     table: null,
     tableIds: null,
+    tables: [],
     ini: function() {
       this.tableIds = getTableIds()
       for(var i=0; i < this.tableIds.length; i++) {
         var table = new Tabla(this.tableIds[i], viewParentEle)
-        tables.push(table)
+        this.tables.push(table)
       }
-      this.table = tables[0]
-      console.debug(this.table)
+      this.table = this.tables[0]
     },
+    setTableById: function(tableId) {
+      for(var i=0; i < this.tables.length; i++) {
+        if(tableId == this.tables[i].id) {
+          this.table = this.tables[i]
+        }
+      }
+    },
+
+
   }
 
 
   var view = {
     ele: addEle(viewParentEle),
     render: function() {
-      table.ele.innerHTML = genTableHtml(table.id)
+      model.table.view.render()
     },
     ini: function() {
       this.ele.className = 'tables'
@@ -32,14 +41,15 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
 
     ele: addSelectEle(controlParentEle),
 
+
     render: function() {
       addOptionEles(this.ele, model.tableIds)
     },
 
     listen: function() {
       this.ele.onchange = function(eve) {
-        model.table = getTableById(eve.target.value)
-        view.render()
+        model.table = this.setTableById(eve.target.value)
+        table.view.render()
       }
     },
 

@@ -26,7 +26,8 @@ function getComponentEle(appEle, componentName) {
 
 
 function main(appEle=null) {
-
+addApp(appEle)
+/*
   var tablesIds = getTableIds()
   for(var i=0; i < tablesIds.length; i++) {
     table = new Table(tablesIds[i], appEle)
@@ -35,10 +36,8 @@ function main(appEle=null) {
 
   table = tables[0]
 
-  appEle = addApp(appEle)
 
 
-/*
   var controlsEle = addEle(appEle)
   controlsEle.className = 'controls'
   addControls(controlsEle)
@@ -55,4 +54,4 @@ function main(appEle=null) {
 
 }
 
-main(document.body)
+main()
