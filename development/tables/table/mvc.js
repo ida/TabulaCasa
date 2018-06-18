@@ -8,9 +8,11 @@ function Tabla(id, viewParentEle, controlParentEle=viewParentEle) {
 
   var view = {
     ele: addEle(viewParentEle),
+    hide: function() { hideEle(this.ele) },
     render: function() {
       this.ele.innerHTML = getRows(model.id)
     },
+    show: function() { showEle(this.ele) },
     ini: function() {
       this.ele.id = id
       this.render()
@@ -46,5 +48,6 @@ function Tabla(id, viewParentEle, controlParentEle=viewParentEle) {
     control.ini()
   }
   ini()
+  this.model = model
   this.view = view
 }

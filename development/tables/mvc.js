@@ -8,17 +8,21 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
     ini: function() {
       this.tableIds = getTableIds()
       for(var i=0; i < this.tableIds.length; i++) {
-        var table = new Tabla(this.tableIds[i], viewParentEle)
+        var table = new Tabla(this.tableIds[i], view.ele)
         this.tables.push(table)
       }
       this.table = this.tables[0]
     },
-    setTableById: function(tableId) {
+    setTableById: function(tableId, updateView=true) {
       for(var i=0; i < this.tables.length; i++) {
-        if(tableId == this.tables[i].id) {
+          console.debug(this.tables[i])
+        if(tableId == this.tables[i].model.id) {
+          console.debug(tableId)
           this.table = this.tables[i]
+          break
         }
       }
+      if(updateView === true) view.render()
     },
 
 
@@ -28,7 +32,16 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
   var view = {
     ele: addEle(viewParentEle),
     render: function() {
-      model.table.view.render()
+      this.showTableOnly()
+    },
+    showTableOnly: function() {
+      console.debug('showTableOnly')
+console.debug(model.table.view)
+
+      for(var i=0; i < model.tables.length; i++) {
+        model.tables[i].view.hide()
+      }
+      model.table.view.show()
     },
     ini: function() {
       this.ele.className = 'tables'
@@ -48,8 +61,7 @@ function Tables(viewParentEle, controlParentEle=viewParentEle) {
 
     listen: function() {
       this.ele.onchange = function(eve) {
-        model.table = this.setTableById(eve.target.value)
-        table.view.render()
+        model.setTableById(eve.target.value)
       }
     },
 
