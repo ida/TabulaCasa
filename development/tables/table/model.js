@@ -22,6 +22,9 @@ function Table(id) {
   this.addTable = function(tableId) {
     addTable(tableId)
   }
+  this.cloneTable = function(sourceTableId, targetTableId) {
+    cloneTable(sourceTableId, targetTableId)
+  }
   this.delColumn = function(columnPos) {
     delColumn(this.id, columnPos)
   }

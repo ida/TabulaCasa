@@ -55,6 +55,10 @@ function addTable(key, csv='', displayTable=true) {
   tables.push(table)
   setTable(key, csv, displayTable)
 }
+function cloneTable(sourceTableId, targetTableId) {
+  var csv = localStorage.getItem(sourceTableId)
+  addTable(targetTableId, csv)
+}
 function delColumn(key, colPos, displayTable=true) {
   var csv = ''
   var rows = getRows(key)

@@ -26,7 +26,9 @@ function main(appEle=null) {
     tables.push(table)
   }
   table = tables[0]
+
   appEle = addApp(appEle)
+
   addAppStyles()
 
   var controlsEle = addEle(appEle)

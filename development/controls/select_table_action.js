@@ -3,7 +3,7 @@ function addSelectTableActionEles(parentEle) {
   parentEle = addEle(parentEle, null, 'span')
   parentEle.className = 'selectTableAction'
 
-  var actionOptions = ['add', 'del', 'move', 'import', 'sort']
+  var actionOptions = ['add', 'clone', 'del', 'move', 'import', 'sort']
   var actionEle = addSelectEle(parentEle, actionOptions)
   var whatOptions = ['Row', 'Column', 'SumColumn', 'SumRow', 'Table', 'SumRowPerMonth', 'SumRowPerWeek']
   var whatEle = addSelectEle(parentEle, whatOptions)
@@ -17,8 +17,11 @@ function addSelectTableActionEles(parentEle) {
   addDependentFieldAction(actionEle, whatEle, 'del', whatOptions)
   whatOptions = ['Row', 'Column']
   addDependentFieldAction(actionEle, whatEle, 'move', whatOptions)
-  addDependentFieldAction(actionEle, whatEle, 'import', ['Table'])
-  addDependentFieldAction(actionEle, whatEle, 'sort', ['Column'])
+  whatOptions = ['Table']
+  addDependentFieldAction(actionEle, whatEle, 'clone', whatOptions)
+  addDependentFieldAction(actionEle, whatEle, 'import', whatOptions)
+  whatOptions = ['Column']
+  addDependentFieldAction(actionEle, whatEle, 'sort', whatOptions)
 
   // Hide importEle for all actions, but action 'import':
   for(var i=0; i < actionOptions[i].length; i++) {
@@ -32,10 +35,11 @@ function addSelectTableActionEles(parentEle) {
     startNrEle.value = table.id; startNrEle.focus()
   });
 
-  // Hide targetNrEle for all actions, but action 'move':
+  // Hide targetNrEle for all actions, but 'clone' and 'move':
   for(var i=0; i < actionOptions[i].length; i++) {
     addDependentFieldAction(actionEle, targetNrEle, actionOptions[i], hideEle)
   }
+  addDependentFieldAction(actionEle, targetNrEle, 'clone', showEle)
   addDependentFieldAction(actionEle, targetNrEle, 'move', showEle)
 
   listenSelectTableActionEles(parentEle)
