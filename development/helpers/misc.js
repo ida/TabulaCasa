@@ -32,7 +32,7 @@ function addInfo(msg) {
 function dataRowPosToVisualRowPos(rowPos) {
 // If rowEle does not have visual class, it's a data-row:
 //   Subtract 1 of rowPos until it's 0 and return rowElePos
-  var tableEle = document.getElementById(getTableId())
+  var tableEle = document.getElementById(table.id)
   var rowEles = tableEle.children
   for(var i=0; i < rowEles.length; i++) {
     var rowEle = rowEles[i]

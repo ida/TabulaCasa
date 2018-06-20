@@ -137,17 +137,6 @@ function getLastColumnPos(tableId) {
 function getLastRowPos(tableId) {
   return getRows(tableId).length-1
 }
-function getTableId() {
-  var key = null
-  var selectionEle = getComponentEle(getAppEle(), 'tablesSelection')
-  var options = selectionEle.getElementsByTagName('option')
-  for(var i=0; i < options.length; i++) {
-    if(options[i].selected === true) {
-      key = options[i].value
-    }
-  }
-  return key
-}
 function getTableIds() {
   var keys = []
   for(var i=0; i < localStorage.length; i++) {
