@@ -22,7 +22,7 @@ function addInfo(msg) {
   msgEle.style.position = 'absolute'
   var closeMsgEle = addEle(msgEle, 'x', 'span')
   closeMsgEle.tabIndex = 0
-  closeMsgEle.onclick = function() msgEle.remove()
+  closeMsgEle.onclick = function() { msgEle.remove() }
   closeMsgEle.onkeydown = function(eve) { if(eve.keyCode == 13) eve.target.click() }
   setTimeout(function() { closeMsgEle.click() }, 10000)
 }

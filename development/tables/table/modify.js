@@ -51,7 +51,7 @@ function addRow(key, rowPos, vals='', displayTable=true) {
   setTable(key, csv, displayTable)
 }
 function addTable(key, csv='', displayTable=true) {
-  table = new Table(key)
+  table = new Table(key, tablesEle)
   tables.push(table)
   setTable(key, csv, displayTable)
 }

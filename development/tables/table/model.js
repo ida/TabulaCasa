@@ -1,4 +1,4 @@
-function Table(id) {
+function Table(id, parentEle) {
   this.id = id
   this.ele = null
   this.addColumn = function(columnPos) {
@@ -46,4 +46,9 @@ function Table(id) {
   this.sortColumn = function(columnPos) {
     sortColumnByDate(this.id, columnPos)
   }
+  this.ini(parentEle)
+}
+Table.prototype.ini = function(parentEle) {
+  this.ele = addEle(parentEle)
+  this.ele.id = this.id
 }
