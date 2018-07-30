@@ -22,7 +22,7 @@ function addInfo(msg) {
   msgEle.style.position = 'absolute'
   var closeMsgEle = addEle(msgEle, 'x', 'span')
   closeMsgEle.tabIndex = 0
-  closeMsgEle.onclick = function() msgEle.remove()
+  closeMsgEle.onclick = function() { msgEle.remove() }
   closeMsgEle.onkeydown = function(eve) { if(eve.keyCode == 13) eve.target.click() }
   setTimeout(function() { closeMsgEle.click() }, 10000)
 }
@@ -32,7 +32,7 @@ function addInfo(msg) {
 function dataRowPosToVisualRowPos(rowPos) {
 // If rowEle does not have visual class, it's a data-row:
 //   Subtract 1 of rowPos until it's 0 and return rowElePos
-  var tableEle = document.getElementById(getTableId())
+  var tableEle = document.getElementById(table.id)
   var rowEles = tableEle.children
   for(var i=0; i < rowEles.length; i++) {
     var rowEle = rowEles[i]

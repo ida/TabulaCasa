@@ -21,3 +21,4 @@
 tables/table/model.js
 tables/table/view.js
 ./main.js
+dev.js

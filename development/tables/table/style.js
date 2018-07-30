@@ -1,4 +1,5 @@
 function addTableStyle(prefix, showNrs=true) {
+
   var tableTagName = 'div'
   var rowTagName = 'ul'
   var cellTagName = 'li'

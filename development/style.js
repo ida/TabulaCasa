@@ -1,4 +1,7 @@
-function addAppStyles() {
+function addAppStyles(prefix) {
+
+  styleToSheet.prefix = prefix
+
   var background = '#000'
   var color = '#fff'
   var background = 'inherit'
@@ -12,6 +15,7 @@ function addAppStyles() {
   styleToSheet.addRule(selector, style)
 
 
+  style += 'background: green;'
 /*
   style += 'border: none;'
   selector = ' input'
