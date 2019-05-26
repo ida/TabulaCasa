@@ -22,12 +22,8 @@ function getComponentEle(appEle, componentName) {
 function main(appEle=null) {
 
   appEle = addApp(appEle)
-  var controlsEle = addEle(appEle)
-  controlsEle.className = 'controls'
-  addControls(controlsEle)
-  addControlsStyle('.' + controlsEle.className + ' ')
 
-  tablesEle = addEle(appEle)
+  tablesEle = document.createElement('div')
   tablesEle.className = 'tables'
   addTableStyle('.' + tablesEle.className + ' ')
 
@@ -38,6 +34,12 @@ function main(appEle=null) {
   }
   table = tables[0]
 
+  var controlsEle = addEle(appEle)
+  controlsEle.className = 'controls'
+  addControls(controlsEle)
+  addControlsStyle('.' + controlsEle.className + ' ')
+
+  appEle.appendChild(tablesEle)
 
   if(table === undefined) tablesEle.innerHTML = 'No tables there, yet.'
   else table.show()

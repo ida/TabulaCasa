@@ -48,7 +48,7 @@ function addTableStyle(prefix, showNrs=true) {
  */
   var selector = tableSelector
   var style = `
-  margin-top: ${parseFloat(lineHeight)*2}em; /* leave space for fixed top-menu */
+  margin-bottom: ${parseFloat(lineHeight)*3}em; /* leave space for fixed controls-menu */
   border-right: 1px solid;
   border-bottom: 1px solid;
   line-height: ` + lineHeight + ';'

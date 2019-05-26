@@ -3,9 +3,8 @@ function addControlsStyle(controlsSelector) {
   var style = `
     padding: 1em 0;
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
-    height: 1.5em;
     background: black;
     width: 100%;
   `
