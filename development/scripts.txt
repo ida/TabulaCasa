@@ -6,6 +6,7 @@
 ./helpers/upload.js
 ./helpers/select_helpers.js
 ./controls/main.js
+./controls/config.js
 ./controls/select_table.js
 ./controls/select_table_action.js
 ./controls/style.js
@@ -17,6 +18,7 @@
 ./tables/table/style.js
 ./tables/table/sum.js
 ./tables/table/calendar.js
+./tables/table/columnHeaders.js
 ./style.js
 tables/table/model.js
 tables/table/view.js
