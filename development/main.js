@@ -47,13 +47,13 @@ function main(appEle=null) {
   // Device-distinction desktop/mobile:
   var screenWidth = parseFloat( window.getComputedStyle(document.body).getPropertyValue('width') )
   if(screenWidth < 555) {
-		addColumnHeadersPerRow(tables[0])
-		// Remove styles:
-		var styleEles = document.getElementsByTagName('style')
-		var styleEle = styleEles[0]
-		var styles = styleEle.innerHTML
-		styles = '@media (min-width: 500px) {' + styles + '}'
-		styleEle.innerHTML = styles
+    addColumnHeadersPerRow(tables[0])
+    // Remove styles:
+    var styleEles = document.getElementsByTagName('style')
+    var styleEle = styleEles[0]
+    var styles = styleEle.innerHTML
+    styles = '@media (min-width: 500px) {' + styles + '}'
+    styleEle.innerHTML = styles
 	}
 
 }
