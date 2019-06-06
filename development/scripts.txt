@@ -6,6 +6,7 @@
 ./helpers/upload.js
 ./helpers/select_helpers.js
 ./controls/main.js
+./controls/config.js
 ./controls/select_table.js
 ./controls/select_table_action.js
 ./controls/style.js
