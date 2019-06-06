@@ -34,7 +34,11 @@ function listenCells(tableEle) {
   for(var i=0; i < cells.length; i++) {
     // When user clicks into a cell:
     cells[i].onclick = function(eve) {
-      insertInput(eve.target)
+      // And it does not contain an input-ele, yet (here: no children):
+      if(eve.target.children.length < 1) {
+        // Insert an input-ele:
+        insertInput(eve.target)
+      }
     }
     // When user types something into input:
     cells[i].onkeydown = function(eve) {

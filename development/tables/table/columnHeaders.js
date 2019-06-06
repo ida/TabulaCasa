@@ -1,8 +1,3 @@
-setTimeout(function() {
-  alert('tables')
-  //addColumnHeadersPerRow(tables[0])
-}, 2727);
-//alert( parseFloat( window.getComputedStyle(document.body).getPropertyValue('width') )  )
 function addColumnHeadersPerRow(table) {
 // If we have a small device, show column-header above any cell.
   var style = window.getComputedStyle(table.ele.children[0].children[0])
