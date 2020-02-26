@@ -118,7 +118,6 @@ function delTable(key) {
 function genEmptyRowArray(tableId) {
   var row = []
   var cellsAmount = getLastColumnPos(tableId)
-  console.debug(cellsAmount)
   for(var i=0; i < cellsAmount; i++) {
     row.push('')
   }
