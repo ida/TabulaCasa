@@ -58,4 +58,4 @@ function main(appEle=null) {
 
 }
 
-setTimeout(main, 500)
+setTimeout(main, 500) // body seems not present at load time and DOMContentLoaded does not work

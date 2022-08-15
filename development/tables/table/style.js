@@ -10,7 +10,7 @@ function addTableStyle(prefix, showNrs=true) {
   var sumRowSelector = tableSelector + ' > ' + rowTagName + '.sum'
   var sumCellSelector = sumRowSelector + ' > ' + cellTagName
   var background = '#000'
-  var borderWidth = '0.1em'
+  var borderWidth = '1px'
   var border = borderWidth + ' solid'
   var color = '#fff'
   var cellWidth = '13em'
@@ -88,7 +88,7 @@ function addTableStyle(prefix, showNrs=true) {
  *
  */
   if(showNrs) {
-  var colFirstCellSelector = rowSelector + 
+  var colFirstCellSelector = rowSelector +
                              ':first-child > ' +
                              cellTagName
 
