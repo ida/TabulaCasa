@@ -58,4 +58,4 @@ function main(appEle=null) {
 
 }
 
-main(document.body)
+setTimeout(main, 500)

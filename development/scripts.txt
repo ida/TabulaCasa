@@ -1,4 +1,4 @@
-../dependencies/style_to_sheet.js
+./dependencies/style_to_sheet.js
 ./helpers/misc.js
 ./helpers/numbers.js
 ./helpers/date.js

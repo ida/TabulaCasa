@@ -68,6 +68,10 @@ to change to one (most possible unique) key, holding all
 of the app's data (also user-config-settings) in JSON-format.
 
 
+Development
+===========
+
+Read './development/README.txt'
 
 
 Bugs'n'hugs
@@ -85,7 +89,7 @@ Or send an email and cross fingers, it gets through my spam-filters.
 Author
 ======
 
-Ida Ebkes <contact@ida-ebkes.eu>
+Ida Ebkes, 2016.
 
 
 
@@ -99,5 +103,5 @@ MIT License, a copy is attached in this folder.
 Last touched
 ============
 
-This README was last updated by a human on the 14th of March, 2018.
+This README was last updated by a human on the 15th of August, 2022.
 
