@@ -23,12 +23,13 @@ function insertInput(cell) {
   listenInput(input)
 }
 function listenInput(input) {
-  // Input looses focus, reset cell-html with val:
+  // Input looses focus, reset cell-html with val (thereby "removes" input-ele):
   input.onblur = function(eve) {
     input.parentNode.innerHTML = input.value
   }
 }
 function listenCells(tableEle) {
+  var cellValue;
   // We assume every list-item within a table is a cell:
   var cells = tableEle.getElementsByTagName('li')
   for(var i=0; i < cells.length; i++) {
@@ -49,6 +50,9 @@ function listenCells(tableEle) {
       || eve.keyCode == '40') {
         handleArrowKey(eve)
       }
+      else {
+        cellValue = eve.target.value
+      }
     }
     // When user has typed something into input:
     cells[i].onkeyup = function(eve) {
@@ -56,8 +60,19 @@ function listenCells(tableEle) {
       // for that we need table-key, row-pos and cell-pos:
       var cellPos = getCellPos(eve.target.parentNode)
       var rowPos = getRowPos(eve.target.parentNode)
-      var key = tableEle.id
-      setCell(key, rowPos, cellPos, eve.target.value)
+      if(cellValue != eve.target.value) {
+        var key = tableEle.id
+        setCell(key, rowPos, cellPos, eve.target.value)
+
+        // If cell is part of a sum-column or -row, update sum-column or -row:
+        function isSumColumnCell(tableId, rowPos, colPos) {
+          var cellValue = getCell(tableId, 0, colPos+1)
+          return cellValue == sumColHeaderString
+        }
+        if(isSumColumnCell(key, rowPos, cellPos)) {
+          updateSumColumnEles(key, cellPos)
+        }
+      }
     }
     // When a cell gains focus:
     cells[i].onfocus = function(eve) {

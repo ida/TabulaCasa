@@ -9,20 +9,30 @@ function addSumColumn(tableId, colPos) {
 //   1,000,000.00
 //
 
+  var newCells = getSumColumnCells(tableId, colPos-1)
+
+  addColumn(tableId, colPos, newCells)
+
+}
+
+
+function getSumColumnCells(tableId, colPos) {
 
   var rows = getRows(tableId)
 
   var cellValue = null
   var newCells = []
- 
+
   var accumulatedSum = 0
   var nothingChangedSymbol = '-'
 
   for(var i=0; i < rows.length; i++) {
-    cellValue = rows[i].split(cellSeparator)[colPos-1]
+    cellValue = rows[i].split(cellSeparator)[colPos]
+
+    cellValue = valueToNumber(cellValue, true) // true is for treating non-nrs as 0
 
     if(isNumber(cellValue) === true) {
-      accumulatedSum += valueToNumber(cellValue, true) // true is for treating non-nrs as 0
+      accumulatedSum += cellValue
       newCells.push(accumulatedSum)
     }
     else {
@@ -31,9 +41,9 @@ function addSumColumn(tableId, colPos) {
   }
 
   // Replace first cell with 'SUM':
-  newCells.splice(0, 1, '<b style="margin-left: 37%">SUM</b>')
+  newCells.splice(0, 1, sumColHeaderString)
 
-  addColumn(tableId, colPos, newCells)
+  return newCells
 
 }
 
@@ -71,6 +81,7 @@ function addSumRow(tableId, rowPos, startFromRowPos=0) {
 }
 
 
+// TODO: rename func below to addReadonlyRow...
 function addVisualRowEveryNDays(tableId, days=7, dateColumnPos=0) {
   var diffInDays = 0
   var rows = getRows(tableId)

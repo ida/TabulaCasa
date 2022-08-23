@@ -6,6 +6,7 @@ function addControlsStyle(controlsSelector) {
     bottom: 0;
     left: 0;
     background: black;
+    color: white;
     width: 100%;
   `
   styleToSheet.addRule(selector, style)

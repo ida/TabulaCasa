@@ -17,6 +17,7 @@
 ./tables/table/sort.js
 ./tables/table/style.js
 ./tables/table/sum.js
+./tables/table/update.js
 ./tables/table/calendar.js
 ./tables/table/columnHeaders.js
 ./style.js

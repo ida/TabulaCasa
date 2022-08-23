@@ -1,6 +1,6 @@
 function genTableHtml(key) {
 // Each row is an unordered list, containing cells as list-items.
-  var html = '' // table-html 
+  var html = '' // table-html
   if(key === null) {
     html = 'There are no tables to display, yet.'
   }

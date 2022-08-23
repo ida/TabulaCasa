@@ -1,11 +1,13 @@
 var cellSeparator = ','
 var cellSeparator = ';'
-var decimalSeparator = ','
 var decimalSeparator = '.'
+var decimalSeparator = ','
 var rowSeparator = '\n'
 var table = null
 var tables = []
 var tablesEle = null
+var sumColHeaderString = '<b style="margin-left: 37%">SUM</b>'
+
 
 function addApp(appEle) {
   if(appEle===null) appEle = document.body
