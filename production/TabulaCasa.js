@@ -1072,6 +1072,7 @@ function addControlsStyle(controlsSelector) {
     bottom: 0;
     left: 0;
     background: black;
+    color: white;
     width: 100%;
   `
   styleToSheet.addRule(selector, style)
@@ -1084,7 +1085,7 @@ function addControlsStyle(controlsSelector) {
 
 function genTableHtml(key) {
 // Each row is an unordered list, containing cells as list-items.
-  var html = '' // table-html 
+  var html = '' // table-html
   if(key === null) {
     html = 'There are no tables to display, yet.'
   }
@@ -1245,12 +1246,13 @@ function insertInput(cell) {
   listenInput(input)
 }
 function listenInput(input) {
-  // Input looses focus, reset cell-html with val:
+  // Input looses focus, reset cell-html with val (thereby "removes" input-ele):
   input.onblur = function(eve) {
     input.parentNode.innerHTML = input.value
   }
 }
 function listenCells(tableEle) {
+  var cellValue;
   // We assume every list-item within a table is a cell:
   var cells = tableEle.getElementsByTagName('li')
   for(var i=0; i < cells.length; i++) {
@@ -1271,6 +1273,9 @@ function listenCells(tableEle) {
       || eve.keyCode == '40') {
         handleArrowKey(eve)
       }
+      else {
+        cellValue = eve.target.value
+      }
     }
     // When user has typed something into input:
     cells[i].onkeyup = function(eve) {
@@ -1278,8 +1283,19 @@ function listenCells(tableEle) {
       // for that we need table-key, row-pos and cell-pos:
       var cellPos = getCellPos(eve.target.parentNode)
       var rowPos = getRowPos(eve.target.parentNode)
-      var key = tableEle.id
-      setCell(key, rowPos, cellPos, eve.target.value)
+      if(cellValue != eve.target.value) {
+        var key = tableEle.id
+        setCell(key, rowPos, cellPos, eve.target.value)
+
+        // If cell is part of a sum-column or -row, update sum-column or -row:
+        function isSumColumnCell(tableId, rowPos, colPos) {
+          var cellValue = getCell(tableId, 0, colPos+1)
+          return cellValue == sumColHeaderString
+        }
+        if(isSumColumnCell(key, rowPos, cellPos)) {
+          updateSumColumnEles(key, cellPos)
+        }
+      }
     }
     // When a cell gains focus:
     cells[i].onfocus = function(eve) {
@@ -1677,7 +1693,7 @@ function addTableStyle(prefix, showNrs=true) {
  *
  */
   if(showNrs) {
-  var colFirstCellSelector = rowSelector + 
+  var colFirstCellSelector = rowSelector +
                              ':first-child > ' +
                              cellTagName
 
@@ -1756,20 +1772,30 @@ function addSumColumn(tableId, colPos) {
 //   1,000,000.00
 //
 
+  var newCells = getSumColumnCells(tableId, colPos-1)
+
+  addColumn(tableId, colPos, newCells)
+
+}
+
+
+function getSumColumnCells(tableId, colPos) {
 
   var rows = getRows(tableId)
 
   var cellValue = null
   var newCells = []
- 
+
   var accumulatedSum = 0
   var nothingChangedSymbol = '-'
 
   for(var i=0; i < rows.length; i++) {
-    cellValue = rows[i].split(cellSeparator)[colPos-1]
+    cellValue = rows[i].split(cellSeparator)[colPos]
+
+    cellValue = valueToNumber(cellValue, true) // true is for treating non-nrs as 0
 
     if(isNumber(cellValue) === true) {
-      accumulatedSum += valueToNumber(cellValue, true) // true is for treating non-nrs as 0
+      accumulatedSum += cellValue
       newCells.push(accumulatedSum)
     }
     else {
@@ -1778,9 +1804,9 @@ function addSumColumn(tableId, colPos) {
   }
 
   // Replace first cell with 'SUM':
-  newCells.splice(0, 1, '<b style="margin-left: 37%">SUM</b>')
+  newCells.splice(0, 1, sumColHeaderString)
 
-  addColumn(tableId, colPos, newCells)
+  return newCells
 
 }
 
@@ -1818,6 +1844,7 @@ function addSumRow(tableId, rowPos, startFromRowPos=0) {
 }
 
 
+// TODO: rename func below to addReadonlyRow...
 function addVisualRowEveryNDays(tableId, days=7, dateColumnPos=0) {
   var diffInDays = 0
   var rows = getRows(tableId)
@@ -1959,6 +1986,16 @@ function addSumRowPerWeek(tableId, dateColumnPos=0, sumColumnPos=null) {
   }
 }
 
+
+function updateSumColumnEles(tableId, colPos) {
+  // Recalculate sum-column-cells:
+  var sumColCells = getSumColumnCells(tableId, colPos)
+  // Update displayed sum-cells with new values:
+  var cellEles = document.querySelectorAll(`#${tableId} > ul > li:nth-child(${colPos+2})`)
+  for(var i=1; i < cellEles.length; i++) {
+    cellEles[i].innerHTML = sumColCells[i]
+  }
+}
 
 function addCalendarColumn(startDate, days, columnPos=0) {
   // startDate is expected to look like: '01.01.1970'
@@ -2144,12 +2181,14 @@ Table.prototype.show = function() {
 
 var cellSeparator = ','
 var cellSeparator = ';'
-var decimalSeparator = ','
 var decimalSeparator = '.'
+var decimalSeparator = ','
 var rowSeparator = '\n'
 var table = null
 var tables = []
 var tablesEle = null
+var sumColHeaderString = '<b style="margin-left: 37%">SUM</b>'
+
 
 function addApp(appEle) {
   if(appEle===null) appEle = document.body
@@ -2202,7 +2241,7 @@ function main(appEle=null) {
 
 }
 
-setTimeout(main, 500)
+setTimeout(main, 500) // body seems not present at load time and DOMContentLoaded does not work
 
 
 
