@@ -8,10 +8,10 @@ What
 ====
 
 1.) All user-interactions are possible using the keyboard only,
-as a by-product one can also use the mouse but that's not the
+as a by-product one can also use the mouse, but that's not the
 emphasis, here.
 
-2.) Any changement will be stored immediately.
+2.) Any changement will be stored immediately, while typing.
 
 
 Why
@@ -63,7 +63,7 @@ Technically
 The data is saved in the browser's local-storage.
 
 Currently each table takes up a key for its id and stores
-the table-data as a CSV-string in the value. This is suppossed
+the table-data as a CSV-string in the value. This is supposed
 to change to one (most possible unique) key, holding all
 of the app's data (also user-config-settings) in JSON-format.
 
